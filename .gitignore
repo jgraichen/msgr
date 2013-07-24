@@ -18,3 +18,10 @@ tmp
 .idea
 *.iml
 .rbx
+.rspec
+log/*.log
+spec/dummy/db/*.sqlite3
+spec/dummy/db/*.sqlite3-journal
+spec/dummy/log/*.log
+spec/dummy/tmp/
+spec/dummy/.sass-cache
