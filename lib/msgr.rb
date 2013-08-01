@@ -1,5 +1,7 @@
 require 'msgr/version'
 
 module Msgr
-  # Your code goes here...
+  extend ActiveSupport::Autoload
+
+  autoload :Consumer
 end
