@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Msgr do
+describe Msgr::Client do
 
 end
