@@ -1,0 +1,14 @@
+language: ruby
+bundler_args: --without development
+rvm:
+  - 2.0.0
+  - 1.9.3
+  - jruby
+  - rbx-19mode
+
+gemfile:
+  - gemfiles/Gemfile.rails-3-2
+  - gemfiles/Gemfile.rails-4-0
+
+services:
+  - rabbitmq
