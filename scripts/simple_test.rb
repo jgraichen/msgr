@@ -1,24 +1,37 @@
 require 'msgr'
 
-Msgr.logger.info('[ROOT]') { 'START' }
-client = Msgr::Client.new uri: 'amqp://msgr:msgr@localhost'
+Msgr.logger.level = Logger::Severity::DEBUG
 
-client.routes.configure do
+@client = Msgr::Client.new uri: 'amqp://msgr:msgr@localhost'
+
+@client.routes.configure do
   route 'abc.#', to: 'test#index'
   route 'cde.#', to: 'test#index'
   route '#', to: 'test#another_action'
 end
 
-client.start
+@client.start
 
 10.times do |i|
-  client.publish 'abc.XXX', "Message #{i} #{rand}"
+  @client.publish 'abc.XXX', "Message #{i} #{rand}"
+end
+
+sleep 5
+
+@client.routes.configure do
+  route 'abc.#', to: 'test#index'
+end
+
+@client.reload
+
+10.times do |i|
+  @client.publish 'abc.XXX', "Message #{i} #{rand}"
 end
 
 begin
   sleep
 rescue Interrupt
-  client.stop
+  @client.stop
 end
 
 #class Dispatcher

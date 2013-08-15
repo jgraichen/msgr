@@ -20,7 +20,9 @@ module Msgr
 
   class << self
     def logger
-      @logger ||= Logger.new $stdout
+      @logger ||= Logger.new($stdout).tap do |logger|
+        logger.level = Logger::Severity::INFO
+      end
     end
 
     def start
