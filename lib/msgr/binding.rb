@@ -14,6 +14,9 @@ module Msgr
       @subscription = queue.subscribe ack: true, &method(:call)
     end
 
+    # Called from Bunny Thread Pool. Will create message object from
+    # provided bunny data and dispatch message to connection.
+    #
     def call(info, metadata, payload)
       message = Message.new(connection, info, metadata, payload, route)
       connection.dispatch message
@@ -21,6 +24,8 @@ module Msgr
       Msgr.logger.warn(self) { "Error received within bunny subscribe handler: #{error.inspect}." }
     end
 
+    # Cancel subscription to not receive any more messages.
+    #
     def release
       subscription.cancel if subscription
     end
