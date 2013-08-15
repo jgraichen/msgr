@@ -4,6 +4,8 @@ module Msgr
 
   class Client
     include Celluloid
+    include Logging
+
     attr_reader :pool
 
     def initialize(config)
@@ -17,8 +19,12 @@ module Msgr
 
       @config  = config
       @bunny   = Bunny.new uri.to_s
-      @pool    = Pool.new Dispatcher, size: 5
+      @pool    = Pool.new Dispatcher
       @running = true
+    end
+
+    def running?
+      @running
     end
 
     def routes
@@ -31,19 +37,21 @@ module Msgr
     end
 
     def stop
-      return unless @running
+      return unless running?
+
       @running = false
-      Msgr.logger.debug '[CLIENT] Stopping...'
+      log(:debug) { 'Stopping...' }
 
       @connection.release
       @pool.stop
 
-      Msgr.logger.debug '[CLIENT] Terminating...'
+      log(:debug) { 'Terminating...' }
 
-      @bunny.stop
       @connection.terminate
       @pool.terminate
-      Msgr.logger.debug '[CLIENT] Stopped.'
+      @bunny.stop
+
+      log(:debug) { 'Terminated.' }
     end
   end
 end

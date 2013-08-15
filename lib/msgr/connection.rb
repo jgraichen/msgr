@@ -2,6 +2,8 @@ module Msgr
 
   class Connection
     include Celluloid
+    include Logging
+
     attr_reader :conn, :pool
     finalizer :close
 
@@ -14,6 +16,8 @@ module Msgr
       @channel.prefetch(10)
 
       routes.each { |route| bindings << Binding.new(Actor.current, route) }
+
+      log(:debug) { 'Connection bound and subscribed.' }
     end
 
     # Used to store al bindings. Allows use to
@@ -43,12 +47,12 @@ module Msgr
 
     # Release all bindings but do not close channel. Will not
     # longer receive any message but channel can be used to
-    # acknowledgment currently processed messages.
+    # acknowledge currently processing messages.
     #
     def release
       return unless bindings.any?
 
-      Msgr.logger.debug '[CONN] Release all bindings.'
+      log(:debug) { 'Release all bindings.' }
 
       bindings.each { |binding| binding.release }
       bindings.clear
@@ -63,9 +67,8 @@ module Msgr
     end
 
     def close
-      sleep 10
       @channel.close if @channel.open?
-      Msgr.logger.debug '[CONN] Connection closed.'
+      log(:debug) { 'Connection closed.' }
     end
   end
 end

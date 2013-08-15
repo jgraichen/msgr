@@ -5,6 +5,7 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/string/inflections'
 
+require 'msgr/logging'
 require 'msgr/binding'
 require 'msgr/client'
 require 'msgr/connection'

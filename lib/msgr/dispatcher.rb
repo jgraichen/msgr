@@ -5,18 +5,24 @@ module Msgr
   # delegate them to a new and fresh consumer instance.
   #
   class Dispatcher
+    include Logging
 
     def initialize
 
     end
 
     def call(message)
-      Msgr.logger.debug "Receive dispatched message: #{message.payload}"
+      log(:debug) { "Receive dispatched message: #{message.payload}" }
 
-      sleep 2
+      sleep 10 * rand
 
       message.ack
-      Msgr.logger.debug 'Dispatched message acknowledged.'
+
+      log(:debug) { 'Dispatched message acknowledged.' }
+    end
+
+    def to_s
+      self.class.name
     end
   end
 end
