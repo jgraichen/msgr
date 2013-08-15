@@ -1,4 +1,4 @@
-# Msgr - *A Rails-like Messaging Framework*
+# Msgr: *Rails-like Messaging Framework*
 
 [![Gem Version](https://badge.fury.io/rb/msgr.png)](http://badge.fury.io/rb/msgr)
 [![Build Status](https://travis-ci.org/jgraichen/msgr.png?branch=master)](https://travis-ci.org/jgraichen/msgr)
