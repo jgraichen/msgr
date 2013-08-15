@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/jgraichen/msgr/badge.png?branch=master)](https://coveralls.io/r/jgraichen/msgr)
 [![Code Climate](https://codeclimate.com/github/jgraichen/msgr.png)](https://codeclimate.com/github/jgraichen/msgr)
 [![Dependency Status](https://gemnasium.com/jgraichen/msgr.png)](https://gemnasium.com/jgraichen/msgr)
-[![RubyDoc Documentation](https://raw.github.com/jgraichen/msgr/master/rubydoc.png)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
+[![RubyDoc Documentation](https://raw.github.com/jgraichen/shields/master/rubydoc.png)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and ou like it. Using Rails you can just declare your routes and
 create a controller. Now it just works.
