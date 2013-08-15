@@ -13,7 +13,7 @@ module Msgr
 
       log(:debug) { "Inialize size => #{@size}" }
 
-      start
+      start if opts[:autostart].nil? || opts[:autostart]
     end
 
     def running?
