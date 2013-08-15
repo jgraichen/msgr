@@ -10,20 +10,36 @@ end
 
 @client.start
 
-Thread.new do
-  loop do
-    10.times { |x| @client.publish 'route.ing.key', "message #{x}" }
-  end
-end.run
-
 begin
-  sleep 5
+  sleep 10
   @client.stop
 rescue Interrupt
   @client.stop
 end
 
-sleep 30
+#class Dispatcher
+#  include Msgr::Logging
+#
+#  def call(message)
+#    log(:info) { message }
+#    sleep 5 * rand
+#    log(:info) { 'Done' }
+#  end
+#end
+#
+#pool = Msgr::Pool.new Dispatcher, size: 10
+#pool.start
+#
+#100.times do |i|
+#  pool.dispatch(:call, "Message ##{i}")
+#end
+#
+#sleep 5
+#
+#pool.stop
+#pool.terminate
+#
+#Msgr.logger.info('[ROOT]') { 'Pool terminated.' }
 
 #require 'celluloid'
 #
