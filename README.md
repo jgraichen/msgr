@@ -7,7 +7,7 @@
 [![Dependency Status](https://gemnasium.com/jgraichen/msgr.png)](https://gemnasium.com/jgraichen/msgr)
 [![RubyDoc Documentation](https://raw.github.com/jgraichen/shields/master/rubydoc.png)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
-You know it and ou like it. Using Rails you can just declare your routes and
+You know it and you like it. Using Rails you can just declare your routes and
 create a controller. Now it just works.
 
 With *Msgr* you can do the same for asynchronous AMQP messaging. Just define
