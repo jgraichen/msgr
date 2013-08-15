@@ -4,7 +4,7 @@ module Msgr
     include Celluloid
     include Logging
 
-    attr_reader :conn, :pool
+    attr_reader :conn, :pool, :routes
     finalizer :close
 
     def initialize(conn, routes, pool)
@@ -15,9 +15,19 @@ module Msgr
       @channel = conn.create_channel
       @channel.prefetch(10)
 
+      rebind
+    end
+
+    def rebind(routes = nil)
+      routes = self.routes unless routes
+
+      # First release old bindings
+      release
+
+      # Create new bindings
       routes.each { |route| bindings << Binding.new(Actor.current, route) }
 
-      log(:debug) { 'Connection bound and subscribed.' }
+      log(:debug) { 'New routes bound.' }
     end
 
     # Used to store al bindings. Allows use to
