@@ -15,4 +15,12 @@ RSpec.configure do |config|
     # Only allow expect syntax
     c.syntax = :expect
   end
+
+  config.before do
+    Celluloid.shutdown
+    Celluloid.boot
+
+    Celluloid.logger = nil
+    Msgr.logger = nil
+  end
 end
