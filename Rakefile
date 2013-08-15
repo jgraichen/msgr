@@ -15,3 +15,15 @@ desc 'Run all specs'
 RSpec::Core::RakeTask.new('spec') do |t|
   t.pattern = 'spec/msgr/**/*_spec.rb'
 end
+
+begin
+  require 'yard'
+  require 'yard/rake/yardoc_task'
+
+  YARD::Rake::YardocTask.new do |t|
+    t.files = %w(lib/**/*.rb)
+    t.options = %w(--output-dir doc/)
+  end
+rescue LoadError
+  nil
+end
