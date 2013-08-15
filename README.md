@@ -1,4 +1,4 @@
-# Msgr: *Rails-like Messaging Framework*
+# Msgr - *A Rails-like Messaging Framework*
 
 [![Gem Version](https://badge.fury.io/rb/msgr.png)](http://badge.fury.io/rb/msgr)
 [![Build Status](https://travis-ci.org/jgraichen/msgr.png?branch=master)](https://travis-ci.org/jgraichen/msgr)
@@ -8,7 +8,7 @@
 [![RubyDoc Documentation](https://raw.github.com/jgraichen/shields/master/rubydoc.png)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and you like it. Using Rails you can just declare your routes and
-create a controller. Now it just works.
+create a controller. That's all you need to process requests.
 
 With *Msgr* you can do the same for asynchronous AMQP messaging. Just define
 your routes, create your consumer and watch you app processing messages.
