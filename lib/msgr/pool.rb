@@ -2,6 +2,7 @@ module Msgr
 
   class Pool
     include Celluloid
+    include Logging
     attr_reader :size, :idle, :busy
 
     def initialize(runner_klass, opts = {})
@@ -9,6 +10,8 @@ module Msgr
       @runner_args  = opts[:args] ? Array(opts[:args]) : []
       @size         = (opts[:size] || Celluloid.cores).to_i
       @running      = false
+
+      log(:debug) { "Inialize size => #{@size}" }
 
       start
     end
@@ -18,35 +21,36 @@ module Msgr
     end
 
     def start
+      return if running?
+
+      log(:debug) { 'Spin up worker pool' }
+      @running = true
+
       @idle    = @size.times.map do |index|
         Worker.new_link Actor.current, index, @runner_klass, @runner_args
       end
       @busy    = []
-      @running = true
+
+      log(:debug) { 'Startup done. Invoke worker polling.' }
 
       @idle.each { |worker| async.poll worker }
     end
 
     # Request a graceful shutdown of all pool workers.
     #
-    # @param [Hash] opts
-    # @option opts [Boolean] :block If method should block until all worker are shutdown.
-    #
-    def stop(opts = {})
-      opts = {block: true}.merge opts
-
-      Msgr.logger.debug '[POOL] Graceful shutdown requested.'
+    def stop
+      log(:debug) { 'Graceful shutdown requested.' }
 
       @running = false
       @idle.each { |worker| worker.terminate }
 
-      if opts[:block] && busy.any?
-        Msgr.logger.debug "[POOL] Wait for #{busy.size} workers to terminate."
+      if busy.any?
+        log(:debug) { "Wait for #{busy.size} workers to terminate." }
 
         wait :shutdown
-
-        Msgr.logger.debug '[POOL] Graceful shutdown done.'
       end
+
+      log(:debug) { 'Graceful shutdown done.' }
     end
 
     # Check if a worker is available.
@@ -64,7 +68,7 @@ module Msgr
     # Dispatch given message to a worker.
     #
     def dispatch(message, *args)
-      messages << [message, args]
+      messages.push [message, args]
       after(0) { signal :dispatch }
     end
 
@@ -73,17 +77,17 @@ module Msgr
     # @param [Pool::Worker] worker Worker that finished processing.
     #
     def executed(worker)
-      Msgr.logger.debug "[POOL] Worker signals done."
       busy.delete worker
 
       if running?
         idle << worker
         poll worker
       else
-        Msgr.logger.debug "[POOL] Worker terminated. Still #{busy.size} to go..."
+        log(:debug) { "Terminate worker. Still #{busy.size} to go..." }
+
         worker.terminate if worker.alive?
         if busy.empty?
-          Msgr.logger.debug "[POOL] All worker down. Signal :shutdown."
+          log(:debug) { 'All worker down. Signal :shutdown.' }
           after(0) { signal :shutdown }
         end
       end
@@ -93,7 +97,7 @@ module Msgr
       return unless worker.alive?
 
       if running?
-        if (message = messages.pop)
+        if (message = messages.shift)
           idle.delete worker
           busy << worker
 
@@ -103,12 +107,12 @@ module Msgr
         end
       else
         worker.terminate if worker.alive?
-        after(0) { puts "SHUTDOWN"; signal(:shutdown) } if @busy.empty?
+        after(0) { signal(:shutdown) } if @busy.empty?
       end
     end
 
     def to_s
-      "#{self.class.name}<#{object_id}>[#{@runner_klass}]"
+      "#{self.class.name}[#{@runner_klass}]<#{object_id}>"
     end
 
     # Worker actor capsuling worker logic and dispatching
@@ -116,19 +120,24 @@ module Msgr
     #
     class Worker
       include Celluloid
+      include Logging
       attr_reader :pool, :index, :runner
 
       def initialize(pool, index, runner_klass, runner_args)
-        @pool    = pool
-        @pname   = pool.to_s
-        @index   = index
-        @runner  = runner_klass.new *runner_args
+        @pool     = pool
+        @poolname = pool.to_s
+        @index    = index
+        @runner   = runner_klass.new *runner_args
+
+        log(:debug) { 'Worker ready.' }
       end
 
       # Dispatch given method and argument to custom runner.
       # Arguments are used to call `#send` on runner instance.
       #
       def dispatch(method, args)
+        log(:debug) { "Dispatch to runner: #{runner.class.name}##{method.to_s}" }
+
         # Send method to custom runner.
         runner.send method, *args
       rescue => error
@@ -138,7 +147,7 @@ module Msgr
       end
 
       def to_s
-        "#{@pname}[#{index}] (#{Thread.current.object_id})"
+        "#{@poolname}[##{index}]"
       end
     end
   end
