@@ -14,8 +14,6 @@ module Msgr
     def call(message)
       log(:debug) { "Receive dispatched message: #{message.payload}" }
 
-      sleep 10 * rand
-
       message.ack
 
       log(:debug) { 'Dispatched message acknowledged.' }
