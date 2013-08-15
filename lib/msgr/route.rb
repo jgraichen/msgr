@@ -18,5 +18,9 @@ module Msgr
         raise ArgumentError.new "Invalid consumer format: #{opts[:to].strip.to_s.inspect}. Must be `consumer_class#action`."
       end
     end
+
+    def name
+      "msgr.consumer-#{key}//#{consumer}##{action}"
+    end
   end
 end
