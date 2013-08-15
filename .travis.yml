@@ -7,8 +7,8 @@ rvm:
   - rbx-19mode
 
 gemfile:
-  - gemfiles/Gemfile.rails-3-2
-  - gemfiles/Gemfile.rails-4-0
+  - Gemfile.rails-3-2
+  - Gemfile.rails-4-0
 
 services:
   - rabbitmq
