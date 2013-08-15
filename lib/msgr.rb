@@ -25,6 +25,10 @@ module Msgr
       end
     end
 
+    def logger=(logger)
+      @logger = logger
+    end
+
     def start
       # stub
     end
