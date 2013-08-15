@@ -97,7 +97,7 @@ module Msgr
       return unless worker.alive?
 
       if running?
-        if (message = messages.shift)
+        if (message = exclusive { messages.shift })
           idle.delete worker
           busy << worker
 
