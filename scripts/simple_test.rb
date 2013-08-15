@@ -10,9 +10,14 @@ end
 
 @client.start
 
+sleep 2
+
+10000.times do |i|
+  @client.publish 'abc.XXX', "Message #{i}"
+end
+
 begin
-  sleep 10
-  @client.stop
+  sleep
 rescue Interrupt
   @client.stop
 end

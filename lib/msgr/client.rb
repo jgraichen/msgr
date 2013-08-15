@@ -19,8 +19,7 @@ module Msgr
 
       @config  = config
       @bunny   = Bunny.new uri.to_s
-      @pool    = Pool.new Dispatcher
-      @running = true
+      @pool    = Pool.new Dispatcher, autostart: false
     end
 
     def running?
@@ -33,6 +32,9 @@ module Msgr
 
     def start
       @bunny.start
+      @pool.start
+
+      @running    = true
       @connection = Connection.new @bunny, routes, pool
     end
 
@@ -52,6 +54,10 @@ module Msgr
       @bunny.stop
 
       log(:debug) { 'Terminated.' }
+    end
+
+    def publish(routing_key, payload)
+      @connection.publish payload, routing_key: routing_key
     end
   end
 end
