@@ -1,25 +1,24 @@
 require 'msgr'
 
-@client = Msgr::Client.new uri: 'amqp://msgr:msgr@localhost'
+Msgr.logger.info('[ROOT]') { 'START' }
+client = Msgr::Client.new uri: 'amqp://msgr:msgr@localhost'
 
-@client.routes.configure do
+client.routes.configure do
   route 'abc.#', to: 'test#index'
   route 'cde.#', to: 'test#index'
   route '#', to: 'test#another_action'
 end
 
-@client.start
+client.start
 
-sleep 2
-
-10000.times do |i|
-  @client.publish 'abc.XXX', "Message #{i}"
+10.times do |i|
+  client.publish 'abc.XXX', "Message #{i} #{rand}"
 end
 
 begin
   sleep
 rescue Interrupt
-  @client.stop
+  client.stop
 end
 
 #class Dispatcher

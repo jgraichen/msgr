@@ -3,7 +3,7 @@ module Msgr
   class Pool
     include Celluloid
     include Logging
-    attr_reader :size, :idle, :busy
+    attr_reader :size
 
     def initialize(runner_klass, opts = {})
       @runner_klass = runner_klass
@@ -14,11 +14,15 @@ module Msgr
       log(:debug) { "Inialize size => #{@size}" }
 
       start if opts[:autostart].nil? || opts[:autostart]
+      every(30) { log_status } if opts[:nostats].nil? || opts[:nostats]
     end
 
     def running?
       @running
     end
+
+    def idle; @idle ||= [] end
+    def busy; @busy ||= [] end
 
     def start
       return if running?
@@ -26,14 +30,20 @@ module Msgr
       log(:debug) { 'Spin up worker pool' }
       @running = true
 
-      @idle    = @size.times.map do |index|
-        Worker.new_link Actor.current, index, @runner_klass, @runner_args
+      idle.clear
+      busy.clear
+
+      @size.times.map do |index|
+        idle << Worker.new_link(Actor.current, index, @runner_klass, @runner_args)
       end
-      @busy    = []
 
       log(:debug) { 'Startup done. Invoke worker polling.' }
 
-      @idle.each { |worker| async.poll worker }
+      idle.each { |worker| async.poll worker }
+    end
+
+    def log_status
+      log(:info) { "[STATUS] Idle: #{idle.size} Busy: #{busy.size}" }
     end
 
     # Request a graceful shutdown of all pool workers.
@@ -42,7 +52,8 @@ module Msgr
       log(:debug) { 'Graceful shutdown requested.' }
 
       @running = false
-      @idle.each { |worker| worker.terminate }
+      idle.each { |worker| worker.terminate }
+      idle.clear
 
       if busy.any?
         log(:debug) { "Wait for #{busy.size} workers to terminate." }
@@ -58,7 +69,7 @@ module Msgr
     # @return [Boolean] True if at least on idle worker is available, false otherwise.
     #
     def available?
-      @idle.any?
+      idle.any?
     end
 
     def messages
