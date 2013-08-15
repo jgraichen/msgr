@@ -141,7 +141,7 @@ module Msgr
         # Send method to custom runner.
         runner.send method, *args
       rescue => error
-        Msgr.logger.error "Received error from runner: #{error.message}\n#{error.backtrace.join("    \n")}"
+        log(:error) { "Received error from runner: #{error.message}\n#{error.backtrace.join("    \n")}" }
       ensure
         pool.executed Actor.current
       end
