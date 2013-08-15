@@ -1,11 +1,12 @@
 module Msgr
   # A single binding
   class Binding
-    attr_reader :connection, :route, :subscription
+    attr_reader :connection, :route, :subscription, :dispatcher
 
-    def initialize(connection, route)
+    def initialize(connection, route, dispatcher)
       @connection = connection
       @route      = route
+      @dispatcher = dispatcher
 
       queue    = connection.queue route.name
 
@@ -19,7 +20,7 @@ module Msgr
     #
     def call(info, metadata, payload)
       message = Message.new(connection, info, metadata, payload, route)
-      connection.dispatch message
+      dispatcher.dispatch :call, message
     rescue => error
       Msgr.logger.warn(self) { "Error received within bunny subscribe handler: #{error.inspect}." }
     end

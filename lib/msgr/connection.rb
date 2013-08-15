@@ -25,7 +25,7 @@ module Msgr
       release
 
       # Create new bindings
-      routes.each { |route| bindings << Binding.new(Actor.current, route) }
+      routes.each { |route| bindings << Binding.new(Actor.current, route, pool) }
 
       log(:debug) { 'New routes bound.' }
     end
@@ -37,14 +37,6 @@ module Msgr
     #
     def bindings
       @bindings ||= []
-    end
-
-    # Will be called by Binding when a message is received.
-    #
-    # @param [Message] message Received message.
-    #
-    def dispatch(message)
-      pool.dispatch :call, message
     end
 
     def queue(name)
