@@ -1,20 +1,13 @@
 begin
   require 'bundler'
-  Bundler.require :default, :development
+  Bundler.require :default
 rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
 require 'rake'
-require 'yard'
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
-require 'yard/rake/yardoc_task'
-
-YARD::Rake::YardocTask.new do |t|
-  t.files = %w(lib/**/*.rb)
-  t.options = %w(--output-dir doc/)
-end
 
 # Delegate spec task task to spec:all to run all specs.
 task :spec => 'spec:all'
@@ -36,4 +29,16 @@ namespace :spec do
     t.ruby_opts='-w -W2 -Ispec/support -rsetup -Ispec/integration'
     t.pattern = 'spec/integration/**/*_spec.rb'
   end
+end
+
+begin
+  require 'yard'
+  require 'yard/rake/yardoc_task'
+
+  YARD::Rake::YardocTask.new do |t|
+    t.files = %w(lib/**/*.rb)
+    t.options = %w(--output-dir doc/)
+  end
+rescue NameError
+  nil
 end
