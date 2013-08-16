@@ -39,6 +39,6 @@ begin
     t.files = %w(lib/**/*.rb)
     t.options = %w(--output-dir doc/)
   end
-rescue NameError
+rescue LoadError
   nil
 end
