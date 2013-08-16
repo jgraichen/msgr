@@ -1,18 +1,22 @@
 language: ruby
 bundler_args: --without development
+services:
+  - rabbitmq
 rvm:
   - 2.0.0
   - 1.9.3
   - jruby
   - rbx-19mode
-
 gemfile:
   - gemfiles/Gemfile.rails-3-2
   - gemfiles/Gemfile.rails-4-0
-
-services:
-  - rabbitmq
+env:
+  - SUITE=msgr
+  - SUITE=integration
+matrix:
+  exclude:
+    - gemfile: gemfiles/Gemfile.rails-3-2
+      env: SUITE=integration
 
 script:
-  - bundle exec rake spec:msgr
-  - bundle exec rake spec:integration
+  - bundle exec rake spec:$SUITE
