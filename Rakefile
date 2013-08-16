@@ -20,13 +20,13 @@ namespace :spec do
 
   desc 'Run all unit specs.'
   RSpec::Core::RakeTask.new(:msgr) do |t|
-    t.ruby_opts='-w -W2 -Ispec/support -rsetup -Ispec/msgr'
+    t.ruby_opts="#{ENV['CI'] ? '' : '-w -W2'} -Ispec/support -rsetup -Ispec/msgr"
     t.pattern = 'spec/msgr/**/*_spec.rb'
   end
 
   desc 'Run all integration specs.'
   RSpec::Core::RakeTask.new(:integration) do |t|
-    t.ruby_opts='-w -W2 -Ispec/support -rsetup -Ispec/integration'
+    t.ruby_opts="#{ENV['CI'] ? '' : '-w -W2'} -Ispec/support -rsetup -Ispec/integration"
     t.pattern = 'spec/integration/**/*_spec.rb'
   end
 end
