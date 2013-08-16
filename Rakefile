@@ -1,6 +1,6 @@
 begin
   require 'bundler'
-  Bundler.setup :default, :development
+  Bundler.require :default, :development
 rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
@@ -22,7 +22,7 @@ task :spec => 'spec:all'
 desc 'Run all specs'
 namespace :spec do
 
-  desc 'Run allunit specs and all integration specs.'
+  desc 'Run all msgr specs and all integration specs.'
   task :all => [ :msgr, :integration ]
 
   desc 'Run all unit specs.'
