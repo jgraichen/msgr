@@ -15,6 +15,12 @@ group :development do
   gem 'redcarpet', platform: :ruby
 end
 
+group :rails do
+  gem 'rails'
+  gem 'rspec-rails'
+  gem 'sqlite3'
+end
+
 # Specify your gem's dependencies in acfs.gemspec
 gemroot = File.dirname File.absolute_path __FILE__
 gemspec path: gemroot

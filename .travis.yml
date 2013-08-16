@@ -12,3 +12,7 @@ gemfile:
 
 services:
   - rabbitmq
+
+script:
+  - bundle exec rake spec:msgr
+  - bundle exec rake spec:integration

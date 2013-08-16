@@ -1,3 +1,7 @@
+# Bundler setup
+require 'bundler'
+Bundler.setup :default, :test
+
 # Coverage
 require 'coveralls'
 Coveralls.wear! do

@@ -1,29 +1,39 @@
 begin
-  require 'bundler/setup'
+  require 'bundler'
+  Bundler.setup :default, :development
 rescue LoadError
   puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
 
 require 'rake'
+require 'yard'
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
+require 'yard/rake/yardoc_task'
 
-task 'default' => 'ci'
-task 'ci' => 'spec'
-
-desc 'Run all specs'
-RSpec::Core::RakeTask.new('spec') do |t|
-  t.pattern = 'spec/msgr/**/*_spec.rb'
+YARD::Rake::YardocTask.new do |t|
+  t.files = %w(lib/**/*.rb)
+  t.options = %w(--output-dir doc/)
 end
 
-begin
-  require 'yard'
-  require 'yard/rake/yardoc_task'
+# Delegate spec task task to spec:all to run all specs.
+task :spec => 'spec:all'
 
-  YARD::Rake::YardocTask.new do |t|
-    t.files = %w(lib/**/*.rb)
-    t.options = %w(--output-dir doc/)
+desc 'Run all specs'
+namespace :spec do
+
+  desc 'Run allunit specs and all integration specs.'
+  task :all => [ :msgr, :integration ]
+
+  desc 'Run all unit specs.'
+  RSpec::Core::RakeTask.new(:msgr) do |t|
+    t.ruby_opts='-w -W2 -Ispec/support -rsetup -Ispec/msgr'
+    t.pattern = 'spec/msgr/**/*_spec.rb'
   end
-rescue LoadError
-  nil
+
+  desc 'Run all integration specs.'
+  RSpec::Core::RakeTask.new(:integration) do |t|
+    t.ruby_opts='-w -W2 -Ispec/support -rsetup -Ispec/integration'
+    t.pattern = 'spec/integration/**/*_spec.rb'
+  end
 end
