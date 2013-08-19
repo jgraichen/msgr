@@ -56,4 +56,33 @@ describe Msgr::Routes do
       expect(last_route.action).to eq 'index2'
     end
   end
+
+  describe '#files' do
+    it 'should allow to add route paths' do
+      routes.files << 'abc.rb'
+      routes.files += %w(cde.rb edf.rb)
+
+      expect(routes.files).to eq %w(abc.rb cde.rb edf.rb)
+    end
+  end
+
+  describe 'reload' do
+    before { File.stub(:exists?).and_return(true) }
+
+    it 'should trigger load for all files' do
+      expect(routes).to receive(:load).with('cde.rb').ordered
+      expect(routes).to receive(:load).with('edf.rb').ordered
+      routes.files += %w(cde.rb edf.rb)
+      routes.reload
+    end
+  end
+
+  describe 'load' do
+    let(:file) { 'spec/fixtures/msgr-routes-test-1.rb' }
+
+    it 'should eval given file within routes context' do
+      expect(routes).to receive(:route).with('abc.#', to: 'test#index')
+      routes.load file
+    end
+  end
 end

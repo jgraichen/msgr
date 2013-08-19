@@ -16,6 +16,8 @@ require 'msgr/pool'
 require 'msgr/route'
 require 'msgr/routes'
 
+require 'msgr/railtie' if defined? Rails
+
 module Msgr
 
   class << self

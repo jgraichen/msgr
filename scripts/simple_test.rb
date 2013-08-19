@@ -2,7 +2,7 @@ require 'msgr'
 
 Msgr.logger.level = Logger::Severity::DEBUG
 
-@client = Msgr::Client.new uri: 'amqp://msgr:msgr@localhost'
+@client = Msgr::Client.new user: 'msgr', password: 'msgr'
 
 @client.routes.configure do
   route 'abc.#', to: 'test#index'
