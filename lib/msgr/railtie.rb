@@ -29,6 +29,7 @@ module Msgr
         if Rails.env.development?
           reloader = ActiveSupport::FileUpdateChecker.new client.routes.files do
             client.routes.reload
+            client.reload
           end
 
           ActionDispatch::Reloader.to_prepare do
