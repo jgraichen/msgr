@@ -21,6 +21,7 @@ module Msgr
     end
 
     def reload
+      routes.clear
       files.each do |file|
         if File.exists? file
           load file

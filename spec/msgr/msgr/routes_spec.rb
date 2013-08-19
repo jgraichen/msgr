@@ -75,6 +75,12 @@ describe Msgr::Routes do
       routes.files += %w(cde.rb edf.rb)
       routes.reload
     end
+
+    it 'should clear old routes before reloading' do
+      routes.route 'abc', to: 'abc#test'
+      routes.reload
+      expect(routes.each).to have(0).items
+    end
   end
 
   describe 'load' do
