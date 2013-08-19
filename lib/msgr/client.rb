@@ -21,7 +21,7 @@ module Msgr
 
       @config  = config
       @bunny   = Bunny.new config
-      @pool    = Pool.new Dispatcher, autostart: false
+      @pool    = Pool.new Dispatcher
     end
 
     def running?; @running end

@@ -13,8 +13,7 @@ module Msgr
 
       log(:debug) { "Inialize size => #{@size}" }
 
-      start if opts[:autostart].nil? || opts[:autostart]
-      every(30) { log_status } if opts[:nostats].nil? || opts[:nostats]
+      every([opts.fetch(:stats_interval, 30).to_i, 1].max) { log_status } if opts[:nostats].nil? || opts[:nostats]
     end
 
     def running?
