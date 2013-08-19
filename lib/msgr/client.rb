@@ -10,18 +10,18 @@ module Msgr
 
     def initialize(config)
       @uri = URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
-      @uri.protocol = 'amqps'                   if config[:secure]
-      @uri.user     = config.delete :user       if config[:user]
-      @uri.password = config.delete :password   if config[:password]
-      @uri.host     = config.delete :host       if config[:host]
-      @uri.port     = config.delete(:port).to_i if config[:port]
-      @uri.path     = "/#{config.delete :vhost}".gsub /\/+/, '/' if config[:vhost]
+      config[:pass] ||= @uri.password
+
+      @uri.user   = config[:user]  ||= @uri.user || 'guest'
+      @uri.scheme = (config[:ssl]  ||= @uri.scheme.to_s.downcase == 'amqps') ? 'amqps' : 'amqp'
+      @uri.host   = config[:host]  ||= @uri.host || '127.0.0.1'
+      @uri.port   = config[:port]  ||= @uri.port
+      @uri.path   = config[:vhost] ||= @uri.path.present? ? @uri.path : '/'
+      config.reject! { |_,v| v.nil? }
 
       @config  = config
-      @bunny   = Bunny.new @uri.to_s
+      @bunny   = Bunny.new config
       @pool    = Pool.new Dispatcher, autostart: false
-
-      @uri.password = nil
     end
 
     def running?; @running end
