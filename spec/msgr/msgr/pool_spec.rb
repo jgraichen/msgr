@@ -2,7 +2,6 @@ require 'spec_helper'
 
 class Runner
   def test_method(*args)
-    puts "test_method => #{args}"
   end
 end
 
@@ -44,7 +43,7 @@ describe Msgr::Pool do
     it 'should dispatch message to runner' do
       expect_any_instance_of(Runner).to receive(:test_method).with(5, 3.2, 'hello').once
       pool.dispatch :test_method, 5, 3.2, 'hello'
-      sleep 1
+      sleep 1 # TODO: Asynchronous time-boxed assertion
     end
   end
 end
