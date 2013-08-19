@@ -10,13 +10,7 @@ rvm:
 gemfile:
   - gemfiles/Gemfile.rails-3-2
   - gemfiles/Gemfile.rails-4-0
-env:
-  - SUITE=msgr
-  - SUITE=integration
-matrix:
-  allow_failures:
-    - gemfile: gemfiles/Gemfile.rails-3-2
-      env: SUITE=integration
 
 script:
-  - bundle exec rake spec:$SUITE
+  - bundle exec rake spec:msgr
+  - bundle exec rake spec:integration
