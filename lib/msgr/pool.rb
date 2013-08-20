@@ -62,6 +62,7 @@ module Msgr
 
       log(:debug) { 'Graceful shutdown done.' }
     end
+    alias_method :shutdown, :stop
 
     # Check if a worker is available.
     #
