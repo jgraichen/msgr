@@ -41,9 +41,8 @@ describe Msgr::Pool do
     before { pool.start }
 
     it 'should dispatch message to runner' do
-      expect_any_instance_of(Runner).to receive(:test_method).with(5, 3.2, 'hello').once
+      expect_any_instance_of(Runner).to receive(:test_method).within(10).seconds.with(5, 3.2, 'hello').once
       pool.dispatch :test_method, 5, 3.2, 'hello'
-      sleep 1 # TODO: Asynchronous time-boxed assertion
     end
   end
 end

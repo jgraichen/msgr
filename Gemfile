@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 #
 gem 'rake'
 gem 'rspec'
+gem 'rspec-message-within', '>= 1.1.0'
 gem 'coveralls'
 
 # Doc

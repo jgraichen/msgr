@@ -9,6 +9,7 @@ Coveralls.wear! do
 end
 
 require 'rspec/autorun'
+require 'rspec/message/within'
 require 'msgr'
 
 Dir[File.expand_path('../support/**/*.rb', __FILE__)].each { |f| require f }
