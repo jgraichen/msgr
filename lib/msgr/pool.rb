@@ -78,16 +78,17 @@ module Msgr
 
     # Dispatch given message to a worker.
     #
-    def dispatch(message, *args)
-      log(:debug) { "Dispatch message to worker: #{message}" }
+    def dispatch(*args)
+      log(:debug) { 'Dispatch message to worker.' }
 
-      fetch_idle_worker.future :dispatch, message, args
+      fetch_idle_worker.future :dispatch, args
     end
 
     # Return an idle worker.
     #
     def fetch_idle_worker
       if (worker = idle.shift)
+        busy << worker
         worker
       else
         wait :worker_done
@@ -140,11 +141,12 @@ module Msgr
       # Dispatch given method and argument to custom runner.
       # Arguments are used to call `#send` on runner instance.
       #
-      def dispatch(method, args)
-        log(:debug) { "Dispatch to runner: #{runner.class.name}##{method.to_s}" }
+      def dispatch(args)
+        log(:debug) { "Dispatch to runner: #{runner.class.name}" }
 
         # Send method to custom runner.
-        runner.send method, *args
+        runner.send :call, *args
+
       rescue => error
         log(:error) { "Received error from runner: #{error.message}\n#{error.backtrace.join("    \n")}" }
       ensure

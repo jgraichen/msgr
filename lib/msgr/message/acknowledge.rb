@@ -22,7 +22,7 @@ module Msgr
       def ack
         unless acked?
           @acked = true
-          @connection.ack delivery_info.delivery_tag
+          @connection.future(:ack, delivery_info.delivery_tag).value
         end
       end
     end

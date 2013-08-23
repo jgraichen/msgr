@@ -21,6 +21,7 @@ module Msgr
 
       @config  = config
       @bunny   = Bunny.new config
+      @pool    = Pool.new Dispatcher, size: config[:size]
     end
 
     def running?; @running end
@@ -31,7 +32,7 @@ module Msgr
     end
 
     def new_connection
-      @connection = Connection.new @bunny, routes, Dispatcher.new, prefix: @config[:prefix]
+      @connection = Connection.new @bunny, routes, @pool, prefix: @config[:prefix]
     end
 
     def reload
@@ -51,6 +52,7 @@ module Msgr
       log(:info) { "Start client to #{uri}" }
 
       @bunny.start
+      @pool.start
       @running = true
       new_connection
 
@@ -61,21 +63,11 @@ module Msgr
       return unless running?
       opts.reverse_merge! timeout: 10, delete: false
 
-      timeout_empty = [opts[:wait_empty].to_i, 0].max
-
-      begin
-        if opts[:wait_empty]
-
-          log(:info) { "Shutdown requested: Wait until all queues are empty. (TIMEOUT: #{timeout_empty}s)" }
-          @connection.future(:release, true).value timeout_empty
-        else
-          @connection.future(:release).value timeout_empty
-        end
-      rescue TimeoutError
-        log(:warn) { "Could release connection within #{timeout_empty} seconds." }
-      end
+      stop_connection opts
 
       @running = false
+      wait_for_graceful_shutdown opts if opts[:timeout]
+
       log(:debug) { 'Terminating...' }
 
       if opts[:delete]
@@ -90,6 +82,31 @@ module Msgr
 
     def publish(routing_key, payload)
       @connection.publish payload, routing_key: routing_key
+    end
+
+    private
+    def stop_connection(opts)
+      timeout = [opts[:wait_empty].to_i, 1].max
+
+      begin
+        if opts[:wait_empty]
+          log(:info) { "Shutdown requested: Wait until all queues are empty. (TIMEOUT: #{timeout}s)" }
+          @connection.future(:release, true).value timeout
+        else
+          @connection.future(:release).value timeout
+        end
+      rescue TimeoutError
+        log(:warn) { "Could release connection within #{timeout} seconds." }
+      end
+    end
+
+    def wait_for_graceful_shutdown(opts)
+      timeout = [opts[:timeout].to_i, 0].max
+      log(:info) { "Attempting graceful shutdown within #{timeout} seconds..." }
+
+      @pool.future(:stop).value timeout
+    rescue TimeoutError
+      log(:warn) { "Could not shutdown pool within #{timeout} seconds." }
     end
   end
 end

@@ -13,7 +13,7 @@ module Msgr
       @routes     = routes
       @opts       = opts
 
-      @channel = conn.create_channel nil, [opts[:size].to_i, 1].max
+      @channel = conn.create_channel
       @channel.prefetch(10)
 
       bind

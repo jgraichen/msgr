@@ -25,16 +25,9 @@ module Msgr
     # provided bunny data and dispatch message to connection.
     #
     def call(info, metadata, payload)
-      message = Message.new(connection, info, metadata, payload, route)
-      dispatcher.dispatch message
-
-      unless message.acked?
-        log(:warn) { 'Message dispatch done but message still no acked.' }
-        message.ack
-      end
+      dispatcher.dispatch Message.new(connection, info, metadata, payload, route)
     rescue => error
-      log(:error) { "Error received within subscribe handler: #{error.inspect}." }
-      message.reject
+      log(:error) { "Error received within subscribe handler: #{error.inspect}\n#{error.backtrace.join("\n  ")}" }
     end
 
     # Cancel subscription to not receive any more messages.
