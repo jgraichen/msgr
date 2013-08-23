@@ -1,0 +1,11 @@
+common: &common
+  uri: amqp://localhost/
+
+test:
+  <<: *common
+
+development:
+  <<: *common
+
+production:
+  <<: *common
