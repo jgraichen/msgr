@@ -61,9 +61,8 @@ module Msgr
       return unless running?
       opts.reverse_merge! timeout: 10, delete: false
 
-      timeout       = [opts[:timeout].to_i, 0].max
-
       timeout_empty = [opts[:wait_empty].to_i, 0].max
+
       begin
         if opts[:wait_empty]
 
@@ -76,15 +75,7 @@ module Msgr
         log(:warn) { "Could release connection within #{timeout_empty} seconds." }
       end
 
-      log(:info) { 'Graceful shutdown client...' }
-
       @running = false
-      #begin
-      #  @pool.future(:stop).value [timeout.to_i, 0].max
-      #rescue TimeoutError
-      #  log(:warn) { "Could not shutdown pool within #{timeout} seconds." }
-      #end
-
       log(:debug) { 'Terminating...' }
 
       if opts[:delete]
@@ -92,8 +83,6 @@ module Msgr
         @connection.delete
       end
       @connection.terminate
-
-      #@pool.terminate
       @bunny.stop
 
       log(:info) { 'Terminated.' }
