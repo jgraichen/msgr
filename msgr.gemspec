@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Msgr::VERSION
   spec.authors       = ['Jan Graichen']
   spec.email         = ['jg@altimos.de']
-  spec.description   = %q{}
-  spec.summary       = %q{}
+  spec.description   = %q{Msgr: Rails-like Messaging Framework}
+  spec.summary       = %q{Msgr: Rails-like Messaging Framework}
   spec.homepage      = 'https://github.com/jgraichen/msgr'
   spec.license       = 'MIT'
 
