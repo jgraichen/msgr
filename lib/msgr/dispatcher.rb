@@ -7,16 +7,21 @@ module Msgr
   class Dispatcher
     include Logging
 
-    def initialize
+    def dispatch(message)
+      call message
 
+      # Acknowledge message unless it is already acknowledged.
+      message.ack unless message.acked?
     end
 
     def call(message)
-      log(:debug) { "Receive dispatched message: #{message.payload}" }
+      consumer_class = Object.const_get message.route.consumer
 
-      message.ack
+      log(:debug) { "Dispatch message to #{consumer_class.name}" }
 
-      log(:debug) { 'Dispatched message acknowledged.' }
+      consumer_class.new.dispatch message
+    rescue => error
+      log(:error) { error }
     end
 
     def to_s
