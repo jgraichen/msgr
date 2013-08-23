@@ -11,6 +11,8 @@ module Msgr
       @size         = (opts[:size] || Celluloid.cores).to_i
       @running      = false
 
+      raise ArgumentError.new 'Pool size must be greater zero.' if @size <= 0
+
       log(:debug) { "Inialize size => #{@size}" }
 
       every([opts.fetch(:stats_interval, 30).to_i, 1].max) { log_status } if opts[:nostats].nil? || opts[:nostats]
@@ -36,9 +38,7 @@ module Msgr
         idle << Worker.new_link(Actor.current, index, @runner_klass, @runner_args)
       end
 
-      log(:debug) { 'Startup done. Invoke worker polling.' }
-
-      idle.each { |worker| async.poll worker }
+      log(:debug) { 'Pool ready.' }
     end
 
     def log_status
@@ -79,8 +79,20 @@ module Msgr
     # Dispatch given message to a worker.
     #
     def dispatch(message, *args)
-      messages.push [message, args]
-      after(0) { signal :dispatch }
+      log(:debug) { "Dispatch message to worker: #{message}" }
+
+      fetch_idle_worker.future :dispatch, message, args
+    end
+
+    # Return an idle worker.
+    #
+    def fetch_idle_worker
+      if (worker = idle.shift)
+        worker
+      else
+        wait :worker_done
+        fetch_idle_worker
+      end
     end
 
     # Called by worker to indicated it has finished processing.
@@ -92,7 +104,7 @@ module Msgr
 
       if running?
         idle << worker
-        poll worker
+        after(0) { signal :worker_done }
       else
         log(:debug) { "Terminate worker. Still #{busy.size} to go..." }
 
@@ -101,24 +113,6 @@ module Msgr
           log(:debug) { 'All worker down. Signal :shutdown.' }
           after(0) { signal :shutdown }
         end
-      end
-    end
-
-    def poll(worker)
-      return unless worker.alive?
-
-      if running?
-        if (message = exclusive { messages.shift })
-          idle.delete worker
-          busy << worker
-
-          worker.dispatch message[0], message[1]
-        else
-          after(1) { poll worker }
-        end
-      else
-        worker.terminate if worker.alive?
-        after(0) { signal(:shutdown) } if @busy.empty?
       end
     end
 
@@ -154,7 +148,11 @@ module Msgr
       rescue => error
         log(:error) { "Received error from runner: #{error.message}\n#{error.backtrace.join("    \n")}" }
       ensure
-        pool.executed Actor.current
+        if pool.alive?
+          pool.executed Actor.current
+        else
+          terminate
+        end
       end
 
       def to_s
