@@ -31,7 +31,58 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+After adding 'msgr' to your gemfile create a `config/rabbitmq.yml` like this:
+
+```yaml
+common: &common
+  uri: amqp://localhost/
+
+test:
+  <<: *common
+
+development:
+  <<: *common
+
+production:
+  <<: *common
+```
+
+Specify your messaging routes in `config/msgr.rb`:
+
+```ruby
+route 'local.test.index', to: 'test#index'
+route 'local.test.another_action', to: 'test#another_action'
+```
+
+Create your consumer in `app/consumers`:
+
+```ruby
+class TestConsumer < ApplicationConsumer
+  def index
+    data = { fuubar: 'abc' }
+
+    publish data, to: 'local.test.another_action'
+  end
+
+  def another_action
+    puts "#{payload.inspect}"
+  end
+end
+```
+
+Use `Msgr.publish` in to publish a message:
+
+```ruby
+class TestController < ApplicationController
+  def index
+    @data = { abc: 'abc' }
+
+    Msgr.publish @data, to: 'local.test.index'
+
+    render nothing: true
+  end
+end
+```
 
 ## Contributing
 
