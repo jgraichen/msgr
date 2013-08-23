@@ -1,7 +1,10 @@
 module Msgr
 
+  require 'msgr/message/acknowledge'
+
   class Message
-    attr_reader :delivery_info, :metadata, :payload
+    include Acknowledge
+    attr_reader :delivery_info, :metadata, :payload, :route
 
     def initialize(connection, delivery_info, metadata, payload, route)
       @connection    = connection
@@ -9,10 +12,6 @@ module Msgr
       @metadata      = metadata
       @payload       = payload
       @route         = route
-    end
-
-    def ack
-      @connection.ack delivery_info.delivery_tag
     end
   end
 end
