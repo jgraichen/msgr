@@ -12,9 +12,8 @@ gemfile:
   - gemfiles/Gemfile.rails-4-0
 matrix:
   allow_failures:
-    rvm:
-      - jruby
-      - rbx-19mode
+    - rvm: jruby
+    - rvm: rbx-19mode
 
 script:
   - bundle exec rake spec:msgr
