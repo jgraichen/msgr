@@ -25,7 +25,7 @@ describe Msgr::Routes do
     before do
       routes.configure do
         route 'abc.#', to: 'test#index'
-        route 'edf.#', to: 'test#index'
+        route 'edf.#', to: 'test#action'
       end
     end
 
@@ -34,9 +34,9 @@ describe Msgr::Routes do
     it 'should iterate over configured routes' do
       expect(each).to have(2).items
 
-      expect(each.map(&:routing_key)).to be == %w(abc.# edf.#)
-      expect(each.map(&:consumer)).to be == %w(TestConsumer TestConsumer)
-      expect(each.map(&:action)).to be == %w(index index)
+      expect(each.map(&:keys)).to eq [%w(abc.#), %w(edf.#)]
+      expect(each.map(&:consumer)).to eq %w(TestConsumer TestConsumer)
+      expect(each.map(&:action)).to eq %w(index action)
     end
   end
 
@@ -51,9 +51,28 @@ describe Msgr::Routes do
     it 'should add given route' do
       subject.call
 
-      expect(last_route.routing_key).to eq 'routing.key'
+      expect(last_route.keys).to eq %w(routing.key)
       expect(last_route.consumer).to eq 'Test2Consumer'
       expect(last_route.action).to eq 'index2'
+    end
+
+    context 'with same target' do
+      let(:subject) do
+        -> do
+          routes.route 'routing.key', to: 'test#index'
+          routes.route 'another.routing.key', to: 'test#index'
+        end
+      end
+
+      it 'should only add one new route' do
+        expect { subject.call }.to change{ routes.routes.size }.from(0).to(1)
+      end
+
+      it 'should add second binding to first route' do
+        subject.call
+        expect(routes.routes.first.keys).to have(2).items
+        expect(routes.routes.first.keys).to eq %w(routing.key another.routing.key)
+      end
     end
   end
 

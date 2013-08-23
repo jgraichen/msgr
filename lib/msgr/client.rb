@@ -6,9 +6,9 @@ module Msgr
     include Celluloid
     include Logging
 
-    attr_reader :pool, :uri
+    attr_reader :uri
 
-    def initialize(config)
+    def initialize(config = {})
       @uri = URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
       config[:pass] ||= @uri.password
 
@@ -21,7 +21,6 @@ module Msgr
 
       @config  = config
       @bunny   = Bunny.new config
-      @pool    = Pool.new Dispatcher
     end
 
     def running?; @running end
@@ -29,6 +28,10 @@ module Msgr
 
     def routes
       @routes ||= Routes.new
+    end
+
+    def new_connection
+      @connection = Connection.new @bunny, routes, Dispatcher.new, prefix: @config[:prefix]
     end
 
     def reload
@@ -39,8 +42,7 @@ module Msgr
       @connection.terminate
 
       log(:debug) { 'Create new connection.' }
-
-      @connection = Connection.new @bunny, routes, pool
+      new_connection
 
       log(:info) { 'Client reloaded.' }
     end
@@ -49,27 +51,49 @@ module Msgr
       log(:info) { "Start client to #{uri}" }
 
       @bunny.start
-      @pool.start
+      @running = true
+      new_connection
 
-      @running    = true
-      @connection = Connection.new @bunny, routes, pool
-
-      log(:info) { "Client started. pool: #{pool.size}" }
+      log(:info) { 'Client started.' }
     end
 
-    def stop
+    def stop(opts = {})
       return unless running?
+      opts.reverse_merge! timeout: 10, delete: false
 
-      @running = false
+      timeout       = [opts[:timeout].to_i, 0].max
+
+      timeout_empty = [opts[:wait_empty].to_i, 0].max
+      begin
+        if opts[:wait_empty]
+
+          log(:info) { "Shutdown requested: Wait until all queues are empty. (TIMEOUT: #{timeout_empty}s)" }
+          @connection.future(:release, true).value timeout_empty
+        else
+          @connection.future(:release).value timeout_empty
+        end
+      rescue TimeoutError
+        log(:warn) { "Could release connection within #{timeout_empty} seconds." }
+      end
+
       log(:info) { 'Graceful shutdown client...' }
 
-      @connection.release
-      @pool.stop
+      @running = false
+      #begin
+      #  @pool.future(:stop).value [timeout.to_i, 0].max
+      #rescue TimeoutError
+      #  log(:warn) { "Could not shutdown pool within #{timeout} seconds." }
+      #end
 
       log(:debug) { 'Terminating...' }
 
+      if opts[:delete]
+        log(:debug) { 'Delete connection.' }
+        @connection.delete
+      end
       @connection.terminate
-      @pool.terminate
+
+      #@pool.terminate
       @bunny.stop
 
       log(:info) { 'Terminated.' }

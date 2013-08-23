@@ -20,8 +20,10 @@ module Msgr
       # @api public
       #
       def ack
-        @acked = true
-        @connection.ack delivery_info.delivery_tag unless acked?
+        unless acked?
+          @acked = true
+          @connection.ack delivery_info.delivery_tag
+        end
       end
     end
   end

@@ -37,6 +37,13 @@ module Msgr
     end
 
     def route(key, opts = {})
+      routes.each do |route|
+        if route.accept? key, opts
+          route.add key
+          return
+        end
+      end
+
       routes << Msgr::Route.new(key, opts)
     end
   end

@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 gem 'rake'
 gem 'rspec'
 gem 'rspec-message-within', '>= 1.1.1'
+gem 'fuubar'
 gem 'coveralls'
 
 # Doc

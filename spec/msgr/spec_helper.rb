@@ -22,10 +22,12 @@ RSpec.configure do |config|
   end
 
   config.before do
+    Celluloid.logger = nil
+
     Celluloid.shutdown
     Celluloid.boot
 
     Celluloid.logger = nil
-    Msgr.logger = nil
+    Msgr.logger = false
   end
 end

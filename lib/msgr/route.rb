@@ -1,15 +1,13 @@
 module Msgr
 
   class Route
-    attr_reader :consumer, :action, :opts, :key
-    alias_method :routing_key, :key
+    attr_reader :consumer, :action, :opts
 
     def initialize(key, opts = {})
-      @key  = key.to_s
       @opts = opts
-
-      raise ArgumentError.new 'Routing key required.' unless @key.present?
       raise ArgumentError.new 'Missing `to` options.' unless @opts[:to]
+
+      add key
 
       if (match = /\A(?<consumer>\w+)#(?<action>\w+)\z/.match(opts[:to].strip.to_s))
         @consumer = "#{match[:consumer].camelize}Consumer"
@@ -19,8 +17,23 @@ module Msgr
       end
     end
 
+    def keys
+      @keys ||= []
+    end
+    alias_method :routing_keys, :keys
+
+    def add(key)
+      raise ArgumentError.new 'Routing key required.' unless key.present?
+
+      keys << key
+    end
+
+    def accept?(key, opts)
+      self.opts == opts
+    end
+
     def name
-      "msgr.consumer-#{key}//#{consumer}##{action}"
+      "msgr.consumer.#{consumer}.#{action}"
     end
   end
 end

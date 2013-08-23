@@ -4,30 +4,35 @@ module Msgr
     include Celluloid
     include Logging
 
-    attr_reader :conn, :pool, :routes
+    attr_reader :conn, :dispatcher, :routes, :opts
     finalizer :close
 
-    def initialize(conn, routes, pool)
-      @conn   = conn
-      @pool   = pool
-      @routes = routes
+    def initialize(conn, routes, dispatcher, opts = {})
+      @conn       = conn
+      @dispatcher = dispatcher
+      @routes     = routes
+      @opts       = opts
 
-      @channel = conn.create_channel
+      @channel = conn.create_channel nil, 2 # nil, [opts[:size].to_i || 1].max
       @channel.prefetch(10)
 
-      rebind
+      bind
     end
 
-    def rebind(routes = nil)
-      routes = self.routes unless routes
-
-      # First release old bindings
+    def rebind
       release
+      bind
+    end
 
+    def bind
       # Create new bindings
-      routes.each { |route| bindings << Binding.new(Actor.current, route, pool) }
+      routes.each { |route| bindings << Binding.new(Actor.current, route, dispatcher) }
 
       log(:debug) { 'New routes bound.' }
+    end
+
+    def prefix(name = '')
+      opts[:prefix] ? "#{opts[:prefix]}-#{name}" : name
     end
 
     # Used to store al bindings. Allows use to
@@ -40,24 +45,52 @@ module Msgr
     end
 
     def queue(name)
-      @channel.queue name, durable: true
+      @channel.queue(prefix(name), durable: true).tap do |queue|
+        log(:debug) { "Create queue #{queue.name} (durable: #{queue.durable?}, auto_delete: #{queue.auto_delete?})" }
+      end
     end
 
     def exchange
-      @exchange ||= @channel.topic 'msgr', durable: true
+      unless @exchange
+        @exchange = @channel.topic prefix('msgr'), durable: true
+
+        log(:debug) { "Created exchange #{@exchange.name} (type: #{@exchange.type}, durable: #{@exchange.durable?}, auto_delete: #{@exchange.auto_delete?})" }
+      end
+
+      @exchange
     end
 
     # Release all bindings but do not close channel. Will not
     # longer receive any message but channel can be used to
     # acknowledge currently processing messages.
     #
-    def release
+    def release(wait = false)
       return unless bindings.any?
 
-      log(:debug) { 'Release all bindings.' }
+      log(:debug) { "Release all bindings#{wait ? ' after queues are empty': ''}..." }
 
-      bindings.each { |binding| binding.release }
+      if wait
+        binds = bindings.dup
+        while binds.any?
+          binds.reject! { |b| b.release_if_empty }
+          sleep 1
+        end
+      else
+        bindings.each &:release
+      end
+
+      log(:debug) { 'All bindings released.' }
+    end
+
+    def delete
+      return unless bindings.any?
+
+      log(:debug) { 'Delete all bindings and exchange.' }
+
+      bindings.each { |binding| binding.delete }
       bindings.clear
+
+      @exchange.delete if @exchange
     end
 
     def publish(payload, opts = {})
@@ -67,7 +100,13 @@ module Msgr
     end
 
     def ack(delivery_tag)
+      log(:debug) { "Ack message: #{delivery_tag}" }
       @channel.ack delivery_tag
+    end
+
+    def reject(delivery_tag, requeue = true)
+      log(:debug) { "Reject message: #{delivery_tag}" }
+      @channel.reject delivery_tag, requeue
     end
 
     def close
