@@ -98,7 +98,13 @@ module Msgr
       raise ArgumentError, 'Missing routing key.' unless opts[:routing_key]
 
       log(:debug) { "Publish message to #{opts[:routing_key]}" }
-      exchange.publish payload, opts.merge(persistent: true)
+
+      begin
+        payload = JSON.generate(payload)
+        exchange.publish payload, opts.merge(persistent: true, content_type: 'application/json')
+      rescue => error
+        exchange.publish payload.to_s, opts.merge(persistent: true, content_type: 'application/text')
+      end
     end
 
     def ack(delivery_tag)

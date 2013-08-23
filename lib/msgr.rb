@@ -5,6 +5,8 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/module/delegation'
 require 'active_support/core_ext/string/inflections'
 require 'active_support/core_ext/hash/reverse_merge'
+require 'active_support/core_ext/hash/keys'
+require 'json'
 
 require 'msgr/logging'
 require 'msgr/binding'

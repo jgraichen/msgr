@@ -12,6 +12,14 @@ module Msgr
       @metadata      = metadata
       @payload       = payload
       @route         = route
+
+      if content_type == 'application/json'
+        @payload = JSON[payload].symbolize_keys
+      end
+    end
+
+    def content_type
+      @metadata.content_type
     end
   end
 end

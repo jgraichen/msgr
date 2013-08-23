@@ -4,5 +4,7 @@ class TestController < ApplicationController
     @data = { abc: 'abc' }
 
     Msgr.publish @data, to: 'local.test.index'
+
+    render nothing: true
   end
 end

@@ -7,6 +7,6 @@ class TestConsumer < ApplicationConsumer
   end
 
   def another_action
-
+    puts "#{payload.inspect}"
   end
 end
