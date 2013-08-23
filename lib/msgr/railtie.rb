@@ -22,7 +22,13 @@ module Msgr
         Msgr.logger = app.config.msgr.logger
         Celluloid.logger = app.config.msgr.logger
 
-        client = Msgr::Client.new uri: 'amqp://localhost'
+        cfile  = app.config.msgr.rabbitmq_config.to_s
+        config = YAML.load ERB.new(File.read(cfile)).result
+
+        raise ArgumentError, 'Could not load rabbitmq config.' unless config.is_a? Hash
+        raise ArgumentError, 'Could not load rabbitmq environment config ' unless config[Rails.env]
+
+        client = Msgr::Client.new config[Rails.env]
         client.routes.files << app.config.msgr.routes_file
         client.routes.reload
 
@@ -37,6 +43,7 @@ module Msgr
           end
         end
 
+        Msgr.client = client
         client.start
       end
     end

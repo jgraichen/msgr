@@ -94,8 +94,10 @@ module Msgr
     end
 
     def publish(payload, opts = {})
-      log(:debug) { "Publish message to #{opts[:routing_key]}" }
+      opts[:routing_key] ||= opts[:to]
+      raise ArgumentError, 'Missing routing key.' unless opts[:routing_key]
 
+      log(:debug) { "Publish message to #{opts[:routing_key]}" }
       exchange.publish payload, opts.merge(persistent: true)
     end
 

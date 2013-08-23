@@ -20,5 +20,9 @@ module Msgr
 
       log(:debug) { "Action #{action.inspect} done." }
     end
+
+    def publish(data, opts = {})
+      Msgr.client.publish(data, opts)
+    end
   end
 end
