@@ -23,7 +23,7 @@ describe Msgr do
   end
 
   after do
-    client.stop timeout: 10, delete: true, wait_empty: true
+    client.stop timeout: 10, delete: true, wait_empty: 10
   end
 
   it 'should dispatch published methods to consumer' do

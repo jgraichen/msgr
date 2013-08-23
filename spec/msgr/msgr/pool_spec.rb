@@ -3,7 +3,7 @@ require 'spec_helper'
 $shutdown_test_graceful_down = false
 
 class Runner
-  def test_method(*_) end
+  def call(*_) end
 
   def shutdown_test
     sleep 2
@@ -47,8 +47,8 @@ describe Msgr::Pool do
     before { pool.start }
 
     it 'should dispatch message to runner' do
-      expect_any_instance_of(Runner).to receive(:test_method).within(10).seconds.with(5, 3.2, 'hello').once
-      pool.dispatch :test_method, 5, 3.2, 'hello'
+      expect_any_instance_of(Runner).to receive(:call).within(10).seconds.once
+      pool.dispatch 5, 3.2, 'hello'
     end
   end
 
