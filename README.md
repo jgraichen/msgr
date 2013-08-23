@@ -57,7 +57,7 @@ route 'local.test.another_action', to: 'test#another_action'
 Create your consumer in `app/consumers`:
 
 ```ruby
-class TestConsumer < ApplicationConsumer
+class TestConsumer < Msgr::Consumer
   def index
     data = { fuubar: 'abc' }
 
