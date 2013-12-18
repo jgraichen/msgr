@@ -80,8 +80,8 @@ module Msgr
       log(:info) { 'Terminated.' }
     end
 
-    def publish(routing_key, payload)
-      @connection.publish payload, routing_key: routing_key
+    def publish(payload, routing_key)
+      @connection.publish payload, routing_key
     end
 
     private

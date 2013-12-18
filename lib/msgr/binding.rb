@@ -4,17 +4,15 @@ module Msgr
     include Logging
     attr_reader :connection, :route, :subscription, :dispatcher, :queue
 
-    def initialize(connection, route, dispatcher)
+    def initialize(connection, route, dispatcher, exchange)
       @connection = connection
       @route      = route
       @dispatcher = dispatcher
-
       exchange  = connection.exchange
       @queue    = connection.queue route.name
 
       route.keys.each do |key|
-        log(:debug) { "Bind #{key} to #{@queue.name}." }
-
+        log(:debug) { "Bind #{key} to #{@queue.name} on exchange #{exchange.name}." }
         queue.bind exchange, routing_key: key
       end
 
