@@ -26,7 +26,7 @@ module Msgr
 
     def bind
       # Create new bindings
-      routes.each { |route| bindings << Binding.new(Actor.current, route, dispatcher) }
+      routes.each { |route| bindings << Binding.new(Actor.current, route, dispatcher, exchange) }
 
       log(:debug) { 'New routes bound.' }
     end
@@ -101,6 +101,8 @@ module Msgr
 
       begin
         payload = JSON.generate(payload)
+        log(:debug) {opts.inspect}
+        log(:debug) {exchange.name}
         exchange.publish payload, opts.merge(persistent: true, content_type: 'application/json')
       rescue => error
         exchange.publish payload.to_s, opts.merge(persistent: true, content_type: 'application/text')
