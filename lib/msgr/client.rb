@@ -80,8 +80,9 @@ module Msgr
       log(:info) { 'Terminated.' }
     end
 
-    def publish(routing_key, payload)
-      @connection.publish payload, routing_key: routing_key
+    def publish(payload, opts = {})
+      opts[:routing_key] = opts.delete(:to) if opts[:to]
+      @connection.publish payload, opts
     end
 
     private

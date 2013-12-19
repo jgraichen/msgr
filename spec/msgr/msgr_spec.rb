@@ -29,7 +29,7 @@ describe Msgr do
   it 'should dispatch published methods to consumer' do
     expect_any_instance_of(TestConsumer).to receive(:index).within(10).seconds.and_call_original
 
-    client.publish 'routing.key', 'Payload'
+    client.publish 'Payload', to: 'routing.key'
 
     sleep 10
   end
