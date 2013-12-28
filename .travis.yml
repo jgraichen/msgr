@@ -17,6 +17,7 @@ matrix:
     - rvm: rbx-19mode
 before_install:
   - gem install json -v '1.8.1'
+  - gem install minitest -v '4.7.5'
 script:
   - bundle exec rake spec:msgr
   - bundle exec rake spec:integration
