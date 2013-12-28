@@ -14,7 +14,7 @@ gemfile:
 matrix:
   allow_failures:
     - rvm: jruby
-    - rvm: rbx-19mode
+    - rvm: rbx
 before_install:
   - gem install json -v '1.8.1'
   - gem install minitest -v '4.7.5'
