@@ -26,6 +26,7 @@ end
 
 platform :rbx do
   gem 'rubysl'
+  gem 'rubysl-json'
   gem 'rubinius-coverage'
 end
 
