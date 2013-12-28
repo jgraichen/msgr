@@ -28,6 +28,7 @@ platform :rbx do
   gem 'rubysl'
   gem 'rubysl-json'
   gem 'rubinius-coverage'
+  gem 'racc'
 end
 
 # Specify your gem's dependencies in acfs.gemspec
