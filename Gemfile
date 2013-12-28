@@ -24,6 +24,11 @@ group :rails do
   gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
 end
 
+platform :rbx do
+  gem 'rubysl'
+  gem 'rubinius-coverage'
+end
+
 # Specify your gem's dependencies in acfs.gemspec
 gemroot = File.dirname File.absolute_path __FILE__
 gemspec path: gemroot
