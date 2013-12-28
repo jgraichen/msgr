@@ -15,7 +15,8 @@ matrix:
   allow_failures:
     - rvm: jruby
     - rvm: rbx-19mode
-
+before_install:
+  - gem install json -v '1.8.1'
 script:
   - bundle exec rake spec:msgr
   - bundle exec rake spec:integration
