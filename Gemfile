@@ -18,7 +18,7 @@ group :development do
 end
 
 group :rails do
-  gem 'rails'
+  gem 'rails', '>= 3.2', '< 5'
   gem 'rspec-rails'
   gem 'sqlite3', platform: :ruby
   gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby

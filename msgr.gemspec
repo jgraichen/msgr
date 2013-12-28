@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'activesupport'
-  spec.add_dependency 'bunny', '~> 0.10.0'
+  spec.add_dependency 'bunny', '~> 1.0'
   spec.add_dependency 'celluloid'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
