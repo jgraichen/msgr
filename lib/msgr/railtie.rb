@@ -25,26 +25,41 @@ module Msgr
         cfile  = app.config.msgr.rabbitmq_config.to_s
         config = YAML.load ERB.new(File.read(cfile)).result
 
-        raise ArgumentError, 'Could not load rabbitmq config.' unless config.is_a? Hash
-        raise ArgumentError, 'Could not load rabbitmq environment config ' unless config[Rails.env]
+        raise ArgumentError, 'Could not load rabbitmq config: Config must be a Hash' unless config.is_a? Hash
 
-        client = Msgr::Client.new config[Rails.env]
-        client.routes.files << app.config.msgr.routes_file
-        client.routes.reload
+        if config[Rails.env].is_a?(Hash)
+          cfg = HashWithIndifferentAccess.new config[Rails.env]
 
-        if Rails.env.development?
-          reloader = ActiveSupport::FileUpdateChecker.new client.routes.files do
-            client.routes.reload
-            client.reload
+          if cfg[:enabled].nil? || cfg[:enabled] == 'true'
+            if cfg[:uri]
+              client = Msgr::Client.new
+              client.routes.files << app.config.msgr.routes_file
+              client.routes.reload
+
+              if Rails.env.development? || config
+                reloader = ActiveSupport::FileUpdateChecker.new client.routes.files do
+                  client.routes.reload
+                  client.reload
+                end
+
+                ActionDispatch::Reloader.to_prepare do
+                  reloader.execute_if_updated
+                end
+              end
+
+              Msgr.client = client
+              client.start
+            else
+              raise ArgumentError, 'Could not load rabbitmq environment config: URI missing.'
+            end
           end
-
-          ActionDispatch::Reloader.to_prepare do
-            reloader.execute_if_updated
+        else
+          if Rails.env.production?
+            raise ArgumentError, 'Could not load rabbitmq environment config: Not a hash.'
+          else
+            Rails.logger.warn 'Could not load rabbitmq environment config: Not a hash.'
           end
         end
-
-        Msgr.client = client
-        client.start
       end
     end
   end
