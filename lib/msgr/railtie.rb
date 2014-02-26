@@ -32,7 +32,7 @@ module Msgr
 
           if cfg[:enabled].nil? || cfg[:enabled] == 'true'
             if cfg[:uri]
-              client = Msgr::Client.new
+              client = Msgr::Client.new cfg
               client.routes.files << app.config.msgr.routes_file
               client.routes.reload
 
