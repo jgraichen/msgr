@@ -19,9 +19,7 @@ module Msgr
       @uri.path   = config[:vhost] ||= @uri.path.present? ? @uri.path : '/'
       config.reject! { |_,v| v.nil? }
 
-      @config  = config
-      @bunny   = Bunny.new config
-      @pool    = Pool.new Dispatcher, size: config[:size]
+      @config = config
     end
 
     def running?; @running end
@@ -51,10 +49,8 @@ module Msgr
     def start
       log(:info) { "Start client to #{uri}" }
 
-      @bunny.start
-      @pool.start
-      @running = true
-      new_connection
+      init
+      launch
 
       log(:info) { 'Client started.' }
     end
@@ -108,6 +104,18 @@ module Msgr
       @pool.future(:stop).value timeout
     rescue TimeoutError
       log(:warn) { "Could not shutdown pool within #{timeout} seconds." }
+    end
+
+    def init
+      @bunny = Bunny.new @config
+      @pool  = Pool.new Dispatcher, size: @config[:size]
+    end
+
+    def launch
+      @bunny.start
+      @pool.start
+      @running = true
+      new_connection
     end
   end
 end

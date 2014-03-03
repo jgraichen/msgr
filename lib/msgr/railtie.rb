@@ -48,7 +48,7 @@ module Msgr
               end
 
               Msgr.client = client
-              client.start
+              client.start unless cfg[:autostart] and cfg[:autostart] == 'false'
             else
               raise ArgumentError, 'Could not load rabbitmq environment config: URI missing.'
             end

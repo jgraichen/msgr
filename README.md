@@ -84,6 +84,20 @@ class TestController < ApplicationController
 end
 ```
 
+## Msgr and fork web server like unicorn
+
+Per default msgr opens the rabbitmq connect when rails is loaded. If you use a multi-process web server that preloads the application (like unicorn) will lead to unexpected behavior. In this case adjust `config/rabbitmq.yml` and adjust `autostart = false`:
+
+
+```yaml
+common: &common
+  uri: amqp://localhost/
+  autostart: false
+```
+
+And call inside each worker `Msgr.client.start` - e.g. in an after-fork block
+
+
 ## Contributing
 
 1. Fork it
