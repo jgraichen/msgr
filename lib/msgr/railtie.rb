@@ -12,54 +12,69 @@ module Msgr
       config.msgr.rabbitmq_config ||= Rails.root.join *%w(config rabbitmq.yml)
     end
 
-    initializer 'msgr.routes_file' do
-      config.msgr.routes_file ||= Rails.root.join *%w(config msgr.rb)
-    end
-
     # Start msgr
     initializer 'msgr.start' do
       config.after_initialize do |app|
         Msgr.logger = app.config.msgr.logger
         Celluloid.logger = app.config.msgr.logger
 
-        cfile  = app.config.msgr.rabbitmq_config.to_s
-        config = YAML.load ERB.new(File.read(cfile)).result
+        self.class.load app.config.msgr
+      end
+    end
 
-        raise ArgumentError, 'Could not load rabbitmq config: Config must be a Hash' unless config.is_a? Hash
+    class << self
+      def load(rails_config)
+        cfg = parse_config load_config rails_config.rabbitmq_config.to_s
+        return unless cfg # no config given -> does not load Msgr
 
-        if config[Rails.env].is_a?(Hash)
-          cfg = HashWithIndifferentAccess.new config[Rails.env]
+        Msgr.config = cfg
 
-          if cfg[:enabled].nil? || cfg[:enabled] == 'true'
-            if cfg[:uri]
-              client = Msgr::Client.new cfg
-              client.routes.files << app.config.msgr.routes_file
-              client.routes.reload
-
-              if Rails.env.development? || config
-                reloader = ActiveSupport::FileUpdateChecker.new client.routes.files do
-                  client.routes.reload
-                  client.reload
-                end
-
-                ActionDispatch::Reloader.to_prepare do
-                  reloader.execute_if_updated
-                end
-              end
-
-              Msgr.client = client
-              client.start unless cfg[:autostart] and cfg[:autostart] == 'false'
-            else
-              raise ArgumentError, 'Could not load rabbitmq environment config: URI missing.'
-            end
-          end
-        else
-          if Rails.env.production?
-            raise ArgumentError, 'Could not load rabbitmq environment config: Not a hash.'
-          else
-            Rails.logger.warn 'Could not load rabbitmq environment config: Not a hash.'
+        # later loading for e.g. unicorn
+        if Rails.env.development?
+          Msgr.after_load do |client|
+            setup_autoreload client
           end
         end
+
+        Msgr.start if cfg[:autostart]
+      end
+
+      def setup_autoreload(client)
+        reloader = ActiveSupport::FileUpdateChecker.new client.routes.files do
+          client.routes.reload
+          client.reload
+        end
+
+        ActionDispatch::Reloader.to_prepare do
+          reloader.execute_if_updated
+        end
+      end
+
+      def parse_config(cfg)
+        unless cfg.is_a? Hash
+          raise ArgumentError, 'Could not load rabbitmq config: Config must be a Hash'
+        end
+        unless cfg[Rails.env].is_a?(Hash)
+          raise ArgumentError, "Could not load rabbitmq config for environment \"#{Rails.env}\": is not a Hash"
+        end
+        cfg = HashWithIndifferentAccess.new cfg[Rails.env]
+        unless cfg[:uri]
+          raise ArgumentError, 'Could not load rabbitmq environment config: URI missing.'
+        end
+        case cfg[:autostart]
+        when true, 'true', 'enabled', nil
+          cfg[:autostart] = true
+        when false, 'false', 'disabled'
+          cfg[:autostart] = false
+        else
+          raise ArgumentError, "Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\""
+        end
+        cfg[:routing_file] ||= Rails.root.join('config/msgr.rb').to_s
+        cfg
+      end
+
+      def load_config(file)
+        YAML.load ERB.new(File.read(file)).result
       end
     end
   end

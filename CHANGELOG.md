@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+* Improve railtie and autostart code
+
 ## 0.3.0
 
 * Support for forking web servers like unicorn

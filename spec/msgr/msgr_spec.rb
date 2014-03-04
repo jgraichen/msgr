@@ -33,4 +33,12 @@ describe Msgr do
 
     sleep 10
   end
+
+  describe '.after_load' do
+    before { allow_any_instance_of(Msgr::Client).to receive(:launch) }
+
+    it 'should yield the given block when Msgr.start is called' do
+      expect { |cb| Msgr.after_load &cb; Msgr.start }.to yield_with_args
+    end
+  end
 end

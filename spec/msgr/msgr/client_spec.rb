@@ -47,5 +47,12 @@ describe Msgr::Client do
         Msgr::Client.new(uri: 'ampq://localhost', ssl: true, host: 'a.example.org').start
       end
     end
+
+    context 'routes' do
+      let(:params) { [ routing_file: 'config/msgr.rb']}
+      before { client.start }
+      subject { client.routes }
+      its(:files) { should eq ['config/msgr.rb'] }
+    end
   end
 end

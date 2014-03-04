@@ -109,6 +109,9 @@ module Msgr
     def init
       @bunny = Bunny.new @config
       @pool  = Pool.new Dispatcher, size: @config[:size]
+      if @config[:routing_file]
+        routes.files << @config[:routing_file]
+      end
     end
 
     def launch

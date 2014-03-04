@@ -95,7 +95,7 @@ common: &common
   autostart: false
 ```
 
-And call inside each worker `Msgr.client.start` - e.g. in an after-fork block
+And call inside each worker `Msgr.start` - e.g. in an after-fork block
 
 
 ## Contributing

@@ -25,8 +25,16 @@ require 'msgr/railtie' if defined? Rails
 module Msgr
 
   class << self
-    attr_accessor :client
+    attr_writer :client, :config
     delegate :publish, to: :client
+
+    def config
+      @config ||= {}
+    end
+
+    def client
+      @client ||= Msgr::Client.new config
+    end
 
     def logger
       if @logger.nil?
@@ -39,6 +47,19 @@ module Msgr
 
     def logger=(logger)
       @logger = logger
+    end
+
+    def after_load(&block)
+      @after_load_callbacks ||= []
+      @after_load_callbacks << block
+    end
+
+    def start
+      client.start
+      (@after_load_callbacks || []).each do |callback|
+        callback.call client
+      end
+      client
     end
   end
 end
