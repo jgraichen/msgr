@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+* Fix bug with empty routes on client start
+
 ## 0.4.0
 
 * Improve railtie and autostart code
