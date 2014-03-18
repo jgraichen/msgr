@@ -112,6 +112,8 @@ module Msgr
       if @config[:routing_file]
         routes.files << @config[:routing_file]
       end
+
+      routes.reload
     end
 
     def launch
