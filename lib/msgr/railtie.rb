@@ -32,12 +32,13 @@ module Msgr
 
       def parse_config(cfg)
         unless cfg.is_a? Hash
-          Rails.logger.wanr '[Msgr] Could not load rabbitmq config: Config must be a Hash'
+          Rails.logger.warn '[Msgr] Could not load rabbitmq config: Config must be a Hash'
           return nil
         end
 
         unless cfg[Rails.env].is_a?(Hash)
-          raise ArgumentError, "Could not load rabbitmq config for environment \"#{Rails.env}\": is not a Hash"
+          Rails.logger.warn "Could not load rabbitmq config for environment \"#{Rails.env}\": is not a Hash"
+          return nil
         end
 
         cfg = HashWithIndifferentAccess.new cfg[Rails.env]
