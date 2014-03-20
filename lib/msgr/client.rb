@@ -45,13 +45,22 @@ module Msgr
       end
     end
 
+    def connect
+      mutex.synchronize do
+        check_process!
+        return if connection.running?
+
+        log(:info) { "Connect to #{uri}..." }
+
+        connection.connect
+      end
+    end
+
     def stop
       mutex.synchronize do
         check_process!
 
         log(:info) { "Stop on #{uri}..." }
-
-        return unless connection.running?
 
         connection.release
         connection.close

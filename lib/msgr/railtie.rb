@@ -27,6 +27,7 @@ module Msgr
         return unless cfg # no config given -> does not load Msgr
 
         Msgr.config = cfg
+        Msgr.client.connect
       end
 
       def parse_config(cfg)

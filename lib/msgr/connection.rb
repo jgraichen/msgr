@@ -37,6 +37,10 @@ module Msgr
       @connection ||= ::Bunny.new(config).tap { |b| b.start }
     end
 
+    def connect
+      connection
+    end
+
     def channel
       @channel ||= connection.create_channel
     end
