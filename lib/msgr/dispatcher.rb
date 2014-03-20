@@ -37,6 +37,11 @@ module Msgr
         "Dispatcher error: #{error.class.name}: #{error}\n" +
             error.backtrace.join("\n")
       end
+    ensure
+      if defined?(ActiveRecord) && ActiveRecord::Base.active_connection?
+        log(:debug) { 'Release used AR connection for dispatcher thread.' }
+        ActiveRecord::Base.release_connection
+      end
     end
 
     def shutdown
