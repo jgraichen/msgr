@@ -1,14 +1,16 @@
 module Msgr
 
   class Routes
+    include Logging
     attr_reader :routes
-    delegate :each, to: :@routes
+    delegate :each, :empty?, :size, :any?, to: :@routes
 
     def initialize
       @routes = []
     end
 
     def configure(&block)
+      blocks << block
       instance_eval &block
     end
 
@@ -16,17 +18,27 @@ module Msgr
       @files ||= []
     end
 
+    def blocks
+      @blocks ||= []
+    end
+
     def files=(files)
       @files = Array files
     end
 
+    def <<(file)
+      files << file
+    end
+
     def reload
       routes.clear
+      blocks.each { |block| instance_eval(&block) }
+      files.uniq!
       files.each do |file|
         if File.exists? file
           load file
         else
-          Msgr.logger.warn "Routes file `#{file}` does not exists (anymore)."
+          log(:warn) { "Routes file `#{file}` does not exists (anymore)." }
         end
       end
     end

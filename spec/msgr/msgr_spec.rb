@@ -8,7 +8,7 @@ end
 
 describe Msgr do
   before do
-    Msgr.logger = nil;
+    Msgr.logger = nil
     Msgr.logger.level = Logger::Severity::DEBUG if Msgr.logger
   end
 
@@ -23,22 +23,14 @@ describe Msgr do
   end
 
   after do
-    client.stop timeout: 10, delete: true, wait_empty: 10
+    client.stop
   end
 
   it 'should dispatch published methods to consumer' do
-    expect_any_instance_of(TestConsumer).to receive(:index).within(10).seconds.and_call_original
+    expect_any_instance_of(TestConsumer).to receive(:index).seconds.and_call_original
 
     client.publish 'Payload', to: 'routing.key'
 
-    sleep 10
-  end
-
-  describe '.after_load' do
-    before { allow_any_instance_of(Msgr::Client).to receive(:launch) }
-
-    it 'should yield the given block when Msgr.start is called' do
-      expect { |cb| Msgr.after_load &cb; Msgr.start }.to yield_with_args
-    end
+    sleep 4
   end
 end

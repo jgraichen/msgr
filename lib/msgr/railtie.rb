@@ -16,7 +16,6 @@ module Msgr
     initializer 'msgr.start' do
       config.after_initialize do |app|
         Msgr.logger = app.config.msgr.logger
-        Celluloid.logger = app.config.msgr.logger
 
         self.class.load app.config.msgr
       end
@@ -28,26 +27,7 @@ module Msgr
         return unless cfg # no config given -> does not load Msgr
 
         Msgr.config = cfg
-
-        # later loading for e.g. unicorn
-        if Rails.env.development?
-          Msgr.after_load do |client|
-            setup_autoreload client
-          end
-        end
-
         Msgr.start if cfg[:autostart]
-      end
-
-      def setup_autoreload(client)
-        reloader = ActiveSupport::FileUpdateChecker.new client.routes.files do
-          client.routes.reload
-          client.reload
-        end
-
-        ActionDispatch::Reloader.to_prepare do
-          reloader.execute_if_updated
-        end
       end
 
       def parse_config(cfg)

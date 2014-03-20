@@ -12,8 +12,6 @@ module Msgr
 
       # Acknowledge message unless it is already acknowledged.
       message.ack unless message.acked?
-
-      log(:warn) { "Message not acked!" } unless message.acked?
     end
 
     def dispatch(message)
@@ -23,7 +21,14 @@ module Msgr
 
       consumer_class.new.dispatch message
     rescue => error
-      log(:error) { error }
+      log(:error) do
+        "Dispatcher error: #{error.class.name}: #{error}\n" +
+            error.backtrace.join("\n")
+      end
+    end
+
+    def shutdown
+
     end
 
     def to_s
