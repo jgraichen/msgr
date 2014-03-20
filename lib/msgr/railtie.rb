@@ -27,7 +27,6 @@ module Msgr
         return unless cfg # no config given -> does not load Msgr
 
         Msgr.config = cfg
-        Msgr.start if cfg[:autostart]
       end
 
       def parse_config(cfg)
