@@ -32,23 +32,28 @@ module Msgr
 
       def parse_config(cfg)
         unless cfg.is_a? Hash
-          raise ArgumentError, 'Could not load rabbitmq config: Config must be a Hash'
+          Rails.logger.wanr '[Msgr] Could not load rabbitmq config: Config must be a Hash'
+          return nil
         end
+
         unless cfg[Rails.env].is_a?(Hash)
           raise ArgumentError, "Could not load rabbitmq config for environment \"#{Rails.env}\": is not a Hash"
         end
+
         cfg = HashWithIndifferentAccess.new cfg[Rails.env]
         unless cfg[:uri]
           raise ArgumentError, 'Could not load rabbitmq environment config: URI missing.'
         end
+
         case cfg[:autostart]
-        when true, 'true', 'enabled', nil
-          cfg[:autostart] = true
-        when false, 'false', 'disabled'
-          cfg[:autostart] = false
-        else
-          raise ArgumentError, "Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\""
+          when true, 'true', 'enabled', nil
+            cfg[:autostart] = true
+          when false, 'false', 'disabled'
+            cfg[:autostart] = false
+          else
+            raise ArgumentError, "Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\""
         end
+
         cfg[:routing_file] ||= Rails.root.join('config/msgr.rb').to_s
         cfg
       end
