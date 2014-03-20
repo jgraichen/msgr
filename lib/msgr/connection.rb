@@ -1,3 +1,6 @@
+require 'bunny'
+require 'multi_json'
+
 module Msgr
 
   class Connection

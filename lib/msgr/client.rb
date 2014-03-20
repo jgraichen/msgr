@@ -1,5 +1,3 @@
-require 'bunny'
-
 module Msgr
 
   class Client
@@ -7,7 +5,7 @@ module Msgr
     attr_reader :uri, :config
 
     def initialize(config = {})
-      @uri          = URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
+      @uri          = ::URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
       config[:pass] ||= @uri.password
 
       @uri.user   = config[:user] ||= @uri.user || 'guest'
@@ -18,8 +16,13 @@ module Msgr
       config.reject! { |_, v| v.nil? }
 
       @config = config
-      @mutex  = Mutex.new
+      @config[:max] ||= 2
+
+      @mutex  = ::Mutex.new
       @routes = Routes.new
+      @pid    ||= ::Process.pid
+
+      log(:info) { "Created new client on process ##{@pid}..." }
     end
 
     def running?
@@ -53,6 +56,8 @@ module Msgr
         connection.release
         connection.close
         dispatcher.shutdown
+
+        reset
       end
     end
 
@@ -84,21 +89,31 @@ module Msgr
     end
 
     def check_process!
-      unless Process.pid == @pid
-        @connection    = nil
-        @pool          = nil
-        @channel       = nil
-        @subscriptions = nil
+      unless ::Process.pid == @pid
+        log(:warn) { 'Fork detected. Reset internal state...' }
+
+        reset
         @pid           = ::Process.pid
       end
     end
 
     def connection
-      @connection ||= Connection.new(uri, config, dispatcher)
+      @connection ||= Connection.new(uri, config, dispatcher).tap do
+        log(:debug) { 'Created new connection..' }
+      end
     end
 
     def dispatcher
-      @dispatcher ||= Dispatcher.new
+      @dispatcher ||= Dispatcher.new(config).tap do
+        log(:debug) { 'Created new dispatcher..' }
+      end
+    end
+
+    def reset
+      @connection    = nil
+      @pool          = nil
+      @channel       = nil
+      @subscriptions = nil
     end
   end
 end
