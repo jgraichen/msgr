@@ -28,6 +28,7 @@ module Msgr
 
         Msgr.config = cfg
         Msgr.client.connect
+        Msgr.start if !cfg[:autostart].nil? && cfg[:autostart]
       end
 
       def parse_config(cfg)
@@ -47,9 +48,9 @@ module Msgr
         end
 
         case cfg[:autostart]
-          when true, 'true', 'enabled', nil
+          when true, 'true', 'enabled'
             cfg[:autostart] = true
-          when false, 'false', 'disabled'
+          when false, 'false', 'disabled', nil
             cfg[:autostart] = false
           else
             raise ArgumentError, "Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\""

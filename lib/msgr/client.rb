@@ -99,10 +99,10 @@ module Msgr
 
     def check_process!
       unless ::Process.pid == @pid
-        log(:warn) { 'Fork detected. Reset internal state...' }
+        log(:warn) { "Fork detected. Reset internal state. (Old PID: #{@pid} / New PID: #{::Process.pid}" }
 
         reset
-        @pid           = ::Process.pid
+        @pid = ::Process.pid
       end
     end
 

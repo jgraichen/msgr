@@ -10,11 +10,6 @@ describe Msgr::Railtie do
     end
   end
 
-  describe 'msgr should have load config/msgr.rb' do
-    subject { Msgr.client.routes }
-    its(:files) { should eq [Rails.root.join('config/msgr.rb').to_s] }
-  end
-
   describe '#parse_config' do
     let(:settings) { {} }
     let(:action) { described_class.parse_config settings }
@@ -22,17 +17,6 @@ describe Msgr::Railtie do
 
     context 'with incorrect settings' do
       subject { -> { action } }
-      context 'without an hash config' do
-        let(:settings) { '' }
-
-        it { should raise_error 'Could not load rabbitmq config: Config must be a Hash' }
-      end
-
-      context 'without an hash for the current environment' do
-        let(:settings) { {} }
-
-        it { should raise_error 'Could not load rabbitmq config for environment "test": is not a Hash' }
-      end
 
       context 'with config without url' do
         let(:settings) { {"test" => { hans: 'otto'}} }
@@ -79,17 +63,17 @@ describe Msgr::Railtie do
       cfg
     end
 
-    context 'with autostart = false' do
+    context 'with autostart is true' do
       it 'should not start Msgr' do
-        expect(Msgr).not_to receive(:start)
-        expect(Msgr::Railtie).to receive(:load_config).and_return({ "test" => { uri: 'test', autostart: false} })
+        expect(Msgr).to receive(:start)
+        expect(Msgr::Railtie).to receive(:load_config).and_return({ "test" => { uri: 'test', autostart: true} })
         Msgr::Railtie.load config
       end
     end
 
     context 'without autostart value' do
       it 'should not start Msgr' do
-        expect(Msgr).to receive(:start)
+        expect(Msgr).to_not receive(:start)
         expect(Msgr::Railtie).to receive(:load_config).and_return({ "test" => { uri: 'test' } })
         Msgr::Railtie.load config
       end
