@@ -19,7 +19,7 @@ module Msgr
 
       @subscription = queue.subscribe(ack: true) do |*args|
         begin
-          dispatcher.call Message.new(self, *args, route)
+          dispatcher.call Message.new(connection, *args, route)
         rescue => err
           log(:error) do
             "Rescued error from subscribe: #{err.class.name}: #{err}\n#{err.backtrace.join("\n")}"
