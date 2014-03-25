@@ -15,7 +15,7 @@ module Msgr
       @uri.path   = config[:vhost] ||= @uri.path.present? ? @uri.path : '/'
       config.reject! { |_, v| v.nil? }
 
-      @config = config
+      @config       = config
       @config[:max] ||= 2
 
       @mutex  = ::Mutex.new
@@ -56,13 +56,14 @@ module Msgr
       end
     end
 
-    def stop
+    def stop(opts = {})
       mutex.synchronize do
         check_process!
 
         log(:info) { "Stop on #{uri}..." }
 
         connection.release
+        connection.delete if opts[:delete]
         connection.close
         dispatcher.shutdown
 
@@ -119,10 +120,10 @@ module Msgr
     end
 
     def reset
-      @connection    = nil
-      @pool          = nil
-      @channel       = nil
-      @subscriptions = nil
+      @connection = nil
+      @pool       = nil
+      @channel    = nil
+      @bindings   = nil
     end
   end
 end

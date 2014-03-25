@@ -17,7 +17,7 @@ module Msgr
     end
 
     def running?
-      subscriptions.any?
+      bindings.any?
     end
 
     def publish(payload, opts = {})
@@ -46,11 +46,22 @@ module Msgr
     end
 
     def release
-      subscriptions.each { |subscription| subscription.cancel }
+      return if bindings.empty?
+      log(:debug) { "Release bindings (#{bindings.size})..." }
+
+      bindings.each { |binding| binding.release }
     end
 
-    def subscriptions
-      @subscription ||= []
+    def delete
+      return if bindings.empty?
+      log(:debug) { "Delete bindings (#{bindings.size})..." }
+
+      bindings.each { |binding| binding.delete }
+      exchange.delete
+    end
+
+    def bindings
+      @bindings ||= []
     end
 
     def prefix(name)
@@ -105,25 +116,7 @@ module Msgr
 
     private
     def bind_all(routes)
-      routes.each do |route|
-        queue = queue(route.name)
-
-        route.keys.each do |key|
-          log(:debug) { "Bind #{key} to #{queue.name}." }
-
-          queue.bind exchange, routing_key: key
-        end
-
-        subscriptions << queue.subscribe(ack: true) do |*args|
-          begin
-            @dispatcher.call Message.new(self, *args, route)
-          rescue => err
-            log(:error) do
-              "Rescued error from subscribe: #{err.class.name}: #{err}\n#{err.backtrace.join("\n")}"
-            end
-          end
-        end
-      end
+      routes.each { |route| bindings << Binding.new(self, route, @dispatcher) }
     end
   end
 end

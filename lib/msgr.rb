@@ -8,6 +8,7 @@ require 'active_support/core_ext/hash/keys'
 
 require 'msgr/logging'
 require 'msgr/client'
+require 'msgr/binding'
 require 'msgr/connection'
 require 'msgr/consumer'
 require 'msgr/dispatcher'
