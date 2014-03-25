@@ -23,7 +23,7 @@ describe Msgr do
   end
 
   after do
-    client.stop
+    client.stop delete: true
   end
 
   it 'should dispatch published methods to consumer' do
