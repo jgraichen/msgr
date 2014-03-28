@@ -38,9 +38,9 @@ module Msgr
             error.backtrace.join("\n")
       end
     ensure
-      if defined?(ActiveRecord) && ActiveRecord::Base.active_connection?
+      if defined?(ActiveRecord) && ActiveRecord::Base.connection_pool.active_connection?
         log(:debug) { 'Release used AR connection for dispatcher thread.' }
-        ActiveRecord::Base.release_connection
+        ActiveRecord::Base.connection_pool.release_connection
       end
     end
 
