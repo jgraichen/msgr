@@ -103,6 +103,11 @@ module Msgr
       log(:debug) { "Acked message: #{delivery_tag}" }
     end
 
+    def nack(delivery_tag)
+      channel.nack delivery_tag, false, true
+      log(:debug) { "Nacked message: #{delivery_tag}" }
+    end
+
     def reject(delivery_tag, requeue = true)
       channel.reject delivery_tag, requeue
       log(:debug) { "Rejected message: #{delivery_tag}" }

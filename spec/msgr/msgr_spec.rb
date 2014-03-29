@@ -1,8 +1,16 @@
 require 'spec_helper'
 
-class TestConsumer < Msgr::Consumer
+class Receiver
+end
+
+#
+class MsgrTestConsumer < Msgr::Consumer
   def index
-    puts "<<< #{payload}"
+    Receiver.index
+  end
+
+  def error
+    Receiver.error
   end
 end
 
@@ -12,11 +20,13 @@ describe Msgr do
     Msgr.logger.level = Logger::Severity::DEBUG if Msgr.logger
   end
 
-  let(:client) { Msgr::Client.new size: 1, prefix: SecureRandom.hex(32) }
+  let(:queue) { Queue.new }
+  let(:client) { Msgr::Client.new size: 1, prefix: SecureRandom.hex(2) }
 
   before do
     client.routes.configure do
-      route '#', to: 'test#index'
+      route 'test.index', to: 'msgr_test#index'
+      route 'test.error', to: 'msgr_test#error'
     end
 
     client.start
@@ -27,10 +37,19 @@ describe Msgr do
   end
 
   it 'should dispatch published methods to consumer' do
-    expect_any_instance_of(TestConsumer).to receive(:index).seconds.and_call_original
+    expect(Receiver).to receive(:index) { queue << :end }
 
-    client.publish 'Payload', to: 'routing.key'
+    client.publish 'Payload', to: 'test.index'
 
-    sleep 4
+    Timeout::timeout(4) { queue.pop }
+  end
+
+  it 'should redelivery failed messages' do
+    expect(Receiver).to receive(:error).ordered.and_raise RuntimeError
+    expect(Receiver).to receive(:error).ordered { queue << :end }
+
+    client.publish 'Payload', to: 'test.error'
+
+    Timeout::timeout(4) { queue.pop }
   end
 end

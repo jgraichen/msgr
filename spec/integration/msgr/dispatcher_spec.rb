@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class TestConsumer < Msgr::Consumer
+class DispatcherTestConsumer < Msgr::Consumer
   def index
     puts "<<< #{payload}"
   end
@@ -8,7 +8,7 @@ end
 
 describe Msgr::Dispatcher do
   let(:dispatcher) { described_class.new max: 1 }
-  let(:consumer) { 'TestConsumer' }
+  let(:consumer) { 'DispatcherTestConsumer' }
   let(:route) do
     double(:route).tap do |t|
       allow(t).to receive(:consumer).and_return consumer
@@ -36,7 +36,7 @@ describe Msgr::Dispatcher do
 
   before do
     expect_any_instance_of(::Concurrent::CachedThreadPool).to receive(:post).and_return { |m, &block| block.call m}
-    expect_any_instance_of(TestConsumer).to receive(:index)
+    expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
   end
 
   it 'should consume message' do

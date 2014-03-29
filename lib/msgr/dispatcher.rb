@@ -34,6 +34,8 @@ module Msgr
       # Acknowledge message unless it is already acknowledged.
       message.ack unless message.acked?
     rescue => error
+      message.nack unless message.acked?
+
       log(:error) do
         "Dispatcher error: #{error.class.name}: #{error}\n" +
             error.backtrace.join("\n")

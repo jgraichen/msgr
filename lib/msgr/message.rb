@@ -37,7 +37,19 @@ module Msgr
     def ack
       unless acked?
         @acked = true
-        @connection.ack(delivery_info.delivery_tag)
+        @connection.ack delivery_info.delivery_tag
+      end
+    end
+
+    # Send negative message acknowledge to broker unless
+    # message is  already acknowledged.
+    #
+    # @api public
+    #
+    def nack
+      unless acked?
+        @acked = true
+        @connection.nack delivery_info.delivery_tag
       end
     end
   end
