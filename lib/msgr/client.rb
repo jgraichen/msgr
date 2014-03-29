@@ -124,6 +124,7 @@ module Msgr
       @pool       = nil
       @channel    = nil
       @bindings   = nil
+      @dispatcher = nil
     end
   end
 end
