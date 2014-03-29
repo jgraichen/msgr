@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.11.rc2
+
+* Add nack for messages when an error is rescued by dispatcher
+
+## 0.11.rc1
+
+* Add pool_class config to override pool classes used by dispatcher
+
+## 0.4 - 0.10
+
+* Some lost history due to several crises
+
 ## 0.4.1
 
 * Fix bug with empty routes on client start

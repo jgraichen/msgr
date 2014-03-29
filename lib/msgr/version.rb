@@ -3,7 +3,7 @@ module Msgr
     MAJOR = 0
     MINOR = 11
     PATCH = 0
-    STAGE = 'rc1'
+    STAGE = 'rc2'
     STRING = [MAJOR, MINOR, PATCH, STAGE].reject(&:nil?).join('.')
 
     def self.to_s; STRING end
