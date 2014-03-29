@@ -14,7 +14,8 @@ module Msgr
     def initialize(config)
       log(:info) { "Initialize new dispatcher (#{config[:max]} threads)..." }
 
-      @pool = ::Concurrent::CachedThreadPool.new(max: config[:max])
+      config[:pool_class] ||= ::Concurrent::CachedThreadPool
+      @pool = config[:pool_class].new(max: config[:max])
     end
 
     def call(message)
@@ -45,7 +46,6 @@ module Msgr
     end
 
     def shutdown
-
     end
 
     def to_s

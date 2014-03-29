@@ -1,3 +1,4 @@
+$:.unshift File.join File.dirname(__FILE__), '../lib'
 require 'msgr'
 
 Msgr.logger.level = Logger::Severity::INFO
@@ -16,7 +17,18 @@ class TestConsumer < Msgr::Consumer
   end
 end
 
-@client = Msgr::Client.new user: 'guest', password: 'guest', size: 1
+#
+class NullPool
+  def initialize(*)
+  end
+
+  def post(*args)
+    yield(*args)
+  end
+end
+
+@client = Msgr::Client.new user: 'guest', password: 'guest',
+                           max: 4#, pool_class: NullPool
 
 @client.routes.configure do
   route 'abc.#', to: 'test#index'
@@ -27,12 +39,14 @@ end
 @client.start
 
 100.times do |i|
-  @client.publish 'abc.XXX', "Message #{i} #{rand}"
+  @client.publish "Message #{i} #{rand}", to: 'abc.XXX'
 end
 
 begin
   sleep
 rescue Interrupt
 ensure
-  @client.stop timeout: 10
+  @client.stop timeout: 10, delete: true
 end
+
+$stderr.puts "COUNTER: #{@counter}"
