@@ -12,10 +12,10 @@ module Msgr
     attr_reader :pool
 
     def initialize(config)
-      log(:info) { "Initialize new dispatcher (#{config[:max]} threads)..." }
+      config[:pool_class] ||= 'Concurrent::CachedThreadPool'
+      log(:info) { "Initialize new dispatcher (#{config[:pool_class]} with #{config[:max]} threads)..." }
 
-      config[:pool_class] ||= ::Concurrent::CachedThreadPool
-      @pool = config[:pool_class].new(max: config[:max])
+      @pool = config[:pool_class].constantize.new(max: config[:max])
     end
 
     def call(message)

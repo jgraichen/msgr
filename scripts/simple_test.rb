@@ -28,7 +28,7 @@ class NullPool
 end
 
 @client = Msgr::Client.new user: 'guest', password: 'guest',
-                           max: 4#, pool_class: NullPool
+                           max: 4#, pool_class: 'NullPool'
 
 @client.routes.configure do
   route 'abc.#', to: 'test#index'
