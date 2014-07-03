@@ -29,6 +29,12 @@ describe Msgr::Railtie do
 
         it { should raise_error 'Invalid value for rabbitmq config autostart: "unvalid"'}
       end
+
+      context 'with invalid checkcredentials value' do
+        let(:settings) { {"test" => { uri: 'hans', checkcredentials: 'unvalid'}} }
+
+        it { should raise_error 'Invalid value for rabbitmq config checkcredentials: "unvalid"'}
+      end
     end
 
     context 'without set routes file' do
@@ -75,6 +81,22 @@ describe Msgr::Railtie do
       it 'should not start Msgr' do
         expect(Msgr).to_not receive(:start)
         expect(Msgr::Railtie).to receive(:load_config).and_return({ "test" => { uri: 'test' } })
+        Msgr::Railtie.load config
+      end
+    end
+
+    context 'without checkcredentials value' do
+      it 'should connect to rabbitmq directly to check credentials' do
+        expect_any_instance_of(Msgr::Client).to receive(:connect)
+        expect(Msgr::Railtie).to receive(:load_config).and_return({ "test" => { uri: 'test' } })
+        Msgr::Railtie.load config
+      end
+    end
+
+    context 'with checkcredentials is false' do
+      it 'should connect to rabbitmq directly to check credentials' do
+        expect_any_instance_of(Msgr::Client).to_not receive(:connect)
+        expect(Msgr::Railtie).to receive(:load_config).and_return({ "test" => { uri: 'test', checkcredentials: false } })
         Msgr::Railtie.load config
       end
     end

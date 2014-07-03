@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.rc3
+
+* Define pool_class by string to make it useable with rails
+* Add checkcredentials config option to disable initial connect to rabbitmq
+  server to check the credentials
+
 ## 0.11.rc2
 
 * Add nack for messages when an error is rescued by dispatcher

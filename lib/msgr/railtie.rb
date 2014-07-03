@@ -27,8 +27,8 @@ module Msgr
         return unless cfg # no config given -> does not load Msgr
 
         Msgr.config = cfg
-        Msgr.client.connect
-        Msgr.start if !cfg[:autostart].nil? && cfg[:autostart]
+        Msgr.client.connect if cfg[:checkcredentials]
+        Msgr.start if cfg[:autostart]
       end
 
       def parse_config(cfg)
@@ -54,6 +54,15 @@ module Msgr
             cfg[:autostart] = false
           else
             raise ArgumentError, "Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\""
+        end
+
+        case cfg[:checkcredentials]
+          when true, 'true', 'enabled', nil
+            cfg[:checkcredentials] = true
+          when false, 'false', 'disabled'
+            cfg[:checkcredentials] = false
+          else
+            raise ArgumentError, "Invalid value for rabbitmq config checkcredentials: \"#{cfg[:checkcredentials]}\""
         end
 
         cfg[:routing_file] ||= Rails.root.join('config/msgr.rb').to_s
