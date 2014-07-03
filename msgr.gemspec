@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'activesupport'
   spec.add_dependency 'bunny', '~> 1.0'
-  spec.add_dependency 'concurrent-ruby'
+  spec.add_dependency 'concurrent-ruby', '~> 0.5.0'
   spec.add_dependency 'multi_json'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
