@@ -42,7 +42,11 @@ module Msgr
     end
 
     def channel
-      @channel ||= connection.create_channel
+      @channel ||= begin
+        channel = connection.create_channel
+        channel.prefetch 10
+        channel
+      end
     end
 
     def release
