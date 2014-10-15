@@ -74,7 +74,7 @@ module Msgr
     def publish(payload, opts = {})
       mutex.synchronize do
         check_process!
-        connection.publish payload, opts
+        sync_publish payload, opts
       end
     end
 
@@ -94,6 +94,22 @@ module Msgr
     end
 
     private
+
+    def sync_publish(payload, opts)
+      begin
+        payload = MultiJson.dump(payload)
+        opts[:content_type] ||= 'application/json'
+      rescue
+        opts[:content_type] ||= 'application/text'
+      end
+
+      sync_publish_message payload.to_s, opts
+    end
+
+    def sync_publish_message(message, opts)
+      connection.publish message, opts
+    end
+
     def mutex
       @mutex
     end

@@ -20,15 +20,10 @@ module Msgr
       bindings.any?
     end
 
-    def publish(payload, opts = {})
+    def publish(message, opts = {})
       opts[:routing_key] = opts.delete(:to) if opts[:to]
 
-      begin
-        payload = MultiJson.dump(payload)
-        exchange.publish payload, opts.merge(persistent: true, content_type: 'application/json')
-      rescue => error
-        exchange.publish payload.to_s, opts.merge(persistent: true, content_type: 'application/text')
-      end
+      exchange.publish message.to_s, opts.merge(persistent: true)
 
       log(:debug) { "Published message to #{opts[:routing_key]}" }
     end
