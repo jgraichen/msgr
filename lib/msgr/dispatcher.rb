@@ -1,4 +1,4 @@
-require 'concurrent/cached_thread_pool'
+require 'concurrent'
 
 module Msgr
 

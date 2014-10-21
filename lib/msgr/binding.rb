@@ -17,7 +17,7 @@ module Msgr
         queue.bind connection.exchange, routing_key: key
       end
 
-      @subscription = queue.subscribe(ack: true) do |*args|
+      @subscription = queue.subscribe(manual_ack: true) do |*args|
         begin
           dispatcher.call Message.new(connection, *args, route)
         rescue => err

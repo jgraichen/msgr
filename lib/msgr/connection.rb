@@ -39,7 +39,7 @@ module Msgr
     def channel
       @channel ||= begin
         channel = connection.create_channel
-        channel.prefetch 10
+        channel.prefetch 1
         channel
       end
     end
