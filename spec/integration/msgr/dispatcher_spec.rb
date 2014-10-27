@@ -35,7 +35,7 @@ describe Msgr::Dispatcher do
   let(:action) { -> { dispatcher.call message }}
 
   before do
-    expect_any_instance_of(::Concurrent::CachedThreadPool).to receive(:post).and_return { |m, &block| block.call m}
+    expect_any_instance_of(::Msgr::Dispatcher::NullPool).to receive(:post).and_return { |m, &block| block.call m}
     expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
   end
 

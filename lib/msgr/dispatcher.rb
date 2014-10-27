@@ -1,5 +1,3 @@
-require 'concurrent'
-
 module Msgr
 
   # The Dispatcher receives incoming messages,
@@ -12,10 +10,10 @@ module Msgr
     attr_reader :pool
 
     def initialize(config)
-      config[:pool_class] ||= 'Concurrent::CachedThreadPool'
-      log(:info) { "Initialize new dispatcher (#{config[:pool_class]} with #{config[:max]} threads)..." }
+      config[:pool_class] ||= 'Msgr::Dispatcher::NullPool'
+      log(:info) { "Initialize new dispatcher (#{config[:pool_class]}: #{config})..." }
 
-      @pool = config[:pool_class].constantize.new(max: config[:max])
+      @pool = config[:pool_class].constantize.new config
     end
 
     def call(message)
@@ -52,6 +50,15 @@ module Msgr
 
     def to_s
       self.class.name
+    end
+
+    class NullPool
+      def initialize(*)
+      end
+
+      def post(*args)
+        yield(*args)
+      end
     end
   end
 end
