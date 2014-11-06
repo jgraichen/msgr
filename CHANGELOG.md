@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.1
+
+* Loose dependency on bunny to allow ~> 1.4 for stone-age old RabbitMQ servers.
+
+
+
+
 ## 0.11.rc3
 
 * Define pool_class by string to make it useable with rails
