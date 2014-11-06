@@ -11,13 +11,15 @@ rvm:
 gemfile:
   - gemfiles/Gemfile.rails-3-2
   - gemfiles/Gemfile.rails-4-0
+  - gemfiles/Gemfile.rails-4-1
+  - gemfiles/Gemfile.rails-4-2
+env:
+  - BUNNY_VERSION="~> 1.4.0"
+  - BUNNY_VERSION="~> 1.5.0"
 matrix:
   allow_failures:
     - rvm: jruby
     - rvm: rbx
-before_install:
-  - gem install json -v '1.8.1'
-  - gem install minitest -v '4.7.5'
 script:
   - bundle exec rake spec:msgr
   - bundle exec rake spec:integration

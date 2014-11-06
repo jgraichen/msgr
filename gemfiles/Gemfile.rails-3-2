@@ -4,3 +4,4 @@ source 'https://rubygems.org'
 self.instance_eval Bundler.read_file 'Gemfile'
 
 gem 'activesupport', '~> 3.2.0'
+gem 'bunny', ENV['BUNNY_VERSION']
