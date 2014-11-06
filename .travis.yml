@@ -3,19 +3,19 @@ bundler_args: --without development
 services:
   - rabbitmq
 rvm:
-  - 2.1.0
-  - 2.0.0
-  - 1.9.3
+  - '2.1'
+  - '2.0'
+  - '1.9.3'
   - jruby
   - rbx
 gemfile:
-  - gemfiles/Gemfile.rails-3-2
-  - gemfiles/Gemfile.rails-4-0
-  - gemfiles/Gemfile.rails-4-1
   - gemfiles/Gemfile.rails-4-2
+  - gemfiles/Gemfile.rails-4-1
+  - gemfiles/Gemfile.rails-4-0
+  - gemfiles/Gemfile.rails-3-2
 env:
-  - BUNNY_VERSION="~> 1.4.0"
   - BUNNY_VERSION="~> 1.5.0"
+  - BUNNY_VERSION="~> 1.4.0"
 matrix:
   allow_failures:
     - rvm: jruby
