@@ -56,7 +56,6 @@ module Msgr
       log(:debug) { "Delete bindings (#{bindings.size})..." }
 
       bindings.each { |binding| binding.delete }
-      exchange.delete
     end
 
     def bindings
