@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.2
+
+* Do not delete the exchange on stop delete:true - as the exchange is changed
+
 ## 0.12.1
 
 * Loose dependency on bunny to allow ~> 1.4 for stone-age old RabbitMQ servers.
