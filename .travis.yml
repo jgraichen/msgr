@@ -4,6 +4,7 @@ bundler_args: --without development
 services:
   - rabbitmq
 rvm:
+  - '2.2'
   - '2.1'
   - '2.0'
   - jruby
@@ -13,8 +14,8 @@ gemfile:
   - gemfiles/Gemfile.rails-4-0
   - gemfiles/Gemfile.rails-3-2
 env:
-  - BUNNY_VERSION="~> 1.6"
-  - BUNNY_VERSION="~> 1.5.0"
+  - BUNNY_VERSION="~> 2.1"
+  - BUNNY_VERSION="~> 1.5"
   - BUNNY_VERSION="~> 1.4.0"
 matrix:
   allow_failures:
