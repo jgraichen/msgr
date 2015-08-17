@@ -6,7 +6,7 @@ module Msgr
     end
 
     def log_name
-      "[#{Thread.current.object_id.to_s(16)}] <#{self.class.name}[#{object_id.to_s(16)}]>"
+      "[#{Thread.current.object_id.to_s(16)}]"
     end
   end
 end

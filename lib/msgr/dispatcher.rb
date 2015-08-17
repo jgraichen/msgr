@@ -11,7 +11,8 @@ module Msgr
 
     def initialize(config)
       config[:pool_class] ||= 'Msgr::Dispatcher::NullPool'
-      log(:info) { "Initialize new dispatcher (#{config[:pool_class]}: #{config})..." }
+
+      log(:debug) { "Initialize new dispatcher (#{config[:pool_class]}: #{config})..." }
 
       @pool = config[:pool_class].constantize.new config
     end

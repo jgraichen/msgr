@@ -22,7 +22,7 @@ module Msgr
       @routes = Routes.new
       @pid    ||= ::Process.pid
 
-      log(:info) { "Created new client on process ##{@pid}..." }
+      log(:debug) { "Created new client on process ##{@pid}..." }
     end
 
     def running?
@@ -37,7 +37,7 @@ module Msgr
         check_process!
         return if connection.running?
 
-        log(:info) { "Start on #{uri}..." }
+        log(:debug) { "Start on #{uri}..." }
 
         @routes << config[:routing_file] if config[:routing_file].present?
         @routes.reload
@@ -50,7 +50,7 @@ module Msgr
         check_process!
         return if connection.running?
 
-        log(:info) { "Connect to #{uri}..." }
+        log(:debug) { "Connect to #{uri}..." }
 
         connection.connect
       end
@@ -60,7 +60,7 @@ module Msgr
       mutex.synchronize do
         check_process!
 
-        log(:info) { "Stop on #{uri}..." }
+        log(:debug) { "Stop on #{uri}..." }
 
         connection.release
         connection.delete if opts[:delete]
