@@ -10,11 +10,11 @@ rvm:
   - jruby
   - rbx
 gemfile:
+  - gemfiles/Gemfile.rails-4-2
   - gemfiles/Gemfile.rails-4-1
   - gemfiles/Gemfile.rails-4-0
-  - gemfiles/Gemfile.rails-3-2
 env:
-  - BUNNY_VERSION="~> 2.1"
+  - BUNNY_VERSION="~> 2.0"
   - BUNNY_VERSION="~> 1.5"
   - BUNNY_VERSION="~> 1.4.0"
 matrix:

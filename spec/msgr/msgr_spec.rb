@@ -15,11 +15,6 @@ class MsgrTestConsumer < Msgr::Consumer
 end
 
 describe Msgr do
-  before do
-    Msgr.logger = nil
-    Msgr.logger.level = Logger::Severity::DEBUG if Msgr.logger
-  end
-
   let(:queue) { Queue.new }
   let(:client) { Msgr::Client.new size: 1, prefix: SecureRandom.hex(2) }
 
