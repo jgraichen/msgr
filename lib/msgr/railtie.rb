@@ -8,10 +8,6 @@ module Msgr
       app.config.msgr.logger ||= Rails.logger
     end
 
-    initializer 'msgr.rabbitmq_config' do
-      config.msgr.rabbitmq_config ||= Rails.root.join *%w(config rabbitmq.yml)
-    end
-
     # Start msgr
     initializer 'msgr.start' do
       config.after_initialize do |app|
@@ -23,7 +19,7 @@ module Msgr
 
     class << self
       def load(rails_config)
-        cfg = parse_config load_config rails_config.rabbitmq_config.to_s
+        cfg = parse_config load_config rails_config
         return unless cfg # no config given -> does not load Msgr
 
         Msgr.config = cfg
@@ -69,8 +65,18 @@ module Msgr
         cfg
       end
 
-      def load_config(file)
-        YAML.load ERB.new(File.read(file)).result
+      def load_config(options)
+        if options.rabbitmq_config || !Rails.application.respond_to?(:config_for)
+          load_file options.rabbitmq_config || Rails.root.join(*%w(config rabbitmq.yml))
+        else
+          conf = Rails.application.config_for :rabbitmq
+
+          {Rails.env.to_s => conf}
+        end
+      end
+
+      def load_file(path)
+        YAML.load ERB.new(File.read(path)).result
       end
     end
   end

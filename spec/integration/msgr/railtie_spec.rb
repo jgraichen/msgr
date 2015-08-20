@@ -101,4 +101,16 @@ describe Msgr::Railtie do
       end
     end
   end
+
+  # describe '#load_config'
+  #   let(:options) { {} }
+
+  #   subject { Msgr::Railtie.load_config options }
+
+  #   if Rails::Application.methods.include(:config_for)
+  #     it 'should use config_for' do
+
+  #     end
+  #   end
+  # end
 end
