@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.0
+
+* Use `Rails.application.config_for` if available.
+
 ## 0.12.2
 
 * Do not delete the exchange on stop delete:true - as the exchange is changed
