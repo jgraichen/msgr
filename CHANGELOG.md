@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.14.0
+
+* Add experimental test pool (`Msgr::TestPool`)
+
 ## 0.13.0
 
 * Use `Rails.application.config_for` if available.
