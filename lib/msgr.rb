@@ -16,6 +16,7 @@ require 'msgr/errors'
 require 'msgr/message'
 require 'msgr/route'
 require 'msgr/routes'
+require 'msgr/test_pool'
 
 require 'msgr/railtie' if defined? Rails
 
