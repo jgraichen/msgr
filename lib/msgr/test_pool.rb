@@ -29,11 +29,7 @@ module Msgr
 
     private
 
-    def ns_clear
-      @queue.clear
-    end
-
-    def ns_run(count: 1, timeout: 1)
+    def ns_run(count: 1, timeout: 5)
       received = 0
 
       while received < count
@@ -66,9 +62,11 @@ module Msgr
         new.run(*args)
       end
 
-      def reset
-        @instance ? @instance.reset : nil
+      def clear
+        @instance ? @instance.clear : nil
       end
+
+      alias_method :reset, :clear
     end
   end
 end
