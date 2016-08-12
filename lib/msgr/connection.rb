@@ -58,6 +58,13 @@ module Msgr
       bindings.each { |binding| binding.delete }
     end
 
+    def purge
+      return if bindings.empty?
+      log(:debug) { "Purge bindings (#{bindings.size})..." }
+
+      bindings.each(&:purge)
+    end
+
     def bindings
       @bindings ||= []
     end

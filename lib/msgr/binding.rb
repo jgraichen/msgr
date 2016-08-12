@@ -36,5 +36,9 @@ module Msgr
       release
       queue.delete
     end
+
+    def purge
+      queue.purge
+    end
   end
 end
