@@ -13,8 +13,6 @@ create a controller. That's all you need to process requests.
 With *Msgr* you can do the same for asynchronous AMQP messaging. Just define
 your routes, create your consumer and watch you app processing messages.
 
-*Note: Msgr is still under heavy development.*
-
 ## Installation
 
 Add this line to your application's Gemfile:
