@@ -1,27 +1,36 @@
-sudo : false
+sudo: false
 language: ruby
-bundler_args: --without development
+bundler_args: "--without development"
 services:
-  - rabbitmq
+- rabbitmq
 rvm:
-  - '2.3.1'
-  - '2.2.5'
-  - '2.1.10'
-  - '2.0'
-  - jruby
-  - rbx
+- 2.3.1
+- 2.2.5
+- 2.1.10
+- '2.0'
+- jruby
+- rbx
 gemfile:
-  - gemfiles/Gemfile.rails-4-2
-  - gemfiles/Gemfile.rails-4-1
-  - gemfiles/Gemfile.rails-4-0
+- gemfiles/Gemfile.rails-4-2
+- gemfiles/Gemfile.rails-4-1
+- gemfiles/Gemfile.rails-4-0
 env:
-  - BUNNY_VERSION="~> 2.0"
-  - BUNNY_VERSION="~> 1.5"
-  - BUNNY_VERSION="~> 1.4.0"
+- BUNNY_VERSION="~> 2.0"
+- BUNNY_VERSION="~> 1.5"
+- BUNNY_VERSION="~> 1.4.0"
 matrix:
   allow_failures:
-    - rvm: jruby
-    - rvm: rbx
+  - rvm: jruby
+  - rvm: rbx
 script:
-  - bundle exec rake spec:msgr
-  - bundle exec rake spec:integration
+- bundle exec rake spec:msgr
+- bundle exec rake spec:integration
+deploy:
+  provider: rubygems
+  api_key:
+    secure: g8icPMdxEmbpBzSRCDmR3uB+1Zhu7tGq3h0cVbGUka2Ni1NiEiQo3LCDzbMp+L7AXH5RhdsG9FTViIAyCy9YENqZ1+jzrQGeADx0KnJZb6F81/SyumeUld0zdkzDbe1aUCJWz2WnEk12aLMPLNPRmDE7wub+od7gJEEv2SsKObo=
+  gem: msgr
+  on:
+    branch: master
+    repo: jgraichen/msgr
+    rvm: 2.3.1
