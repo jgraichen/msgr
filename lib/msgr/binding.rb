@@ -17,15 +17,7 @@ module Msgr
         queue.bind connection.exchange, routing_key: key
       end
 
-      @subscription = queue.subscribe(manual_ack: true) do |*args|
-        begin
-          dispatcher.call Message.new(connection, *args, route)
-        rescue => err
-          log(:error) do
-            "Rescued error from subscribe: #{err.class.name}: #{err}\n#{err.backtrace.join("\n")}"
-          end
-        end
-      end
+      subscribe
     end
 
     def release
@@ -37,8 +29,26 @@ module Msgr
       queue.delete
     end
 
-    def purge
+    def purge(release: true)
+      self.release if release
+
       queue.purge
+
+      subscribe if release
+    end
+
+    private
+
+    def subscribe
+      @subscription = queue.subscribe(manual_ack: true) do |*args|
+        begin
+          dispatcher.call Message.new(connection, *args, route)
+        rescue => err
+          log(:error) do
+            "Rescued error from subscribe: #{err.class.name}: #{err}\n#{err.backtrace.join("\n")}"
+          end
+        end
+      end
     end
   end
 end

@@ -71,13 +71,13 @@ module Msgr
       end
     end
 
-    def purge
+    def purge(release: false)
       mutex.synchronize do
         check_process!
 
         log(:debug) { "Purge all queues on #{uri}..." }
 
-        connection.purge
+        connection.purge(release: release)
       end
     end
 
