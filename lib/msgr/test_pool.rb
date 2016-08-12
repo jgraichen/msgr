@@ -1,30 +1,60 @@
 module Msgr
   class TestPool
     def initialize(*)
-      @mutex = Mutex.new
       @queue = []
+      @mutex = Mutex.new
+      @event = ConditionVariable.new
     end
 
-    def post(*args, &block)
-      @mutex.synchronize { @queue << [block, args] }
-    end
-
-    def run(timeout: 5, count: 1)
-      Timeout.timeout(timeout) do
-        while count > 0
-          @mutex.synchronize do
-            if (item = @queue.pop)
-              item[0].call(*item[1])
-
-              count -= 1
-            end
-          end
-        end
+    def post(message, &block)
+      @mutex.synchronize do
+        @queue << [block, message]
+        @event.signal
       end
     end
 
-    def reset
+    def run(**kwargs)
+      @mutex.synchronize do
+        ns_run(**kwargs)
+      end
+    end
+
+    def clear
+      @mutex.synchronize do
+        @queue.clear
+      end
+    end
+
+    alias_method :reset, :clear
+
+    private
+
+    def ns_clear
       @queue.clear
+    end
+
+    def ns_run(count: 1, timeout: 1)
+      received = 0
+
+      while received < count
+        if (item = @queue.pop)
+          item[0].call item[1]
+          received += 1
+        else
+          start = Time.now.to_f
+
+          @event.wait(@mutex, timeout)
+
+          stop = Time.now.to_f
+          diff = stop - start
+          timeout -= diff
+
+          if timeout <= 0
+            raise TimeoutError.new \
+              "Expected to receive #{count} messages but received #{received}."
+          end
+        end
+      end
     end
 
     class << self
