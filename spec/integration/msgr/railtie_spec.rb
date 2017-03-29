@@ -40,25 +40,37 @@ describe Msgr::Railtie do
     context 'without set routes file' do
       let(:settings) { {"test" => { uri: 'test'}} }
 
-      its([:routing_file]) { should eq Rails.root.join('config/msgr.rb').to_s }
+      context '[:routing_file]' do
+        subject { super()[:routing_file] }
+        it { should eq Rails.root.join('config/msgr.rb').to_s }
+      end
     end
 
     context 'with set routes file' do
       let(:settings) { {"test" => { uri: 'test', 'routing_file' => 'my fancy file' }} }
 
-      its([:routing_file]) { should eq 'my fancy file' }
+      context '[:routing_file]' do
+        subject { super()[:routing_file] }
+        it { should eq 'my fancy file' }
+      end
     end
 
     context 'with uri as symbol' do
       let(:settings) { {"test" => { uri: "hans"}}}
 
-      its([:uri]) { should eq 'hans' }
+      context '[:uri]' do
+        subject { super()[:uri] }
+        it { should eq 'hans' }
+      end
     end
 
     context 'with uri as string' do
       let(:settings) { {"test" => { 'uri' => "hans"}}}
 
-      its([:uri]) { should eq 'hans' }
+      context '[:uri]' do
+        subject { super()[:uri] }
+        it { should eq 'hans' }
+      end
     end
   end
 

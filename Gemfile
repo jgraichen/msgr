@@ -3,14 +3,13 @@ source 'https://rubygems.org'
 # Development gems
 #
 gem 'rake'
-gem 'rspec'
-gem 'rspec-message-within', '>= 1.1.1'
+gem 'rspec', '~> 3.0'
 gem 'fuubar'
 gem 'coveralls'
 
 # Doc
 group :development do
-  gem 'yard', '~> 0.8.6'
+  gem 'yard', '~> 0.9.8'
   gem 'listen'
   gem 'guard-yard'
   gem 'guard-rspec'
@@ -18,7 +17,7 @@ group :development do
 end
 
 group :rails do
-  gem 'rails', '>= 3.2', '< 5'
+  gem 'rails', '>= 3.2'
   gem 'rspec-rails'
   gem 'sqlite3', platform: :ruby
   gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby

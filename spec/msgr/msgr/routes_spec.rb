@@ -7,7 +7,9 @@ describe Msgr::Routes do
     let(:block) { Proc.new{} }
 
     it 'should evaluate given block within instance context' do
-      expect(routes).to receive(:instance_eval).with { |p| p == block }
+      expect(routes).to receive(:instance_eval) do |&p|
+        expect(p).to be block
+      end
 
       routes.configure &block
     end
@@ -32,7 +34,7 @@ describe Msgr::Routes do
     let(:each) { routes.each }
 
     it 'should iterate over configured routes' do
-      expect(each).to have(2).items
+      expect(each.size).to eq 2
 
       expect(each.map(&:keys)).to eq [%w(abc.#), %w(edf.#)]
       expect(each.map(&:consumer)).to eq %w(TestConsumer TestConsumer)
@@ -70,7 +72,6 @@ describe Msgr::Routes do
 
       it 'should add second binding to first route' do
         subject.call
-        expect(routes.routes.first.keys).to have(2).items
         expect(routes.routes.first.keys).to eq %w(routing.key another.routing.key)
       end
     end
@@ -98,7 +99,7 @@ describe Msgr::Routes do
     it 'should clear old routes before reloading' do
       routes.route 'abc', to: 'abc#test'
       routes.reload
-      expect(routes.each).to have(0).items
+      expect(routes.each.size).to eq 0
     end
   end
 

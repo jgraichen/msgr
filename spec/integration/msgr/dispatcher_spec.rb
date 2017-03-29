@@ -22,20 +22,19 @@ describe Msgr::Dispatcher do
   end
   let(:delivery_info) do
      double(:delivery_info).tap do |ti|
-       allow(ti).to receive(:delivery_tag).and_return { 3 }
+       allow(ti).to receive(:delivery_tag).and_return(3)
     end
   end
   let(:payload) { {} }
   let(:metadata) do
     double(:metadata).tap do |metadata|
-      allow(metadata).to receive(:content_type).and_return { 'text/plain' }
+      allow(metadata).to receive(:content_type).and_return('text/plain')
     end
   end
   let(:message) { Msgr::Message.new connection, delivery_info, metadata, payload, route }
   let(:action) { -> { dispatcher.call message }}
 
   before do
-    expect_any_instance_of(::Msgr::Dispatcher::NullPool).to receive(:post).and_return { |m, &block| block.call m}
     expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
   end
 
