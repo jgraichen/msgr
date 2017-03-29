@@ -13,20 +13,13 @@ group :development do
   gem 'listen'
   gem 'guard-yard'
   gem 'guard-rspec'
-  gem 'redcarpet', platform: :ruby
+  gem 'redcarpet'
 end
 
 group :rails do
   gem 'rails', '>= 3.2'
   gem 'rspec-rails'
-  gem 'sqlite3', platform: :ruby
-  gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
-end
-
-platform :rbx do
-  gem 'rubysl'
-  gem 'rubinius-coverage'
-  gem 'racc'
+  gem 'sqlite3'
 end
 
 # Specify your gem's dependencies in acfs.gemspec
