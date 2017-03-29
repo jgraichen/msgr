@@ -61,6 +61,15 @@ module Msgr
             raise ArgumentError, "Invalid value for rabbitmq config checkcredentials: \"#{cfg[:checkcredentials]}\""
         end
 
+        case cfg[:raise_exceptions]
+          when true, 'true', 'enabled'
+            cfg[:raise_exceptions] = true
+          when false, 'false', 'disabled', nil
+            cfg[:raise_exceptions] = false
+          else
+            raise ArgumentError, "Invalid value for rabbitmq config raise_exceptions: \"#{cfg[:raise_exceptions]}\""
+        end
+
         cfg[:routing_file] ||= Rails.root.join('config/msgr.rb').to_s
         cfg
       end

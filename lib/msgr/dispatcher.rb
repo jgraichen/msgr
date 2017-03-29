@@ -7,13 +7,14 @@ module Msgr
   class Dispatcher
     include Logging
 
-    attr_reader :pool
+    attr_reader :config, :pool
 
     def initialize(config)
       config[:pool_class] ||= 'Msgr::Dispatcher::NullPool'
 
       log(:debug) { "Initialize new dispatcher (#{config[:pool_class]}: #{config})..." }
 
+      @config = config
       @pool = config[:pool_class].constantize.new config
     end
 
@@ -39,6 +40,8 @@ module Msgr
         "Dispatcher error: #{error.class.name}: #{error}\n" +
             error.backtrace.join("\n")
       end
+
+      raise error if config[:raise_exceptions]
     ensure
       if defined?(ActiveRecord) && ActiveRecord::Base.connection_pool.active_connection?
         log(:debug) { 'Release used AR connection for dispatcher thread.' }
