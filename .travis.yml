@@ -12,10 +12,6 @@ rvm:
 gemfile:
 - gemfiles/Gemfile.rails-5-0
 - gemfiles/Gemfile.rails-4-2
-env:
-- BUNNY_VERSION="~> 2.0"
-- BUNNY_VERSION="~> 1.5"
-- BUNNY_VERSION="~> 1.4.0"
 matrix:
   exclude:
   - rvm: '2.1.10'
