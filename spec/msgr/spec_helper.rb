@@ -8,7 +8,6 @@ Coveralls.wear! do
   add_filter 'spec'
 end
 
-require 'rspec/autorun'
 require 'msgr'
 
 Dir[File.expand_path('../support/**/*.rb', __FILE__)].each { |f| require f }
