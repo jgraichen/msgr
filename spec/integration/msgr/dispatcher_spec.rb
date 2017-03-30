@@ -6,8 +6,15 @@ class DispatcherTestConsumer < Msgr::Consumer
   end
 end
 
+class DispatcherRaiseConsumer < Msgr::Consumer
+  def index
+    raise ArgumentError, 'Not happy with the payload'
+  end
+end
+
 describe Msgr::Dispatcher do
-  let(:dispatcher) { described_class.new max: 1 }
+  let(:dispatcher) { described_class.new config }
+  let(:config) { { max: 1 } }
   let(:consumer) { 'DispatcherTestConsumer' }
   let(:route) do
     double(:route).tap do |t|
@@ -34,17 +41,33 @@ describe Msgr::Dispatcher do
   let(:message) { Msgr::Message.new connection, delivery_info, metadata, payload, route }
   let(:action) { -> { dispatcher.call message }}
 
-  before do
-    expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
-  end
-
   it 'should consume message' do
+    expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
     dispatcher.call message
   end
 
-  context 'with not acknowlged message' do
+  context 'with not acknowledged message' do
     before { dispatcher.call message }
     subject { message }
     it { should be_acked }
+  end
+
+  describe 'exception swallowing' do
+    let(:consumer) { 'DispatcherRaiseConsumer' }
+    before do
+      allow(message).to receive(:nack)
+    end
+
+    it 'should swallow exceptions by default' do
+      expect { dispatcher.call(message) }.not_to raise_error
+    end
+
+    context 'with raise_exceptions configuration option and a synchronous pool' do
+      let(:config) { super().merge(raise_exceptions: true) }
+
+      it 'should raise the exception' do
+        expect { dispatcher.call(message) }.to raise_error(ArgumentError)
+      end
+    end
   end
 end

@@ -35,6 +35,12 @@ describe Msgr::Railtie do
 
         it { should raise_error 'Invalid value for rabbitmq config checkcredentials: "unvalid"'}
       end
+
+      context 'with invalid raise_exceptions value' do
+        let(:settings) { {"test" => { uri: 'franz', raise_exceptions: 'unvalid'}} }
+
+        it { should raise_error 'Invalid value for rabbitmq config raise_exceptions: "unvalid"'}
+      end
     end
 
     context 'without set routes file' do
@@ -70,6 +76,15 @@ describe Msgr::Railtie do
       context '[:uri]' do
         subject { super()[:uri] }
         it { should eq 'hans' }
+      end
+    end
+
+    context 'without raise_exceptions config' do
+      let(:settings) { {"test" => { 'uri' => 'hans'}, "development" => { 'uri' => 'hans_dev'}}}
+
+      describe '[:raise_exceptions]' do
+        subject { super()[:raise_exceptions] }
+        it { should eq false }
       end
     end
   end
