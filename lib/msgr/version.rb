@@ -2,8 +2,8 @@
 module Msgr
   module VERSION
     MAJOR = 0
-    MINOR = 14
-    PATCH = 1
+    MINOR = 15
+    PATCH = 0
     STAGE = nil
     STRING = [MAJOR, MINOR, PATCH, STAGE].reject(&:nil?).join('.')
 

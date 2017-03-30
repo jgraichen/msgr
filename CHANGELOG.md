@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## 0.15.0
 
 * Add new configuration option `:raise_exceptions` that can be used to enable
   exceptions being raised from consumers. Mostly useful for testing consumers.
