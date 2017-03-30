@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
@@ -21,4 +22,3 @@ module Dummy
     config.msgr.logger = Logger.new $stdout
   end
 end
-

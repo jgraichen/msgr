@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 module Msgr
-
   class Binding
     include Logging
 
@@ -45,7 +45,8 @@ module Msgr
           dispatcher.call Message.new(connection, *args, route)
         rescue => err
           log(:error) do
-            "Rescued error from subscribe: #{err.class.name}: #{err}\n#{err.backtrace.join("\n")}"
+            "Rescued error from subscribe: #{err.class.name}: " \
+            "#{err}\n#{err.backtrace.join("\n")}"
           end
         end
       end

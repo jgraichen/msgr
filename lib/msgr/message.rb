@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 module Msgr
-
   class Message
     attr_reader :delivery_info, :metadata, :payload, :route
 
@@ -10,6 +10,7 @@ module Msgr
       @payload       = payload
       @route         = route
 
+      # rubocop:disable Style/GuardClause
       if content_type == 'application/json'
         @payload = MultiJson.load(payload)
         @payload.symbolize_keys! if @payload.respond_to? :symbolize_keys!
@@ -35,10 +36,10 @@ module Msgr
     # @api public
     #
     def ack
-      unless acked?
-        @acked = true
-        @connection.ack delivery_info.delivery_tag
-      end
+      return if acked?
+
+      @acked = true
+      @connection.ack delivery_info.delivery_tag
     end
 
     # Send negative message acknowledge to broker unless
@@ -47,10 +48,10 @@ module Msgr
     # @api public
     #
     def nack
-      unless acked?
-        @acked = true
-        @connection.nack delivery_info.delivery_tag
-      end
+      return if acked?
+
+      @acked = true
+      @connection.nack delivery_info.delivery_tag
     end
   end
 end

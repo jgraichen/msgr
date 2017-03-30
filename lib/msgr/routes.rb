@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 module Msgr
-
   class Routes
     include Logging
     attr_reader :routes
@@ -11,7 +11,7 @@ module Msgr
 
     def configure(&block)
       blocks << block
-      instance_eval &block
+      instance_eval(&block)
     end
 
     def files
@@ -32,10 +32,10 @@ module Msgr
 
     def reload
       routes.clear
-      blocks.each { |block| instance_eval(&block) }
+      blocks.each {|block| instance_eval(&block) }
       files.uniq!
       files.each do |file|
-        if File.exists? file
+        if File.exist? file
           load file
         else
           log(:warn) { "Routes file `#{file}` does not exists (anymore)." }
@@ -44,19 +44,19 @@ module Msgr
     end
 
     def load(file)
-      raise ArgumentError.new "File `#{file}` does not exists." unless File.exists? file
+      unless File.exist?(file)
+        raise ArgumentError.new "File `#{file}` does not exists."
+      end
+
       instance_eval File.read file
     end
 
     def route(key, opts = {})
-      routes.each do |route|
-        if route.accept? key, opts
-          route.add key
-          return
-        end
+      if (route = routes.find {|r| r.accept?(key, opts) })
+        route.add key
+      else
+        routes << Msgr::Route.new(key, opts)
       end
-
-      routes << Msgr::Route.new(key, opts)
     end
   end
 end

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
 require 'bunny'
 require 'multi_json'
 
 module Msgr
-
+  # rubocop:disable Metrics/ClassLength
   class Connection
     include Logging
 
@@ -29,7 +30,7 @@ module Msgr
     end
 
     def connection
-      @connection ||= ::Bunny.new(config).tap { |b| b.start }
+      @connection ||= ::Bunny.new(config).tap(&:start)
     end
 
     def connect
@@ -48,14 +49,14 @@ module Msgr
       return if bindings.empty?
       log(:debug) { "Release bindings (#{bindings.size})..." }
 
-      bindings.each { |binding| binding.release }
+      bindings.each(&:release)
     end
 
     def delete
       return if bindings.empty?
       log(:debug) { "Delete bindings (#{bindings.size})..." }
 
-      bindings.each { |binding| binding.delete }
+      bindings.each(&:delete)
     end
 
     def purge(**kwargs)
@@ -78,10 +79,12 @@ module Msgr
     end
 
     def exchange
-      @exchange ||= channel.topic(prefix(EXCHANGE_NAME), durable: true).tap do |ex|
-        log(:debug) do
-          "Created exchange #{ex.name} (type: #{ex.type}, " \
-              "durable: #{ex.durable?}, auto_delete: #{ex.auto_delete?})"
+      @exchange ||= begin
+        channel.topic(prefix(EXCHANGE_NAME), durable: true).tap do |ex|
+          log(:debug) do
+            "Created exchange #{ex.name} (type: #{ex.type}, " \
+                "durable: #{ex.durable?}, auto_delete: #{ex.auto_delete?})"
+          end
         end
       end
     end
@@ -97,7 +100,10 @@ module Msgr
 
     def bind(routes)
       if routes.empty?
-        log(:warn) { "No routes to bound to. Bind will have no effect. (#{routes.inspect})" }
+        log(:warn) do
+          "No routes to bound to. Bind will have no effect:\n" \
+          "  #{routes.inspect}"
+        end
       else
         bind_all(routes)
       end
@@ -125,8 +131,9 @@ module Msgr
     end
 
     private
+
     def bind_all(routes)
-      routes.each { |route| bindings << Binding.new(self, route, @dispatcher) }
+      routes.each {|route| bindings << Binding.new(self, route, @dispatcher) }
     end
   end
 end

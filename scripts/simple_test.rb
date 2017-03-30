@@ -1,4 +1,5 @@
-$:.unshift File.join File.dirname(__FILE__), '../lib'
+# frozen_string_literal: true
+$LOAD_PATH.unshift File.join File.dirname(__FILE__), '../lib'
 require 'msgr'
 
 Msgr.logger.level = Logger::Severity::INFO
@@ -19,8 +20,7 @@ end
 
 #
 class NullPool
-  def initialize(*)
-  end
+  def initialize(*); end
 
   def post(*args)
     yield(*args)
@@ -28,7 +28,7 @@ class NullPool
 end
 
 @client = Msgr::Client.new user: 'guest', password: 'guest',
-                           max: 4#, pool_class: 'NullPool'
+                           max: 4 # , pool_class: 'NullPool'
 
 @client.routes.configure do
   route 'abc.#', to: 'test#index'

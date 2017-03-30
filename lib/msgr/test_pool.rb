@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Msgr
   class TestPool
     def initialize(*)
@@ -25,10 +26,12 @@ module Msgr
       end
     end
 
-    alias_method :reset, :clear
+    alias reset clear
 
     private
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def ns_run(count: 1, timeout: 5)
       received = 0
 
@@ -66,7 +69,7 @@ module Msgr
         @instance ? @instance.clear : nil
       end
 
-      alias_method :reset, :clear
+      alias reset clear
     end
   end
 end

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'msgr/version'
 require 'active_support'
 require 'active_support/core_ext/object/blank'
@@ -21,7 +22,6 @@ require 'msgr/test_pool'
 require 'msgr/railtie' if defined? Rails
 
 module Msgr
-
   class << self
     attr_writer :client, :config
     delegate :publish, to: :client
@@ -43,9 +43,7 @@ module Msgr
       @logger
     end
 
-    def logger=(logger)
-      @logger = logger
-    end
+    attr_writer :logger
 
     def start
       client.start

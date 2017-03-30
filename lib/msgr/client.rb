@@ -1,26 +1,29 @@
+# frozen_string_literal: true
 module Msgr
-
+  # rubocop:disable Metrics/ClassLength
   class Client
     include Logging
     attr_reader :uri, :config
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
     def initialize(config = {})
-      @uri          = ::URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
+      @uri = ::URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
       config[:pass] ||= @uri.password
 
       @uri.user   = config[:user] ||= @uri.user || 'guest'
-      @uri.scheme = (config[:ssl] ||= @uri.scheme.to_s.downcase == 'amqps') ? 'amqps' : 'amqp'
+      @uri.scheme = (config[:ssl] ||= @uri.scheme.to_s.casecmp('amqps').zero?) ? 'amqps' : 'amqp'
       @uri.host   = config[:host] ||= @uri.host || '127.0.0.1'
       @uri.port   = config[:port] ||= @uri.port
       @uri.path   = config[:vhost] ||= @uri.path.present? ? @uri.path : '/'
-      config.reject! { |_, v| v.nil? }
+      config.reject! {|_, v| v.nil? }
 
-      @config       = config
+      @config = config
       @config[:max] ||= 2
 
       @mutex  = ::Mutex.new
       @routes = Routes.new
-      @pid    ||= ::Process.pid
+      @pid ||= ::Process.pid
 
       log(:debug) { "Created new client on process ##{@pid}..." }
     end
@@ -120,17 +123,17 @@ module Msgr
       connection.publish message, opts
     end
 
-    def mutex
-      @mutex
-    end
+    attr_reader :mutex
 
     def check_process!
-      unless ::Process.pid == @pid
-        log(:warn) { "Fork detected. Reset internal state. (Old PID: #{@pid} / New PID: #{::Process.pid}" }
-
-        reset
-        @pid = ::Process.pid
+      return if ::Process.pid == @pid
+      log(:warn) do
+        "Fork detected. Reset internal state. (Old PID: #{@pid} / " \
+        "New PID: #{::Process.pid}"
       end
+
+      reset
+      @pid = ::Process.pid
     end
 
     def connection

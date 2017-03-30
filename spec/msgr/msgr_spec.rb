@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 class Receiver
@@ -36,7 +37,7 @@ describe Msgr do
 
     client.publish 'Payload', to: 'test.index'
 
-    Timeout::timeout(4) { queue.pop }
+    Timeout.timeout(4) { queue.pop }
   end
 
   it 'should redelivery failed messages' do
@@ -45,6 +46,6 @@ describe Msgr do
 
     client.publish 'Payload', to: 'test.error'
 
-    Timeout::timeout(4) { queue.pop }
+    Timeout.timeout(4) { queue.pop }
   end
 end

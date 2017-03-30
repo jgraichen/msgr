@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'bundler'
 
 # Somewhere between
@@ -16,7 +17,7 @@ require 'bundler'
 
 module Bundler
   class << self
-    alias :old_setup :setup
+    alias old_setup setup
     def setup(*groups)
       old_setup(*groups) unless groups.empty?
     end

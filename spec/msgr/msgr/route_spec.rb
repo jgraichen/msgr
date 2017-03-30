@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Msgr::Route do
@@ -9,27 +10,27 @@ describe Msgr::Route do
 
   describe '#initialize' do
     it 'should require `to` option' do
-      expect {
+      expect do
         Msgr::Route.new(routing_key, {})
-      }.to raise_error(ArgumentError)
+      end.to raise_error(ArgumentError)
     end
 
     it 'should require routing_key' do
-      expect {
+      expect do
         Msgr::Route.new nil, options
-      }.to raise_error(ArgumentError)
+      end.to raise_error(ArgumentError)
     end
 
     it 'should require not empty routing_key' do
-      expect {
+      expect do
         Msgr::Route.new '', options
-      }.to raise_error ArgumentError, /routing key required/i
+      end.to raise_error ArgumentError, /routing key required/i
     end
 
     it 'should require `to: "consumer#action` format' do
-      expect {
+      expect do
         Msgr::Route.new routing_key, to: 'abc'
-      }.to raise_error ArgumentError, /invalid consumer format/i
+      end.to raise_error ArgumentError, /invalid consumer format/i
     end
   end
 

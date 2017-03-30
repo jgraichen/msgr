@@ -1,8 +1,11 @@
+# frozen_string_literal: true
 module Msgr
-
   class Railtie < ::Rails::Railtie
     config.msgr = ActiveSupport::OrderedOptions.new
-    config.autoload_paths << File.expand_path("#{Rails.root}/app/consumers") if File.exist?("#{Rails.root}/app/consumers")
+
+    if File.exist?("#{Rails.root}/app/consumers")
+      config.autoload_paths << File.expand_path("#{Rails.root}/app/consumers")
+    end
 
     initializer 'msgr.logger' do |app|
       app.config.msgr.logger ||= Rails.logger
@@ -40,7 +43,7 @@ module Msgr
 
         cfg = HashWithIndifferentAccess.new cfg[Rails.env]
         unless cfg[:uri]
-          raise ArgumentError, 'Could not load rabbitmq environment config: URI missing.'
+          raise ArgumentError.new('Could not load rabbitmq environment config: URI missing.')
         end
 
         case cfg[:autostart]
@@ -49,7 +52,7 @@ module Msgr
           when false, 'false', 'disabled', nil
             cfg[:autostart] = false
           else
-            raise ArgumentError, "Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\""
+            raise ArgumentError.new("Invalid value for rabbitmq config autostart: \"#{cfg[:autostart]}\"")
         end
 
         case cfg[:checkcredentials]
@@ -58,7 +61,7 @@ module Msgr
           when false, 'false', 'disabled'
             cfg[:checkcredentials] = false
           else
-            raise ArgumentError, "Invalid value for rabbitmq config checkcredentials: \"#{cfg[:checkcredentials]}\""
+            raise ArgumentError.new("Invalid value for rabbitmq config checkcredentials: \"#{cfg[:checkcredentials]}\"")
         end
 
         case cfg[:raise_exceptions]
@@ -67,7 +70,7 @@ module Msgr
           when false, 'false', 'disabled', nil
             cfg[:raise_exceptions] = false
           else
-            raise ArgumentError, "Invalid value for rabbitmq config raise_exceptions: \"#{cfg[:raise_exceptions]}\""
+            raise ArgumentError.new("Invalid value for rabbitmq config raise_exceptions: \"#{cfg[:raise_exceptions]}\"")
         end
 
         cfg[:routing_file] ||= Rails.root.join('config/msgr.rb').to_s
@@ -76,7 +79,7 @@ module Msgr
 
       def load_config(options)
         if options.rabbitmq_config || !Rails.application.respond_to?(:config_for)
-          load_file options.rabbitmq_config || Rails.root.join(*%w(config rabbitmq.yml))
+          load_file options.rabbitmq_config || Rails.root.join('config', 'rabbitmq.yml')
         else
           conf = Rails.application.config_for :rabbitmq
 
@@ -85,7 +88,7 @@ module Msgr
       end
 
       def load_file(path)
-        YAML.load ERB.new(File.read(path)).result
+        YAML.safe_load ERB.new(File.read(path)).result
       end
     end
   end

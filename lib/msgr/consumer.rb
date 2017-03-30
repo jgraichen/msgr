@@ -1,5 +1,5 @@
+# frozen_string_literal: true
 module Msgr
-
   class Consumer
     include Logging
 
@@ -12,7 +12,11 @@ module Msgr
       @message = message
 
       action = message.route.action.to_sym
-      raise Msgr::NoAction.new "No action `#{action}` for `#{self.class.name}`." unless respond_to? action
+
+      unless respond_to?(action)
+        raise Msgr::NoAction.new \
+          "No action `#{action}` for `#{self.class.name}`."
+      end
 
       log(:debug) { "Invoke action #{action.inspect}." }
 

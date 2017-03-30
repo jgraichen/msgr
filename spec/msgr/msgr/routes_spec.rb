@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 describe Msgr::Routes do
   let(:routes) { Msgr::Routes.new }
 
   describe '#configure' do
-    let(:block) { Proc.new{} }
+    let(:block) { proc {} }
 
     it 'should evaluate given block within instance context' do
       expect(routes).to receive(:instance_eval) do |&p|
@@ -47,7 +48,7 @@ describe Msgr::Routes do
     let(:last_route) { routes.routes.last }
 
     it 'should add a new route' do
-      expect { subject.call }.to change{ routes.routes.size }.from(0).to(1)
+      expect { subject.call }.to change { routes.routes.size }.from(0).to(1)
     end
 
     it 'should add given route' do
@@ -60,14 +61,14 @@ describe Msgr::Routes do
 
     context 'with same target' do
       let(:subject) do
-        -> do
+        lambda do
           routes.route 'routing.key', to: 'test#index'
           routes.route 'another.routing.key', to: 'test#index'
         end
       end
 
       it 'should only add one new route' do
-        expect { subject.call }.to change{ routes.routes.size }.from(0).to(1)
+        expect { subject.call }.to change { routes.routes.size }.from(0).to(1)
       end
 
       it 'should add second binding to first route' do
@@ -87,7 +88,7 @@ describe Msgr::Routes do
   end
 
   describe 'reload' do
-    before { File.stub(:exists?).and_return(true) }
+    before { File.stub(:exist?).and_return(true) }
 
     it 'should trigger load for all files' do
       expect(routes).to receive(:load).with('cde.rb').ordered

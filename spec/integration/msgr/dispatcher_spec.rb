@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 
 class DispatcherTestConsumer < Msgr::Consumer
@@ -8,13 +9,13 @@ end
 
 class DispatcherRaiseConsumer < Msgr::Consumer
   def index
-    raise ArgumentError, 'Not happy with the payload'
+    raise ArgumentError.new('Not happy with the payload')
   end
 end
 
 describe Msgr::Dispatcher do
   let(:dispatcher) { described_class.new config }
-  let(:config) { { max: 1 } }
+  let(:config) { {max: 1} }
   let(:consumer) { 'DispatcherTestConsumer' }
   let(:route) do
     double(:route).tap do |t|
@@ -28,8 +29,8 @@ describe Msgr::Dispatcher do
     end
   end
   let(:delivery_info) do
-     double(:delivery_info).tap do |ti|
-       allow(ti).to receive(:delivery_tag).and_return(3)
+    double(:delivery_info).tap do |ti|
+      allow(ti).to receive(:delivery_tag).and_return(3)
     end
   end
   let(:payload) { {} }
@@ -39,7 +40,7 @@ describe Msgr::Dispatcher do
     end
   end
   let(:message) { Msgr::Message.new connection, delivery_info, metadata, payload, route }
-  let(:action) { -> { dispatcher.call message }}
+  let(:action) { -> { dispatcher.call message } }
 
   it 'should consume message' do
     expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
