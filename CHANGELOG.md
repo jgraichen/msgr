@@ -2,7 +2,16 @@
 
 ## master
 
-* Add new configuration option `:raise_exceptions` that can be used to enable exceptions being raised from consumers. Mostly useful for testing consumers. Defaults to `false`.
+* Add new configuration option `:raise_exceptions` that can be used to enable
+  exceptions being raised from consumers. Mostly useful for testing consumers.
+  Defaults to `false`.
+* Add option to release bindings before purging
+* Rework TestPool timeout handling to not account processing time
+* Add methods for purging queues
+
+## 0.14.1
+
+* Fix loading test pool source file
 
 ## 0.14.0
 
