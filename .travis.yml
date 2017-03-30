@@ -27,4 +27,4 @@ deploy:
   on:
     branch: master
     repo: jgraichen/msgr
-    rvm: 2.3.1
+    rvm: 2.3.3
