@@ -1,11 +1,12 @@
 # Msgr: *Rails-like Messaging Framework*
 
-[![Gem Version](https://badge.fury.io/rb/msgr.png)](http://badge.fury.io/rb/msgr)
-[![Build Status](https://travis-ci.org/jgraichen/msgr.png?branch=master)](https://travis-ci.org/jgraichen/msgr)
-[![Coverage Status](https://coveralls.io/repos/jgraichen/msgr/badge.png?branch=master)](https://coveralls.io/r/jgraichen/msgr)
-[![Code Climate](https://codeclimate.com/github/jgraichen/msgr.png)](https://codeclimate.com/github/jgraichen/msgr)
-[![Dependency Status](https://gemnasium.com/jgraichen/msgr.png)](https://gemnasium.com/jgraichen/msgr)
-[![RubyDoc Documentation](https://raw.github.com/jgraichen/shields/master/rubydoc.png)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
+
+[![Gem Version](https://badge.fury.io/rb/msgr.svg)](http://badge.fury.io/rb/msgr)
+[![Build Status](http://img.shields.io/travis/jgraichen/msgr/master.svg)](https://travis-ci.org/jgraichen/msgr)
+[![Coverage Status](http://img.shields.io/coveralls/jgraichen/msgr/master.svg)](https://coveralls.io/r/jgraichen/msgr)
+[![Code Climate](http://img.shields.io/codeclimate/github/jgraichen/msgr.svg)](https://codeclimate.com/github/jgraichen/msgr)
+[![Dependency Status](http://img.shields.io/gemnasium/jgraichen/msgr.svg)](https://gemnasium.com/jgraichen/msgr)
+[![RubyDoc Documentation](http://img.shields.io/badge/rubydoc-here-blue.svg)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and you like it. Using Rails you can just declare your routes and
 create a controller. That's all you need to process requests.
@@ -130,10 +131,10 @@ before { Msgr.client.start }
 it 'executes the consumer' do
   # Publish an event on our queue
   Msgr.publish 'payload', to: 'msgr.queue.my_queue'
-  
+
   # Let the TestPool handle exactly one event
   Msgr::TestPool.run count: 1
-  
+
   # And finally, assert that something happened
   expect(actual).to eq expected
 end
