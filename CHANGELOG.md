@@ -1,5 +1,9 @@
 # Changelog
 
+## master
+
+* Add new configuration option `:raise_exceptions` that can be used to enable exceptions being raised from consumers. Mostly useful for testing consumers. Defaults to `false`.
+
 ## 0.14.0
 
 * Add experimental test pool (`Msgr::TestPool`)
