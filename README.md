@@ -11,7 +11,7 @@ You know it and you like it. Using Rails you can just declare your routes and
 create a controller. That's all you need to process requests.
 
 With *Msgr* you can do the same for asynchronous AMQP messaging. Just define
-your routes, create your consumer and watch you app processing messages.
+your routes, create your consumer and watch your app processing messages.
 
 ## Installation
 
@@ -94,6 +94,50 @@ common: &common
 ```
 
 And call inside each worker `Msgr.start` - e.g. in an after-fork block
+
+
+## Testing
+
+### Recommended configuration
+
+```yaml
+test:
+  <<: *common
+  pool_class: Msgr::TestPool
+  raise_exceptions: true
+```
+
+The `Msgr::TestPool` pool implementation executes all consumers synchronously.
+By enabling the `raise_exceptions` configuration flag, we can ensure that exceptions raised in a consumer will not be swallowed by dispatcher (which it usually does in order to retry consuming the message).
+
+### RSpec example
+
+In your `spec_helper.rb`:
+
+```ruby
+config.after(:each) do
+  # Flush the consumer queue
+  Msgr.client.stop delete: true
+  Msgr::TestPool.reset
+end
+```
+
+In a test:
+
+```ruby
+before { Msgr.client.start }
+
+it 'executes the consumer' do
+  # Publish an event on our queue
+  Msgr.publish 'payload', to: 'msgr.queue.my_queue'
+  
+  # Let the TestPool handle exactly one event
+  Msgr::TestPool.run count: 1
+  
+  # And finally, assert that something happened
+  expect(actual).to eq expected
+end
+```
 
 
 ## Contributing
