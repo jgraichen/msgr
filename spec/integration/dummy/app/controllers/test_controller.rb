@@ -5,6 +5,6 @@ class TestController < ApplicationController
 
     Msgr.publish @data, to: 'local.test.index'
 
-    render nothing: true
+    head :ok
   end
 end

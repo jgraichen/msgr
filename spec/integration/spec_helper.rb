@@ -11,7 +11,7 @@ end
 
 #
 ENV['RAILS_ENV'] ||= 'test'
-ENV['RAILS_GROUPS'] = ENV['RAILS_GROUPS'] ? "rails,#{ENV['RAILS_GROUPS']}" : 'rails'
+ENV['RAILS_GROUPS'] = ['rails', ENV['RAILS_GROUPS']].reject(&:nil?).join(',')
 require File.expand_path('../dummy/config/environment', __FILE__)
 require 'rspec/rails'
 
@@ -21,7 +21,9 @@ Dir[File.expand_path('../support/**/*.rb', __FILE__)].each {|f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration) && Rails::VERSION::MAJOR >= 4
+if defined?(ActiveRecord::Migration) && Rails::VERSION::MAJOR >= 4
+  ActiveRecord::Migration.check_pending!
+end
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

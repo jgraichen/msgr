@@ -12,7 +12,7 @@ describe Msgr::Routes do
         expect(p).to be block
       end
 
-      routes.configure &block
+      routes.configure(&block)
     end
 
     it 'should allow to call instance method in gven block' do

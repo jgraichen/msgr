@@ -5,7 +5,7 @@ describe Msgr::Route do
   let(:routing_key) { 'routing.key.#' }
   let(:options) { {to: 'test#index'} }
   let(:args) { [routing_key, options] }
-  let(:route) { Msgr::Route.new *args }
+  let(:route) { Msgr::Route.new(*args) }
   subject { route }
 
   describe '#initialize' do
