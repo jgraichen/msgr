@@ -49,7 +49,7 @@ module Msgr
           timeout -= diff
 
           if timeout <= 0
-            raise TimeoutError.new \
+            raise Timeout::Error.new \
               "Expected to receive #{count} messages but received #{received}."
           end
         end
