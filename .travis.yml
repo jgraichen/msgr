@@ -6,25 +6,28 @@ services:
 - rabbitmq
 rvm:
 - '2.4.1'
-- '2.3.3'
+- '2.3.4'
 - '2.2.7'
-- '2.1.10'
 gemfile:
+- gemfiles/Gemfile.rails-master
+- gemfiles/Gemfile.rails-5-1
 - gemfiles/Gemfile.rails-5-0
 - gemfiles/Gemfile.rails-4-2
-matrix:
-  exclude:
-  - rvm: '2.1.10'
-    gemfile: gemfiles/Gemfile.rails-5-0
 script:
 - bundle exec rake spec:msgr
 - bundle exec rake spec:integration
-deploy:
-  provider: rubygems
-  api_key:
-    secure: g8icPMdxEmbpBzSRCDmR3uB+1Zhu7tGq3h0cVbGUka2Ni1NiEiQo3LCDzbMp+L7AXH5RhdsG9FTViIAyCy9YENqZ1+jzrQGeADx0KnJZb6F81/SyumeUld0zdkzDbe1aUCJWz2WnEk12aLMPLNPRmDE7wub+od7gJEEv2SsKObo=
-  gem: msgr
-  on:
-    branch: master
-    repo: jgraichen/msgr
-    rvm: 2.3.3
+
+jobs:
+  include:
+    - stage: Beta release
+      rvm: '2.4.1'
+      script: echo "Deploy to rubygems.org..."
+      deploy:
+        provider: rubygems
+        api_key:
+          secure: g8icPMdxEmbpBzSRCDmR3uB+1Zhu7tGq3h0cVbGUka2Ni1NiEiQo3LCDzbMp+L7AXH5RhdsG9FTViIAyCy9YENqZ1+jzrQGeADx0KnJZb6F81/SyumeUld0zdkzDbe1aUCJWz2WnEk12aLMPLNPRmDE7wub+od7gJEEv2SsKObo=
+        gem: msgr
+        on:
+          branch: master
+          repo: jgraichen/msgr
+

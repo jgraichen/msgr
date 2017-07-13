@@ -3,5 +3,5 @@ source 'https://rubygems.org'
 # Load root Gemfile
 self.instance_eval Bundler.read_file 'Gemfile'
 
-gem 'activesupport', '~> 4.1.0'
+gem 'activesupport', '~> 5.1.0'
 gem 'bunny', ENV['BUNNY_VERSION'] if ENV['BUNNY_VERSION']
