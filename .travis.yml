@@ -18,6 +18,8 @@ script:
 - bundle exec rake spec:integration
 
 jobs:
+  allow_failures:
+    - gemfile: gemfiles/Gemfile.rails-master
   include:
     - stage: Beta release
       rvm: '2.4.1'
