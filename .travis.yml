@@ -9,10 +9,10 @@ rvm:
 - '2.3.4'
 - '2.2.7'
 gemfile:
-- gemfiles/Gemfile.rails-master
 - gemfiles/Gemfile.rails-5-1
 - gemfiles/Gemfile.rails-5-0
 - gemfiles/Gemfile.rails-4-2
+- gemfiles/Gemfile.rails-master
 script:
 - bundle exec rake spec:msgr
 - bundle exec rake spec:integration
