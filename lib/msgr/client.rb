@@ -1,25 +1,25 @@
 # frozen_string_literal: true
+
+require 'uri'
+require 'cgi'
+
 module Msgr
   # rubocop:disable Metrics/ClassLength
   class Client
     include Logging
-    attr_reader :uri, :config
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
+    attr_reader :config
+
+    # rubocop:disable MethodLength
     def initialize(config = {})
-      @uri = ::URI.parse config[:uri] ? config.delete(:uri) : 'amqp://localhost/'
-      config[:pass] ||= @uri.password
+      @config = {
+        host: '127.0.0.1',
+        vhost: '/',
+        max: 2
+      }
 
-      @uri.user   = config[:user] ||= @uri.user || 'guest'
-      @uri.scheme = (config[:ssl] ||= @uri.scheme.to_s.casecmp('amqps').zero?) ? 'amqps' : 'amqp'
-      @uri.host   = config[:host] ||= @uri.host || '127.0.0.1'
-      @uri.port   = config[:port] ||= @uri.port
-      @uri.path   = config[:vhost] ||= @uri.path.present? ? @uri.path : '/'
-      config.reject! {|_, v| v.nil? }
-
-      @config = config
-      @config[:max] ||= 2
+      @config.merge! parse(config.delete(:uri)) if config.key?(:uri)
+      @config.merge! config.symbolize_keys
 
       @mutex  = ::Mutex.new
       @routes = Routes.new
@@ -27,6 +27,30 @@ module Msgr
 
       log(:debug) { "Created new client on process ##{@pid}..." }
     end
+    # rubocop:enable all
+
+    # rubocop:disable AbcSize
+    # rubocop:disable MethodLength
+    # rubocop:disable PerceivedComplexity
+    # rubocop:disable CyclomaticComplexity
+    def uri
+      @uri = begin
+        uri = ::URI.parse('amqp://localhost')
+
+        uri.user     = CGI.escape(config[:user]) if config.key?(:user)
+        uri.password = '****'                    if config.key?(:pass)
+        uri.host     = config[:host]             if config.key?(:host)
+        uri.port     = config[:port]             if config.key?(:port)
+        uri.scheme   = config[:ssl] ? 'amqps' : 'amqp'
+
+        if config.key?(:vhost) && config[:vhost] != '/'
+          uri.path = "/#{CGI.escape(config[:vhost])}"
+        end
+
+        uri
+      end
+    end
+    # rubocop:enable all
 
     def running?
       mutex.synchronize do
@@ -35,6 +59,7 @@ module Msgr
       end
     end
 
+    # rubocop:disable AbcSize
     def start
       mutex.synchronize do
         check_process!
@@ -47,6 +72,7 @@ module Msgr
         connection.bind(@routes)
       end
     end
+    # rubocop:enable all
 
     def connect
       mutex.synchronize do
@@ -59,6 +85,7 @@ module Msgr
       end
     end
 
+    # rubocop:disable AbcSize
     def stop(opts = {})
       mutex.synchronize do
         check_process!
@@ -73,6 +100,7 @@ module Msgr
         reset
       end
     end
+    # rubocop:enable all
 
     def purge(release: false)
       mutex.synchronize do
@@ -155,5 +183,23 @@ module Msgr
       @bindings   = nil
       @dispatcher = nil
     end
+
+    # rubocop:disable AbcSize
+    def parse(uri)
+      # Legacy parsing of URI configuration; does not follow usual
+      # AMQP vhost encoding but used regular URL path
+      uri = ::URI.parse(uri)
+
+      config = {}
+      config[:user]  ||= uri.user     if uri.user
+      config[:pass]  ||= uri.password if uri.password
+      config[:host]  ||= uri.host     if uri.host
+      config[:port]  ||= uri.port     if uri.port
+      config[:vhost] ||= uri.path     if uri.path
+      config[:ssl]   ||= uri.scheme.casecmp('amqps').zero?
+
+      config
+    end
+    # rubocop:enable all
   end
 end
