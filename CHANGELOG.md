@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.15.1
+
+* Fix errors with additional configuration keys for AMQP connection (#13)
+
 ## 0.15.0
 
 * Add new configuration option `:raise_exceptions` that can be used to enable
@@ -28,9 +32,6 @@
 ## 0.12.1
 
 * Loose dependency on bunny to allow ~> 1.4 for stone-age old RabbitMQ servers.
-
-
-
 
 ## 0.11.rc3
 
