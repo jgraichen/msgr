@@ -195,7 +195,7 @@ module Msgr
       config[:pass]  ||= uri.password if uri.password
       config[:host]  ||= uri.host     if uri.host
       config[:port]  ||= uri.port     if uri.port
-      config[:vhost] ||= uri.path     if uri.path
+      config[:vhost] ||= uri.path     unless uri.path.empty?
       config[:ssl]   ||= uri.scheme.casecmp('amqps').zero?
 
       config
