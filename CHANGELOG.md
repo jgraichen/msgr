@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.15.2
 
 * Fix regression in parsing `:uri` config with empty path
 
