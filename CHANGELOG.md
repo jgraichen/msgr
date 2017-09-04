@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+* Fix regression in parsing `:uri` config with empty path
+
 ## 0.15.1
 
 * Fix errors with additional configuration keys for AMQP connection (#13)
