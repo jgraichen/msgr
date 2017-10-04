@@ -5,9 +5,9 @@ bundler_args: "--without development"
 services:
 - rabbitmq
 rvm:
-- '2.4.1'
-- '2.3.4'
-- '2.2.7'
+- '2.4.2'
+- '2.3.5'
+- '2.2.8'
 gemfile:
 - gemfiles/Gemfile.rails-5-1
 - gemfiles/Gemfile.rails-5-0

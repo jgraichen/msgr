@@ -7,7 +7,6 @@ gem 'activesupport', git: 'https://github.com/rails/rails'
 gem 'bunny', ENV['BUNNY_VERSION'] if ENV['BUNNY_VERSION']
 
 group :rails do
-  $RAILS = true
   gem 'rails', '>= 3.2', git: 'https://github.com/rails/rails'
   gem 'arel', git: 'https://github.com/rails/arel'
 end

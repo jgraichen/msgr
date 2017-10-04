@@ -8,9 +8,10 @@ gem 'coveralls'
 gem 'fuubar'
 gem 'rake'
 gem 'rspec', '~> 3.0'
+gem 'rubocop', '~> 0.50.0'
 
 group :rails do
-  gem 'rails', '>= 3.2' unless $RAILS
+  gem 'rails', '>= 4.2'
   gem 'rspec-rails'
   gem 'sqlite3'
 end
