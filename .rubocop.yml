@@ -1,7 +1,6 @@
 AllCops:
-  Include:
-    - '**/*.rb'
   TargetRubyVersion: 2.4
+
 
 Metrics/BlockLength:
   Exclude:
@@ -11,38 +10,43 @@ Metrics/LineLength:
   Exclude:
     - 'spec/**/*_spec.rb'
 
-Style/AlignParameters:
+
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
-
-Style/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: no_space
-
-Style/RaiseArgs:
-  EnforcedStyle: compact
-
-Style/Documentation:
-  Enabled: false
-
-Style/SpaceInsideBlockBraces:
-  EnforcedStyle: space
-  EnforcedStyleForEmptyBraces: no_space
-  SpaceBeforeBlockParameters: false
-
-Style/SignalException:
-  EnforcedStyle: only_raise
-
-Style/CaseIndentation:
+Layout/CaseIndentation:
   EnforcedStyle: end
   SupportedStyles:
     - case
     - end
   IndentOneStep: true
 
+Layout/SpaceInsideBlockBraces:
+  EnforcedStyle: space
+  EnforcedStyleForEmptyBraces: no_space
+  SpaceBeforeBlockParameters: false
+
+Layout/SpaceInsideHashLiteralBraces:
+  EnforcedStyle: no_space
+
+
+Style/BracesAroundHashParameters:
+  EnforcedStyle: context_dependent
+
 Style/ClassAndModuleChildren:
   Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/RaiseArgs:
+  EnforcedStyle: compact
+
+Style/SafeNavigation:
+  Enabled: false # not available before 2.3
+
+Style/SignalException:
+  EnforcedStyle: only_raise
 
 Style/TrivialAccessors:
   AllowPredicates: true

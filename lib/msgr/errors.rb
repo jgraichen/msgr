@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Msgr
   # Abstract error base class
   class CausedByError < StandardError

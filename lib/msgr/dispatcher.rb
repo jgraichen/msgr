@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Msgr
   # The Dispatcher receives incoming messages,
   # process them through a middleware stack and

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Msgr
   module Logging
     def log(level)

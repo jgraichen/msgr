@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Msgr
   class Consumer
     include Logging

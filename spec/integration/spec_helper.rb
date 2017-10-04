@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # Bundler setup
 require 'bundler'
 Bundler.require :default, :test, :rails

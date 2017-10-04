@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class TestConsumer < ApplicationConsumer
   def index
     data = {fuubar: 'abc'}

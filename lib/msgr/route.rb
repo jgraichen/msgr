@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Msgr
   class Route
     attr_reader :consumer, :action, :opts

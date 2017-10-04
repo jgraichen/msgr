@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Msgr::Routes do
@@ -37,9 +38,9 @@ describe Msgr::Routes do
     it 'should iterate over configured routes' do
       expect(each.size).to eq 2
 
-      expect(each.map(&:keys)).to eq [%w(abc.#), %w(edf.#)]
-      expect(each.map(&:consumer)).to eq %w(TestConsumer TestConsumer)
-      expect(each.map(&:action)).to eq %w(index action)
+      expect(each.map(&:keys)).to eq [%w[abc.#], %w[edf.#]]
+      expect(each.map(&:consumer)).to eq %w[TestConsumer TestConsumer]
+      expect(each.map(&:action)).to eq %w[index action]
     end
   end
 
@@ -54,7 +55,7 @@ describe Msgr::Routes do
     it 'should add given route' do
       subject.call
 
-      expect(last_route.keys).to eq %w(routing.key)
+      expect(last_route.keys).to eq %w[routing.key]
       expect(last_route.consumer).to eq 'Test2Consumer'
       expect(last_route.action).to eq 'index2'
     end
@@ -73,7 +74,7 @@ describe Msgr::Routes do
 
       it 'should add second binding to first route' do
         subject.call
-        expect(routes.routes.first.keys).to eq %w(routing.key another.routing.key)
+        expect(routes.routes.first.keys).to eq %w[routing.key another.routing.key]
       end
     end
   end
@@ -81,9 +82,9 @@ describe Msgr::Routes do
   describe '#files' do
     it 'should allow to add route paths' do
       routes.files << 'abc.rb'
-      routes.files += %w(cde.rb edf.rb)
+      routes.files += %w[cde.rb edf.rb]
 
-      expect(routes.files).to eq %w(abc.rb cde.rb edf.rb)
+      expect(routes.files).to eq %w[abc.rb cde.rb edf.rb]
     end
   end
 
@@ -93,7 +94,7 @@ describe Msgr::Routes do
     it 'should trigger load for all files' do
       expect(routes).to receive(:load).with('cde.rb').ordered
       expect(routes).to receive(:load).with('edf.rb').ordered
-      routes.files += %w(cde.rb edf.rb)
+      routes.files += %w[cde.rb edf.rb]
       routes.reload
     end
 
