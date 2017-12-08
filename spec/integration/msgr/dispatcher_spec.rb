@@ -24,8 +24,8 @@ describe Msgr::Dispatcher do
       allow(t).to receive(:action).and_return 'index'
     end
   end
-  let(:connection) do
-    double(:connection).tap do |c|
+  let(:channel) do
+    double(:channel).tap do |c|
       allow(c).to receive(:ack)
     end
   end
@@ -40,7 +40,7 @@ describe Msgr::Dispatcher do
       allow(metadata).to receive(:content_type).and_return('text/plain')
     end
   end
-  let(:message) { Msgr::Message.new connection, delivery_info, metadata, payload, route }
+  let(:message) { Msgr::Message.new channel, delivery_info, metadata, payload, route }
   let(:action) { -> { dispatcher.call message } }
 
   it 'should consume message' do

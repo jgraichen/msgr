@@ -31,6 +31,10 @@ module Msgr
     end
     alias routing_keys keys
 
+    def prefetch
+      @opts[:prefetch] || 1
+    end
+
     def add(key)
       raise ArgumentError.new 'Routing key required.' unless key.present?
 

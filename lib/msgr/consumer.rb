@@ -9,6 +9,16 @@ module Msgr
     delegate :action, to: :'@message.route'
     delegate :consumer, to: :'@message.consumer'
 
+    class << self
+      def auto_ack?
+        @auto_ack || @auto_ack.nil?
+      end
+
+      def auto_ack=(val)
+        @auto_ack = val
+      end
+    end
+
     def dispatch(message)
       @message = message
 
