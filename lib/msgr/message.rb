@@ -4,8 +4,8 @@ module Msgr
   class Message
     attr_reader :delivery_info, :metadata, :payload, :route
 
-    def initialize(connection, delivery_info, metadata, payload, route)
-      @connection    = connection
+    def initialize(channel, delivery_info, metadata, payload, route)
+      @channel       = channel
       @delivery_info = delivery_info
       @metadata      = metadata
       @payload       = payload
@@ -40,7 +40,7 @@ module Msgr
       return if acked?
 
       @acked = true
-      @connection.ack delivery_info.delivery_tag
+      @channel.ack delivery_info.delivery_tag
     end
 
     # Send negative message acknowledge to broker unless
@@ -52,7 +52,7 @@ module Msgr
       return if acked?
 
       @acked = true
-      @connection.nack delivery_info.delivery_tag
+      @channel.nack delivery_info.delivery_tag
     end
   end
 end

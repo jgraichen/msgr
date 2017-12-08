@@ -8,14 +8,13 @@ module Msgr
   class Connection
     include Logging
 
-    EXCHANGE_NAME = 'msgr'
-
     attr_reader :uri, :config
 
     def initialize(uri, config, dispatcher)
       @uri        = uri
       @config     = config
       @dispatcher = dispatcher
+      @channels   = []
     end
 
     def running?
@@ -38,12 +37,15 @@ module Msgr
       connection
     end
 
-    def channel
-      @channel ||= begin
-        channel = connection.create_channel
-        channel.prefetch 1
-        channel
-      end
+    def channel(prefetch: 1)
+      channel = Msgr::Channel.new(config, connection)
+      channel.prefetch(prefetch)
+      @channels << channel
+      channel
+    end
+
+    def exchange
+      @exchange ||= channel.exchange
     end
 
     def release
@@ -71,34 +73,6 @@ module Msgr
       @bindings ||= []
     end
 
-    def prefix(name)
-      if config[:prefix].present?
-        "#{config[:prefix]}-#{name}"
-      else
-        name
-      end
-    end
-
-    def exchange
-      @exchange ||= begin
-        channel.topic(prefix(EXCHANGE_NAME), durable: true).tap do |ex|
-          log(:debug) do
-            "Created exchange #{ex.name} (type: #{ex.type}, " \
-                "durable: #{ex.durable?}, auto_delete: #{ex.auto_delete?})"
-          end
-        end
-      end
-    end
-
-    def queue(name)
-      channel.queue(prefix(name), durable: true).tap do |queue|
-        log(:debug) do
-          "Create queue #{queue.name} (durable: #{queue.durable?}, " \
-          "auto_delete: #{queue.auto_delete?})"
-        end
-      end
-    end
-
     def bind(routes)
       if routes.empty?
         log(:warn) do
@@ -110,23 +84,8 @@ module Msgr
       end
     end
 
-    def ack(delivery_tag)
-      channel.ack delivery_tag
-      log(:debug) { "Acked message: #{delivery_tag}" }
-    end
-
-    def nack(delivery_tag)
-      channel.nack delivery_tag, false, true
-      log(:debug) { "Nacked message: #{delivery_tag}" }
-    end
-
-    def reject(delivery_tag, requeue = true)
-      channel.reject delivery_tag, requeue
-      log(:debug) { "Rejected message: #{delivery_tag}" }
-    end
-
     def close
-      channel.close    if @channel && @channel.open?
+      @channels.each(&:close)
       connection.close if @connection
       log(:debug) { 'Closed.' }
     end
