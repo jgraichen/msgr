@@ -2,13 +2,13 @@
 
 source 'https://rubygems.org'
 
-# Development gems
-#
-gem 'coveralls'
-gem 'fuubar'
-gem 'rake'
-gem 'rspec', '~> 3.0'
-gem 'rubocop', '~> 0.50.0'
+group :development, :test do
+  gem 'coveralls'
+  gem 'fuubar'
+  gem 'rake'
+  gem 'rspec', '~> 3.0'
+  gem 'rubocop', '~> 0.50.0'
+end
 
 group :rails do
   gem 'rails', '>= 4.2'
