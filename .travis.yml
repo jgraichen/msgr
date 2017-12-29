@@ -1,7 +1,6 @@
 dist: trusty
 sudo: false
 language: ruby
-bundler_args: "--without development"
 services:
 - rabbitmq
 rvm:
@@ -17,7 +16,6 @@ gemfile:
 script:
 - bundle exec rake spec:msgr
 - bundle exec rake spec:integration
-
 jobs:
   allow_failures:
     - gemfile: gemfiles/Gemfile.rails-master
