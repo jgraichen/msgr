@@ -13,6 +13,8 @@ gemfile:
 - gemfiles/Gemfile.rails-5-0
 - gemfiles/Gemfile.rails-4-2
 - gemfiles/Gemfile.rails-master
+before_install:
+- gem update --system
 script:
 - bundle exec rake spec:msgr
 - bundle exec rake spec:integration
