@@ -2,7 +2,7 @@
 
 # Bundler setup
 require 'bundler'
-Bundler.require :default, :test, :rails
+Bundler.require :rails, :test
 
 # Coverage
 require 'coveralls'

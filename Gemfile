@@ -12,7 +12,7 @@ end
 
 group :rails do
   gem 'rails', '>= 4.2' unless defined?(NO_RAILS_GEM)
-  gem 'rspec-rails'
+  gem 'rspec-rails', require: false
   gem 'sqlite3'
 end
 
