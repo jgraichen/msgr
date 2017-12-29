@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+NO_RAILS_GEM = true
+
 # Load root Gemfile
 self.instance_eval Bundler.read_file 'Gemfile'
 
@@ -7,6 +9,6 @@ gem 'activesupport', git: 'https://github.com/rails/rails'
 gem 'bunny', ENV['BUNNY_VERSION'] if ENV['BUNNY_VERSION']
 
 group :rails do
-  gem 'rails', '>= 3.2', git: 'https://github.com/rails/rails'
+  gem 'rails', '>= 4.2', git: 'https://github.com/rails/rails'
   gem 'arel', git: 'https://github.com/rails/arel'
 end

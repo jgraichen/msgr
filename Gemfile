@@ -11,7 +11,7 @@ group :development, :test do
 end
 
 group :rails do
-  gem 'rails', '>= 4.2'
+  gem 'rails', '>= 4.2' unless defined?(NO_RAILS_GEM)
   gem 'rspec-rails'
   gem 'sqlite3'
 end
