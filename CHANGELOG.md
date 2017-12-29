@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0
+
+* Configure prefetch per binding and disable auto ack in consumer for customized batch processing (#15)
+* Replace usage of deprecated exception class (#12)
+
 ## 0.15.2
 
 * Fix regression in parsing `:uri` config with empty path
