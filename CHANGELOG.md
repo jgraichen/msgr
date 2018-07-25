@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1
+
+* Add command line runner
+
 ## 1.0
 
 * Configure prefetch per binding and disable auto ack in consumer for customized batch processing (#15)
