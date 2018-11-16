@@ -5,7 +5,6 @@
 [![Build Status](http://img.shields.io/travis/jgraichen/msgr/master.svg)](https://travis-ci.org/jgraichen/msgr)
 [![Coverage Status](http://img.shields.io/coveralls/jgraichen/msgr/master.svg)](https://coveralls.io/r/jgraichen/msgr)
 [![Code Climate](http://img.shields.io/codeclimate/github/jgraichen/msgr.svg)](https://codeclimate.com/github/jgraichen/msgr)
-[![Dependency Status](http://img.shields.io/gemnasium/jgraichen/msgr.svg)](https://gemnasium.com/jgraichen/msgr)
 [![RubyDoc Documentation](http://img.shields.io/badge/rubydoc-here-blue.svg)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and you like it. Using Rails you can just declare your routes and
