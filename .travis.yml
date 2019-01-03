@@ -20,6 +20,8 @@ jobs:
   allow_failures:
     - gemfile: gemfiles/Gemfile.rails-master
   exclude:
+  - rvm: 2.6.0
+    gemfile: gemfiles/Gemfile.rails-4-2
   - rvm: 2.4.5
     gemfile: gemfiles/Gemfile.rails-master
   - rvm: 2.3.8
