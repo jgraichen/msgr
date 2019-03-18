@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'bunny', '>= 1.4', '< 3.0'
   spec.add_dependency 'multi_json'
 
-  spec.add_development_dependency 'bundler', '~> 1.3'
+  spec.add_development_dependency 'bundler'
 
   if ENV['TRAVIS_BUILD_NUMBER']
     spec.version = "#{spec.version}.1.b#{ENV['TRAVIS_BUILD_NUMBER']}"
