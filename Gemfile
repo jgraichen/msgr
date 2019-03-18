@@ -13,7 +13,7 @@ end
 group :rails do
   gem 'rails', '>= 4.2' unless defined?(NO_RAILS_GEM)
   gem 'rspec-rails', require: false
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3.6'
 end
 
 # Specify your gem's dependencies in acfs.gemspec
