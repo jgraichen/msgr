@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 NO_RAILS_GEM = true
 
 # Load root Gemfile
-self.instance_eval Bundler.read_file 'Gemfile'
+eval_gemfile '../Gemfile'
 
 gem 'activesupport', git: 'https://github.com/rails/rails'
 gem 'bunny', ENV['BUNNY_VERSION'] if ENV['BUNNY_VERSION']

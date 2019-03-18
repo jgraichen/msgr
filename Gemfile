@@ -17,5 +17,4 @@ group :rails do
 end
 
 # Specify your gem's dependencies in acfs.gemspec
-gemroot = File.dirname File.absolute_path __FILE__
-gemspec path: gemroot
+gemspec
