@@ -13,7 +13,7 @@ module Msgr
 
       # rubocop:disable Style/GuardClause
       if content_type == 'application/json'
-        @payload = MultiJson.load(payload)
+        @payload = JSON.parse(payload)
         @payload.symbolize_keys! if @payload.respond_to? :symbolize_keys!
       end
     end

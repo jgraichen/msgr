@@ -138,7 +138,7 @@ module Msgr
 
     def sync_publish(payload, opts)
       begin
-        payload = MultiJson.dump(payload)
+        payload = JSON.dump(payload)
         opts[:content_type] ||= 'application/json'
       rescue
         opts[:content_type] ||= 'application/text'

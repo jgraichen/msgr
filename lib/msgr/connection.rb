@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'bunny'
-require 'multi_json'
 
 module Msgr
   # rubocop:disable Metrics/ClassLength
