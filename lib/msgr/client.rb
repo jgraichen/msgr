@@ -140,7 +140,7 @@ module Msgr
       begin
         payload = JSON.dump(payload)
         opts[:content_type] ||= 'application/json'
-      rescue
+      rescue JSON::JSONError
         opts[:content_type] ||= 'application/text'
       end
 
