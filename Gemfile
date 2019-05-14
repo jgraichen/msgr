@@ -7,13 +7,16 @@ group :development, :test do
   gem 'fuubar'
   gem 'rake'
   gem 'rspec', '~> 3.0'
-  gem 'rubocop', '~> 0.67.1'
+  gem 'rubocop', '~> 0.69.0'
 end
 
 group :rails do
-  gem 'rails', '>= 4.2' unless defined?(NO_RAILS_GEM)
+  unless defined?(NO_RAILS_GEM)
+    gem 'rails', '>= 4.2'
+    gem 'sqlite3', '~> 1.3.6'
+  end
+
   gem 'rspec-rails', require: false
-  gem 'sqlite3', '~> 1.3.6'
 end
 
 # Specify your gem's dependencies in acfs.gemspec
