@@ -7,7 +7,7 @@ group :development, :test do
   gem 'fuubar'
   gem 'rake'
   gem 'rspec', '~> 3.0'
-  gem 'rubocop', '~> 0.67.1'
+  gem 'rubocop', '~> 0.69.0'
 end
 
 group :rails do
