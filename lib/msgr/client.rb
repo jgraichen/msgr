@@ -137,14 +137,8 @@ module Msgr
     private
 
     def sync_publish(payload, opts)
-      begin
-        payload = JSON.dump(payload)
-        opts[:content_type] ||= 'application/json'
-      rescue JSON::JSONError
-        opts[:content_type] ||= 'application/text'
-      end
-
-      sync_publish_message payload.to_s, opts
+      opts[:content_type] ||= 'application/json'
+      sync_publish_message JSON.dump(payload).to_s, opts
     end
 
     def sync_publish_message(message, opts)
