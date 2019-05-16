@@ -1,91 +1,120 @@
 # Changelog
+All notable changes to this project will be documented in this file.
 
-## Unreleased
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Support Rails 5.2
-* Serialize JSON using core JSON instead of MultiJson
-* Remove application/text fallback for payload (#25)
+## [Unreleased]
+### Added
+- Test support of Rails 5.2
 
-## 1.1
+### Changed
+- Serialize JSON using core JSON instead of MultiJson
+- Remove application/text fallback for payload (#25)
 
-* Add command line runner
+## [1.1.0] - 2018-07-25
+### Added
+- New command line runner
 
-## 1.0
+## [1.0.0] - 2017-12-29
+### Changed
+- Configure prefetch per binding and disable auto ack in consumer for customized batch processing (#15)
+- Replace usage of deprecated exception class (#12)
 
-* Configure prefetch per binding and disable auto ack in consumer for customized batch processing (#15)
-* Replace usage of deprecated exception class (#12)
+## [0.15.2] - 2017-09-04
+### Fixed
+- Fix regression in parsing `:uri` config with empty path
 
-## 0.15.2
+## [0.15.1] - 2017-07-31
+### Fixed
+- Fix errors with additional configuration keys for AMQP connection (#13)
 
-* Fix regression in parsing `:uri` config with empty path
-
-## 0.15.1
-
-* Fix errors with additional configuration keys for AMQP connection (#13)
-
-## 0.15.0
-
-* Add new configuration option `:raise_exceptions` that can be used to enable
+## [0.15.0] - 2017-03-30
+### Added
+- Add new configuration option `:raise_exceptions` that can be used to enable
   exceptions being raised from consumers. Mostly useful for testing consumers.
   Defaults to `false`.
-* Add option to release bindings before purging
-* Rework TestPool timeout handling to not account processing time
-* Add methods for purging queues
+- Add option to release bindings before purging
+- Add methods for purging queues
 
-## 0.14.1
+### Changed
+- Rework TestPool timeout handling to not account processing time
 
-* Fix loading test pool source file
+## [0.14.1] - 2016-02-17
+### Fixed
+- Fix loading test pool source file
 
-## 0.14.0
+## [0.14.0] - 2016-02-17
+### Added
+- Add experimental test pool (`Msgr::TestPool`)
 
-* Add experimental test pool (`Msgr::TestPool`)
+## [0.13.0] - 2015-08-24
+### Changed
+- Use `Rails.application.config_for` if available.
 
-## 0.13.0
+## [0.12.2] - 2015-01-14
+### Changed
+- Do not delete the exchange on stop delete:true - as the exchange is changed
 
-* Use `Rails.application.config_for` if available.
+## [0.12.1] - 2014-11-06
+### Changed
+- Loose dependency on bunny to allow `~> 1.4` for stone-age old RabbitMQ servers.
 
-## 0.12.2
-
-* Do not delete the exchange on stop delete:true - as the exchange is changed
-
-## 0.12.1
-
-* Loose dependency on bunny to allow ~> 1.4 for stone-age old RabbitMQ servers.
-
-## 0.11.rc3
-
-* Define pool_class by string to make it useable with rails
-* Add checkcredentials config option to disable initial connect to rabbitmq
+## [0.11.0.rc3] - 2014-04-11
+### Added
+- Add checkcredentials config option to disable initial connect to rabbitmq
   server to check the credentials
 
-## 0.11.rc2
+### Changed
+- Define pool_class by string to make it useable with rails
 
-* Add nack for messages when an error is rescued by dispatcher
+## [0.11.0.rc2] - 2014-03-29
+### Added
+- Add nack for messages when an error is rescued by dispatcher
 
-## 0.11.rc1
-
-* Add pool_class config to override pool classes used by dispatcher
+## [0.11.0.rc1] - 2014-03-29
+### Added
+- Add pool_class config to override pool classes used by dispatcher
 
 ## 0.4 - 0.10
+### Changed
+- Some lost history due to several crises
 
-* Some lost history due to several crises
+## [0.4.1] - 2014-03-18
+### Fixed
+- Fix bug with empty routes on client start
 
-## 0.4.1
+## [0.4.0] - 2014-03-04
+### Changed
+- Improve railtie and autostart code
 
-* Fix bug with empty routes on client start
+## [0.3.0] - 2014-03-03
+### Added
+- Support for forking web servers like unicorn
 
-## 0.4.0
+## [0.2.1] - 2014-02-26
+### Fixed
+- Fix wrong rails initializer code - was not use the config file
 
-* Improve railtie and autostart code
+## [0.2.0] - 2014-02-21
+### Changed
+- Improve rails initializer code
 
-## 0.3.0
-
-* Support for forking web servers like unicorn
-
-## 0.2.1
-
-* Fix wrong rails initializer code - was not use the config file
-
-## 0.2.0
-
-* Improve rails initializer code
+[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/jgraichen/msgr/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/jgraichen/msgr/compare/v0.15.2...v1.0.0
+[0.15.2]: https://github.com/jgraichen/msgr/compare/v0.15.1...v0.15.2
+[0.15.1]: https://github.com/jgraichen/msgr/compare/v0.15.0...v0.15.1
+[0.15.0]: https://github.com/jgraichen/msgr/compare/v0.14.1...v0.15.0
+[0.14.1]: https://github.com/jgraichen/msgr/compare/v0.14.0...v0.14.1
+[0.14.0]: https://github.com/jgraichen/msgr/compare/v0.13.0...v0.14.0
+[0.13.0]: https://github.com/jgraichen/msgr/compare/v0.12.3...v0.13.0
+[0.12.2]: https://github.com/jgraichen/msgr/compare/v0.12.1...v0.12.2
+[0.12.1]: https://github.com/jgraichen/msgr/compare/v0.12.0...v0.12.1
+[0.11.0.rc3]: https://github.com/jgraichen/msgr/compare/v0.11.0.rc2...v0.11.0.rc3
+[0.11.0.rc2]: https://github.com/jgraichen/msgr/compare/v0.11.0.rc1...v0.11.0.rc2
+[0.11.0.rc1]: https://github.com/jgraichen/msgr/compare/v0.10.2...v0.11.0.rc1
+[0.4.1]: https://github.com/jgraichen/msgr/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/jgraichen/msgr/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/jgraichen/msgr/compare/v0.2.1...v0.3.0
+[0.2.1]: https://github.com/jgraichen/msgr/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/jgraichen/msgr/compare/v0.1.1...v0.2.0
