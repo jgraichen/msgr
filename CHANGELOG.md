@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+* Support Rails 5.2
+* Serialize JSON using core JSON instead of MultiJson
+* Remove application/text fallback for payload (#25)
+
 ## 1.1
 
 * Add command line runner
