@@ -29,7 +29,7 @@ jobs:
   - rvm: 2.3.8
     gemfile: gemfiles/Gemfile.rails-master
   include:
-    - stage: Beta release
+    - stage: Release
       rvm: 2.6.3
       script: echo "Deploy to rubygems.org..."
       deploy:
@@ -38,6 +38,6 @@ jobs:
           secure: g8icPMdxEmbpBzSRCDmR3uB+1Zhu7tGq3h0cVbGUka2Ni1NiEiQo3LCDzbMp+L7AXH5RhdsG9FTViIAyCy9YENqZ1+jzrQGeADx0KnJZb6F81/SyumeUld0zdkzDbe1aUCJWz2WnEk12aLMPLNPRmDE7wub+od7gJEEv2SsKObo=
         gem: msgr
         on:
-          branch: master
+          tags: true
           repo: jgraichen/msgr
 

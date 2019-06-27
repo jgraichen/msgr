@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'msgr'
   spec.version       = Msgr::VERSION
   spec.authors       = ['Jan Graichen']
-  spec.email         = ['jg@altimos.de']
+  spec.email         = ['jgraichen@altimos.de']
   spec.description   = 'Msgr: Rails-like Messaging Framework'
   spec.summary       = 'Msgr: Rails-like Messaging Framework'
   spec.homepage      = 'https://github.com/jgraichen/msgr'
@@ -25,7 +25,8 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler'
 
-  if ENV['TRAVIS_BUILD_NUMBER']
+  if ENV['TRAVIS_BUILD_NUMBER'] && !ENV['TRAVIS_TAG']
+    # Append travis build number for auto-releases
     spec.version = "#{spec.version}.1.b#{ENV['TRAVIS_BUILD_NUMBER']}"
   end
 end
