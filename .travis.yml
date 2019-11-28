@@ -1,11 +1,12 @@
 dist: xenial
 language: ruby
 rvm:
-- 2.6.3
-- 2.5.5
-- 2.4.6
+- 2.6.5
+- 2.5.7
+- 2.4.9
 - 2.3.8
 gemfile:
+- gemfiles/Gemfile.rails-6-0
 - gemfiles/Gemfile.rails-5-2
 - gemfiles/Gemfile.rails-5-1
 - gemfiles/Gemfile.rails-5-0
@@ -22,22 +23,13 @@ jobs:
   allow_failures:
     - gemfile: gemfiles/Gemfile.rails-master
   exclude:
-  - rvm: 2.6.3
+  - rvm: 2.6.5
     gemfile: gemfiles/Gemfile.rails-4-2
-  - rvm: 2.4.6
+  - rvm: 2.4.9
+    gemfile: gemfiles/Gemfile.rails-6-0
+  - rvm: 2.3.8
+    gemfile: gemfiles/Gemfile.rails-6-0
+  - rvm: 2.4.9
     gemfile: gemfiles/Gemfile.rails-master
   - rvm: 2.3.8
     gemfile: gemfiles/Gemfile.rails-master
-  include:
-    - stage: Release
-      rvm: 2.6.3
-      script: echo "Deploy to rubygems.org..."
-      deploy:
-        provider: rubygems
-        api_key:
-          secure: g8icPMdxEmbpBzSRCDmR3uB+1Zhu7tGq3h0cVbGUka2Ni1NiEiQo3LCDzbMp+L7AXH5RhdsG9FTViIAyCy9YENqZ1+jzrQGeADx0KnJZb6F81/SyumeUld0zdkzDbe1aUCJWz2WnEk12aLMPLNPRmDE7wub+od7gJEEv2SsKObo=
-        gem: msgr
-        on:
-          tags: true
-          repo: jgraichen/msgr
-
