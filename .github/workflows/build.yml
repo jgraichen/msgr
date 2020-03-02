@@ -17,7 +17,6 @@ jobs:
           - rails_51.gemfile
           - rails_52.gemfile
           - rails_60.gemfile
-          - rails_master.gemfile
         exclude:
           - {ruby: '2.7', gemfile: 'rails_42.gemfile'}
           - {ruby: '2.6', gemfile: 'rails_42.gemfile'}
