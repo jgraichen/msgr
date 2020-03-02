@@ -5,3 +5,4 @@ eval_gemfile '../Gemfile'
 
 gem 'activesupport', '~> 5.0.0'
 gem 'bunny', ENV['BUNNY_VERSION'] if ENV['BUNNY_VERSION']
+gem 'sqlite3', '~> 1.3.6'

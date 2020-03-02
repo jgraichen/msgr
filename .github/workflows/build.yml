@@ -2,7 +2,7 @@ name: Build
 on: [push]
 jobs:
   test:
-    name: Ruby ${{ matrix.ruby }} / Gemfile ${{ matrix.gemfile }}
+    name: Ruby ${{ matrix.ruby }} / ${{ matrix.gemfile }}
     runs-on: ubuntu-18.04
 
     strategy:
@@ -18,6 +18,9 @@ jobs:
           - Gemfile.rails-5-0
           - Gemfile.rails-4-2
           - Gemfile.rails-master
+        exclude:
+          - {ruby: '2.7', gemfile: 'Gemfile.rails-4-2'}
+          - {ruby: '2.6', gemfile: 'Gemfile.rails-4-2'}
       fail-fast: false
 
     services:
@@ -41,20 +44,26 @@ jobs:
           sudo apt-get install --quiet --yes libsqlite3-dev
 
       - name: Install bundler
+        env:
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: |
           gem install bundler -v '~> 2.0'
           bundle config path "$(pwd)/vendor/bundle"
           bundle config without development
 
       - name: Run bundle install
+        env:
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: bundle install --gemfile gemfiles/${{ matrix.gemfile }} --jobs=4 --retry=3
 
       - name: Run unit tests
         env:
           AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: bundle exec rspec -Ispec/support -Ispec/msgr -rsetup --color spec/msgr
 
       - name: Run integration tests
         env:
           AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: bundle exec rspec -Ispec/support -Ispec/integration -rsetup --color spec/integration
