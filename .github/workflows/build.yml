@@ -20,6 +20,13 @@ jobs:
           - Gemfile.rails-master
       fail-fast: false
 
+    services:
+      rabbitmq:
+        image: rabbitmq:latest
+        ports:
+          - 5672/tcp
+        options: --health-cmd "rabbitmqctl node_health_check" --health-interval 10s --health-timeout 5s --health-retries 5
+
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-ruby@v1
@@ -29,11 +36,6 @@ jobs:
         with:
           path: vendor
           key: v1-ruby-${{ matrix.ruby }}-gemfile-${{ matrix.gemfile }}
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update --yes --quiet
-          sudo apt-get install --yes --quiet rabbitmq-server
 
       - name: Install bundler
         run: |
@@ -48,4 +50,6 @@ jobs:
         run: bundle exec rspec spec/msgr --color
 
       - name: Run integration tests
+        env:
+          AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
         run: bundle exec rspec spec/integration --color

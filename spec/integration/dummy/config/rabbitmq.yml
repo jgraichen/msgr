@@ -1,5 +1,5 @@
 common: &common
-  uri: amqp://localhost/
+  uri: <% ENV.fetch("AMQP_SERVER", "amqp://localhost/") %>
 
 test:
   <<: *common
