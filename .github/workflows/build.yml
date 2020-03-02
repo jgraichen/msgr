@@ -60,10 +60,10 @@ jobs:
         env:
           AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
-        run: bundle exec rspec -Ispec/support -Ispec/msgr -rsetup --color spec/msgr
+        run: bundle exec rspec -Ispec/unit --color spec/unit
 
       - name: Run integration tests
         env:
           AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
-        run: bundle exec rspec -Ispec/support -Ispec/integration -rsetup --color spec/integration
+        run: bundle exec rspec -Ispec/integration --color spec/integration

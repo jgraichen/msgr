@@ -16,17 +16,17 @@ task spec: 'spec:all'
 desc 'Run all specs'
 namespace :spec do
   desc 'Run all msgr specs and all integration specs.'
-  task all: %i[msgr integration]
+  task all: %i[unit integration]
 
   desc 'Run all unit specs.'
-  RSpec::Core::RakeTask.new(:msgr) do |t|
-    t.ruby_opts = '-Ispec/support -rsetup -Ispec/msgr'
-    t.pattern = 'spec/msgr/**/*_spec.rb'
+  RSpec::Core::RakeTask.new(:unit) do |t|
+    t.ruby_opts = '-Ispec/unit'
+    t.pattern = 'spec/unit/**/*_spec.rb'
   end
 
   desc 'Run all integration specs.'
   RSpec::Core::RakeTask.new(:integration) do |t|
-    t.ruby_opts = '-Ispec/support -rsetup -Ispec/integration'
+    t.ruby_opts = '-Ispec/integration'
     t.pattern = 'spec/integration/**/*_spec.rb'
   end
 end
