@@ -16,7 +16,7 @@ module Msgr
         max: 2
       }
 
-      @config.merge! parse(config.delete(:uri)) if config.key?(:uri)
+      @config.merge! parse(config.delete(:uri)) if config[:uri]
       @config.merge! config.symbolize_keys
 
       @mutex  = ::Mutex.new

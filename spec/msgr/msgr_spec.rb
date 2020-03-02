@@ -25,7 +25,7 @@ end
 
 describe Msgr do
   let(:queue) { Queue.new }
-  let(:client) { Msgr::Client.new size: 1, prefix: SecureRandom.hex(2) }
+  let(:client) { Msgr::Client.new size: 1, prefix: SecureRandom.hex(2), uri: ENV['AMQP_SERVER'] }
 
   before do
     client.routes.configure do
