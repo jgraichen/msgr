@@ -5,7 +5,6 @@ require 'spec_helper'
 class Receiver
 end
 
-#
 class MsgrTestConsumer < Msgr::Consumer
   def index
     Receiver.index
@@ -60,7 +59,7 @@ describe Msgr do
   end
 
   it 'should receive 2 messages when prefetch is set to 2' do
-    expect(Receiver).to receive(:batch).twice { |msg| queue << msg }
+    expect(Receiver).to receive(:batch).twice {|msg| queue << msg }
 
     2.times { client.publish 'Payload', to: 'test.batch' }
 
@@ -68,7 +67,7 @@ describe Msgr do
   end
 
   it 'should not bulk ack all unacknowledged messages when acknowledging the last one' do
-    expect(Receiver).to receive(:batch).exactly(3).times { |msg| queue << msg }
+    expect(Receiver).to receive(:batch).exactly(3).times {|msg| queue << msg }
 
     2.times { client.publish 'Payload', to: 'test.batch' }
 

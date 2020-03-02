@@ -14,9 +14,7 @@ module Msgr
         @auto_ack || @auto_ack.nil?
       end
 
-      def auto_ack=(val)
-        @auto_ack = val
-      end
+      attr_writer :auto_ack
     end
 
     def dispatch(message)

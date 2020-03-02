@@ -10,15 +10,14 @@ Coveralls.wear! do
   add_filter 'spec'
 end
 
-#
 ENV['RAILS_ENV'] ||= 'test'
 ENV['RAILS_GROUPS'] = ['rails', ENV['RAILS_GROUPS']].reject(&:nil?).join(',')
-require File.expand_path('../dummy/config/environment', __FILE__)
+require File.expand_path('dummy/config/environment', __dir__)
 require 'rspec/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[File.expand_path('../support/**/*.rb', __FILE__)].each {|f| require f }
+Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each {|f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.

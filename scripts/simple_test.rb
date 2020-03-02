@@ -19,7 +19,6 @@ class TestConsumer < Msgr::Consumer
   end
 end
 
-#
 class NullPool
   def initialize(*); end
 
@@ -50,4 +49,4 @@ ensure
   @client.stop timeout: 10, delete: true
 end
 
-$stderr.puts "COUNTER: #{@counter}"
+warn "COUNTER: #{@counter}"

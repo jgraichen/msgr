@@ -4,7 +4,7 @@ module Msgr
   class Route
     attr_reader :consumer, :action, :opts
 
-    MATCH_REGEXP = /\A(?<consumer>\w+)#(?<action>\w+)\z/
+    MATCH_REGEXP = /\A(?<consumer>\w+)#(?<action>\w+)\z/.freeze
 
     # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength

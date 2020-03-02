@@ -13,7 +13,7 @@ module Msgr
       @dispatcher = dispatcher
       @queue      = @channel.queue(route.name)
 
-      route.keys.each do |key|
+      route.each_key do |key|
         log(:debug) { "Bind #{key} to #{queue.name}." }
 
         queue.bind @channel.exchange, routing_key: key
@@ -45,10 +45,10 @@ module Msgr
       @subscription = queue.subscribe(manual_ack: true) do |*args|
         begin
           dispatcher.call Message.new(channel, *args, route)
-        rescue => err
+        rescue StandardError => e
           log(:error) do
-            "Rescued error from subscribe: #{err.class.name}: " \
-            "#{err}\n#{err.backtrace.join("\n")}"
+            "Rescued error from subscribe: #{e.class.name}: " \
+            "#{e}\n#{e.backtrace.join("\n")}"
           end
         end
       end

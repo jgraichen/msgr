@@ -11,15 +11,15 @@ Metrics/LineLength:
     - 'spec/**/*_spec.rb'
 
 
-Layout/AlignParameters:
-  EnforcedStyle: with_fixed_indentation
-
 Layout/CaseIndentation:
   EnforcedStyle: end
   SupportedStyles:
     - case
     - end
   IndentOneStep: true
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
 
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
@@ -30,14 +30,20 @@ Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
-
 Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/Documentation:
   Enabled: false
+
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
 
 Style/RaiseArgs:
   EnforcedStyle: compact

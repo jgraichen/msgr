@@ -3,7 +3,6 @@
 require 'bunny'
 
 module Msgr
-  # rubocop:disable Metrics/ClassLength
   class Connection
     include Logging
 
@@ -49,6 +48,7 @@ module Msgr
 
     def release
       return if bindings.empty?
+
       log(:debug) { "Release bindings (#{bindings.size})..." }
 
       bindings.each(&:release)
@@ -56,6 +56,7 @@ module Msgr
 
     def delete
       return if bindings.empty?
+
       log(:debug) { "Delete bindings (#{bindings.size})..." }
 
       bindings.each(&:delete)
@@ -63,6 +64,7 @@ module Msgr
 
     def purge(**kwargs)
       return if bindings.empty?
+
       log(:debug) { "Purge bindings (#{bindings.size})..." }
 
       bindings.each {|b| b.purge(**kwargs) }

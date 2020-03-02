@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'optionparser'
 
 module Msgr
@@ -8,7 +10,7 @@ module Msgr
       @options = options
 
       if !File.exist?(options[:require]) ||
-          (File.directory?(options[:require]) && !File.exist?("#{options[:require]}/config/application.rb"))
+         (File.directory?(options[:require]) && !File.exist?("#{options[:require]}/config/application.rb"))
         raise <<~ERR
           Rails application or required ruby file not found: #{options[:require]}
         ERR
@@ -22,7 +24,7 @@ module Msgr
         require 'rails'
         if ::Rails::VERSION::MAJOR == 4
           require File.expand_path("#{options[:require]}/config/application.rb")
-          ::Rails::Application.initializer "msgr.eager_load" do
+          ::Rails::Application.initializer 'msgr.eager_load' do
             ::Rails.application.config.eager_load = true
           end
           require 'msgr/railtie'
@@ -61,7 +63,7 @@ module Msgr
 
       private
 
-      def parse(argv)
+      def parse(_argv)
         options = {
           require: Dir.pwd,
           environment: 'development'

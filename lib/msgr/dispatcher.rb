@@ -38,16 +38,16 @@ module Msgr
       consumer_class.new.dispatch message
 
       # Acknowledge message unless it is already acknowledged or auto_ack is disabled.
-      message.ack unless message.acked? or not consumer_class.auto_ack?
-    rescue => error
+      message.ack unless message.acked? || !consumer_class.auto_ack?
+    rescue StandardError => e
       message.nack unless message.acked?
 
       log(:error) do
-        "Dispatcher error: #{error.class.name}: #{error}\n" +
-          error.backtrace.join("\n")
+        "Dispatcher error: #{e.class.name}: #{e}\n" +
+          e.backtrace.join("\n")
       end
 
-      raise error if config[:raise_exceptions]
+      raise e if config[:raise_exceptions]
     ensure
       if defined?(ActiveRecord) &&
          ActiveRecord::Base.connection_pool.active_connection?

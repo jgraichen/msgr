@@ -10,7 +10,7 @@ module Msgr
 
     attr_reader :config
 
-    # rubocop:disable MethodLength
+    # rubocop:disable Metrics/MethodLength
     def initialize(config = {})
       @config = {
         host: '127.0.0.1',
@@ -29,10 +29,10 @@ module Msgr
     end
     # rubocop:enable all
 
-    # rubocop:disable AbcSize
-    # rubocop:disable MethodLength
-    # rubocop:disable PerceivedComplexity
-    # rubocop:disable CyclomaticComplexity
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def uri
       @uri = begin
         uri = ::URI.parse('amqp://localhost')
@@ -59,7 +59,7 @@ module Msgr
       end
     end
 
-    # rubocop:disable AbcSize
+    # rubocop:disable Metrics/AbcSize
     def start
       mutex.synchronize do
         check_process!
@@ -85,7 +85,7 @@ module Msgr
       end
     end
 
-    # rubocop:disable AbcSize
+    # rubocop:disable Metrics/AbcSize
     def stop(opts = {})
       mutex.synchronize do
         check_process!
@@ -149,6 +149,7 @@ module Msgr
 
     def check_process!
       return if ::Process.pid == @pid
+
       log(:warn) do
         "Fork detected. Reset internal state. (Old PID: #{@pid} / " \
         "New PID: #{::Process.pid}"
@@ -178,18 +179,18 @@ module Msgr
       @dispatcher = nil
     end
 
-    # rubocop:disable AbcSize
+    # rubocop:disable Metrics/AbcSize
     def parse(uri)
       # Legacy parsing of URI configuration; does not follow usual
       # AMQP vhost encoding but used regular URL path
       uri = ::URI.parse(uri)
 
       config = {}
-      config[:user]  ||= uri.user     if uri.user
-      config[:pass]  ||= uri.password if uri.password
-      config[:host]  ||= uri.host     if uri.host
-      config[:port]  ||= uri.port     if uri.port
-      config[:vhost] ||= uri.path     unless uri.path.empty?
+      config[:user] ||= uri.user if uri.user
+      config[:pass] ||= uri.password if uri.password
+      config[:host] ||= uri.host     if uri.host
+      config[:port] ||= uri.port     if uri.port
+      config[:vhost] ||= uri.path unless uri.path.empty?
       config[:ssl]   ||= uri.scheme.casecmp('amqps').zero?
 
       config
