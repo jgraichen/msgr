@@ -1,6 +1,7 @@
 AllCops:
   TargetRubyVersion: 2.5
   Exclude:
+    - gemfiles/**/*
     - spec/integration/dummy/**/*
     - vendor/**/*
 

@@ -12,15 +12,15 @@ jobs:
           - '2.6'
           - '2.5'
         gemfile:
-          - Gemfile.rails-6-0
-          - Gemfile.rails-5-2
-          - Gemfile.rails-5-1
-          - Gemfile.rails-5-0
-          - Gemfile.rails-4-2
-          - Gemfile.rails-master
+          - rails_42.gemfile
+          - rails_50.gemfile
+          - rails_51.gemfile
+          - rails_52.gemfile
+          - rails_60.gemfile
+          - rails_master.gemfile
         exclude:
-          - {ruby: '2.7', gemfile: 'Gemfile.rails-4-2'}
-          - {ruby: '2.6', gemfile: 'Gemfile.rails-4-2'}
+          - {ruby: '2.7', gemfile: 'rails_42.gemfile'}
+          - {ruby: '2.6', gemfile: 'rails_42.gemfile'}
       fail-fast: false
 
     services:

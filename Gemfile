@@ -2,22 +2,16 @@
 
 source 'https://rubygems.org'
 
-group :development, :test do
-  gem 'coveralls'
-  gem 'fuubar'
-  gem 'rake'
-  gem 'rspec', '~> 3.0'
-  gem 'rubocop', '~> 0.80.1'
-end
+gem 'appraisal'
+gem 'bundler', '~> 2.0'
+gem 'coveralls'
+gem 'rake'
+gem 'rspec', '~> 3.0'
+gem 'rspec-rails'
+gem 'rubocop', '~> 0.80.1'
 
-group :rails do
-  unless defined?(NO_RAILS_GEM)
-    gem 'rails', '>= 4.2'
-    gem 'sqlite3', '~> 1.3.6'
-  end
-
-  gem 'rspec-rails', require: false
-end
+gem 'rails'
+gem 'sqlite3'
 
 # Specify your gem's dependencies in acfs.gemspec
 gemspec

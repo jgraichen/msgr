@@ -1,7 +1,0 @@
-source 'https://rubygems.org'
-
-# Load root Gemfile
-eval_gemfile '../Gemfile'
-
-gem 'activesupport', '~> 6.0.0'
-gem 'bunny', ENV['BUNNY_VERSION'] if ENV['BUNNY_VERSION']
