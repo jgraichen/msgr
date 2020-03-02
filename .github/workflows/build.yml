@@ -42,6 +42,12 @@ jobs:
         run: |
           sudo apt-get install --quiet --yes libsqlite3-dev
 
+      - name: Install bundler 1.0
+        if: matrix.gemfile == 'rails_42.gemfile'
+        run: |
+          gem uninstall --all --executables --force bundler
+          gem install bundler --version '~> 1.0'
+
       - name: Run bundle install
         env:
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
