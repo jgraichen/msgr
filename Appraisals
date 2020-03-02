@@ -3,7 +3,6 @@
 # -*- mode: ruby -*-
 
 appraise 'rails-42' do
-  gem 'bundler', '~> 1.0'
   gem 'rails', '~> 4.2.0'
   gem 'sqlite3', '~> 1.3.6'
 end

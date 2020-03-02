@@ -47,7 +47,6 @@ jobs:
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: |
           gem install bundler --version '~> 1.0'
-          gem install bundler --version '~> 2.0'
           bundle config path "$(pwd)/vendor/bundle"
           bundle config without development
 

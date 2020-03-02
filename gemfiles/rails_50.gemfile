@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 gem "appraisal"
-gem "bundler", "~> 2.0"
 gem "coveralls"
 gem "rake"
 gem "rspec", "~> 3.0"

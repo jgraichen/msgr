@@ -16,7 +16,6 @@ before_install:
   - sudo apt-get install -qy rabbitmq-server
   - echo yes | rvm gemset delete global
   - gem install bundler --version '~> 1.0'
-  - gem install bundler --version '~> 2.0'
 script:
   - bundle exec rake spec:unit
   - bundle exec rake spec:integration
