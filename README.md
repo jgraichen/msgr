@@ -2,7 +2,7 @@
 
 
 [![Gem Version](https://badge.fury.io/rb/msgr.svg)](http://badge.fury.io/rb/msgr)
-[![Build Status](http://img.shields.io/travis/jgraichen/msgr/master.svg)](https://travis-ci.org/jgraichen/msgr)
+[![Build Status](https://travis-ci.org/jgraichen/msgr.svg?branch=master)](https://travis-ci.org/jgraichen/msgr)
 [![Build Status](https://github.com/jgraichen/msgr/workflows/Build/badge.svg?branch=master)](https://github.com/jgraichen/msgr/actions?query=workflow%3ABuild+branch%3Amaster)
 [![RubyDoc Documentation](http://img.shields.io/badge/rubydoc-here-blue.svg)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
