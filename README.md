@@ -3,8 +3,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/msgr.svg)](http://badge.fury.io/rb/msgr)
 [![Build Status](http://img.shields.io/travis/jgraichen/msgr/master.svg)](https://travis-ci.org/jgraichen/msgr)
-[![Coverage Status](http://img.shields.io/coveralls/jgraichen/msgr/master.svg)](https://coveralls.io/r/jgraichen/msgr)
-[![Code Climate](http://img.shields.io/codeclimate/github/jgraichen/msgr.svg)](https://codeclimate.com/github/jgraichen/msgr)
+[![Build Status](https://github.com/jgraichen/msgr/workflows/Build/badge.svg?branch=master)](https://github.com/jgraichen/msgr/actions?query=workflow%3ABuild+branch%3Amaster)
 [![RubyDoc Documentation](http://img.shields.io/badge/rubydoc-here-blue.svg)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and you like it. Using Rails you can just declare your routes and
@@ -86,12 +85,12 @@ end
 
 ### Manual message acknowledgement
 
-Per default messages are automatically acknowledged, if no (n)ack is sent explicitly by the consumer. This can be disabled by setting the `auto_ack` attribute to `false`. 
+Per default messages are automatically acknowledged, if no (n)ack is sent explicitly by the consumer. This can be disabled by setting the `auto_ack` attribute to `false`.
 
 ```ruby
 class TestConsumer < Msgr::Consumer
   self.auto_ack = false
-  
+
   def index
     data = { fuubar: 'abc' }
 
