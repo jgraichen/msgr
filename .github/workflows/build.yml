@@ -51,9 +51,9 @@ jobs:
         run: bundle install --gemfile gemfiles/${{ matrix.gemfile }} --jobs=4 --retry=3
 
       - name: Run unit tests
-        run: bundle exec rspec spec/msgr --color
+        run: bundle exec rspec -Ispec/support -Ispec/msgr -rsetup --color spec/msgr
 
       - name: Run integration tests
         env:
           AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
-        run: bundle exec rspec spec/integration --color
+        run: bundle exec rspec -Ispec/support -Ispec/integration -rsetup --color spec/integration
