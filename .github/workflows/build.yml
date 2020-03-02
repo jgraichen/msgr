@@ -1,0 +1,51 @@
+name: Build
+on: [push]
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }} / Gemfile ${{ matrix.gemfile }}
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        ruby:
+          - '2.7'
+          - '2.6'
+          - '2.5'
+        gemfile:
+          - Gemfile.rails-6-0
+          - Gemfile.rails-5-2
+          - Gemfile.rails-5-1
+          - Gemfile.rails-5-0
+          - Gemfile.rails-4-2
+          - Gemfile.rails-master
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - uses: actions/cache@v1
+        with:
+          path: vendor
+          key: v1-ruby-${{ matrix.ruby }}-gemfile-${{ matrix.gemfile }}
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update --yes --quiet
+          sudo apt-get install --yes --quiet rabbitmq-server
+
+      - name: Install bundler
+        run: |
+          gem install bundler -v '~> 2.0'
+          bundle config path "$(pwd)/vendor/bundle"
+          bundle config without development
+
+      - name: Run bundle install
+        run: bundle install --gemfile gemfiles/${{ matrix.gemfile }}--jobs=4 --retry=3
+
+      - name: Run unit tests
+        run: bundle exec rspec spec/msgr --color
+
+      - name: Run integration tests
+        run: bundle exec rspec spec/integration --color
