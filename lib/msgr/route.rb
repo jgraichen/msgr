@@ -5,9 +5,6 @@ module Msgr
     attr_reader :consumer, :action, :opts
 
     MATCH_REGEXP = /\A(?<consumer>\w+)#(?<action>\w+)\z/.freeze
-
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
     def initialize(key, opts = {})
       @opts = opts
       raise ArgumentError.new 'Missing `to` options.' unless @opts[:to]

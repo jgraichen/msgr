@@ -10,7 +10,8 @@ module Msgr
       @options = options
 
       if !File.exist?(options[:require]) ||
-         (File.directory?(options[:require]) && !File.exist?("#{options[:require]}/config/application.rb"))
+         (File.directory?(options[:require]) &&
+         !File.exist?("#{options[:require]}/config/application.rb"))
         raise <<~ERR
           Rails application or required ruby file not found: #{options[:require]}
         ERR
@@ -27,12 +28,10 @@ module Msgr
           ::Rails::Application.initializer 'msgr.eager_load' do
             ::Rails.application.config.eager_load = true
           end
-          require 'msgr/railtie'
-          require File.expand_path("#{options[:require]}/config/environment.rb")
-        else
-          require 'msgr/railtie'
-          require File.expand_path("#{options[:require]}/config/environment.rb")
         end
+
+        require 'msgr/railtie'
+        require File.expand_path("#{options[:require]}/config/environment.rb")
       else
         require(options[:require])
       end
@@ -45,7 +44,7 @@ module Msgr
       Msgr.logger = Logger.new(STDOUT)
       Msgr.client.start
 
-      while readable = IO.select([r])
+      while (readable = IO.select([r]))
         case readable.first[0].gets.strip
           when 'INT', 'TERM'
             Msgr.client.stop

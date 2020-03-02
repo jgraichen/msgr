@@ -31,8 +31,6 @@ module Msgr
 
     private
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
     def ns_run(count: 1, timeout: 5)
       received = 0
 

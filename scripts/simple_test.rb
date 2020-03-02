@@ -44,7 +44,7 @@ end
 
 begin
   sleep
-rescue Interrupt
+rescue Interrupt # rubocop:disable Lint/SuppressedException
 ensure
   @client.stop timeout: 10, delete: true
 end

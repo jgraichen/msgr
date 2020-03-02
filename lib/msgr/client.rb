@@ -9,8 +9,6 @@ module Msgr
     include Logging
 
     attr_reader :config
-
-    # rubocop:disable Metrics/MethodLength
     def initialize(config = {})
       @config = {
         host: '127.0.0.1',
@@ -27,12 +25,8 @@ module Msgr
 
       log(:debug) { "Created new client on process ##{@pid}..." }
     end
-    # rubocop:enable all
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/PerceivedComplexity
-    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:enable all
     def uri
       @uri = begin
         uri = ::URI.parse('amqp://localhost')
@@ -43,14 +37,11 @@ module Msgr
         uri.port     = config[:port]             if config.key?(:port)
         uri.scheme   = config[:ssl] ? 'amqps' : 'amqp'
 
-        if config.key?(:vhost) && config[:vhost] != '/'
-          uri.path = "/#{CGI.escape(config[:vhost])}"
-        end
+        uri.path = "/#{CGI.escape(config[:vhost])}" if config.key?(:vhost) && config[:vhost] != '/'
 
         uri
       end
     end
-    # rubocop:enable all
 
     def running?
       mutex.synchronize do
@@ -59,7 +50,6 @@ module Msgr
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
     def start
       mutex.synchronize do
         check_process!
@@ -72,7 +62,6 @@ module Msgr
         connection.bind(@routes)
       end
     end
-    # rubocop:enable all
 
     def connect
       mutex.synchronize do
@@ -85,7 +74,6 @@ module Msgr
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
     def stop(opts = {})
       mutex.synchronize do
         check_process!
@@ -100,7 +88,6 @@ module Msgr
         reset
       end
     end
-    # rubocop:enable all
 
     def purge(release: false)
       mutex.synchronize do
@@ -179,7 +166,6 @@ module Msgr
       @dispatcher = nil
     end
 
-    # rubocop:disable Metrics/AbcSize
     def parse(uri)
       # Legacy parsing of URI configuration; does not follow usual
       # AMQP vhost encoding but used regular URL path
@@ -195,6 +181,5 @@ module Msgr
 
       config
     end
-    # rubocop:enable all
   end
 end

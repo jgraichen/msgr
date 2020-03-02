@@ -4,7 +4,14 @@ module Msgr
   class Binding
     include Logging
 
-    attr_reader :queue, :subscription, :connection, :channel, :route, :dispatcher
+    attr_reader(
+      :channel,
+      :connection,
+      :dispatcher,
+      :queue,
+      :route,
+      :subscription
+    )
 
     def initialize(connection, route, dispatcher)
       @connection = connection
@@ -13,7 +20,7 @@ module Msgr
       @dispatcher = dispatcher
       @queue      = @channel.queue(route.name)
 
-      route.each_key do |key|
+      route.keys.each do |key|
         log(:debug) { "Bind #{key} to #{queue.name}." }
 
         queue.bind @channel.exchange, routing_key: key
@@ -43,13 +50,11 @@ module Msgr
 
     def subscribe
       @subscription = queue.subscribe(manual_ack: true) do |*args|
-        begin
-          dispatcher.call Message.new(channel, *args, route)
-        rescue StandardError => e
-          log(:error) do
-            "Rescued error from subscribe: #{e.class.name}: " \
-            "#{e}\n#{e.backtrace.join("\n")}"
-          end
+        dispatcher.call Message.new(channel, *args, route)
+      rescue StandardError => e
+        log(:error) do
+          "Rescued error from subscribe: #{e.class.name}: " \
+          "#{e}\n#{e.backtrace.join("\n")}"
         end
       end
     end

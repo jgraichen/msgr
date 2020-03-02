@@ -27,9 +27,6 @@ module Msgr
       end
     end
 
-    # rubocop:disable Metrics/AbcSize
-    # rubocop:disable Metrics/MethodLength
-    # rubocop:disable Metrics/CyclomaticComplexity
     def dispatch(message)
       consumer_class = Object.const_get message.route.consumer
 

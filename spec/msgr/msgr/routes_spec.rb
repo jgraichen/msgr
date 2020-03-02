@@ -106,7 +106,7 @@ describe Msgr::Routes do
   end
 
   describe 'load' do
-    let(:file) { 'spec/fixtures/msgr-routes-test-1.rb' }
+    let(:file) { 'spec/fixtures/msgr_routes_test_1.rb' }
 
     it 'should eval given file within routes context' do
       expect(routes).to receive(:route).with('abc.#', to: 'test#index')

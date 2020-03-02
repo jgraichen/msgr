@@ -45,9 +45,7 @@ module Msgr
     end
 
     def load(file)
-      unless File.exist?(file)
-        raise ArgumentError.new "File `#{file}` does not exists."
-      end
+      raise ArgumentError.new "File `#{file}` does not exists." unless File.exist?(file)
 
       instance_eval File.read file
     end

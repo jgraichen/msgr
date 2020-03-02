@@ -11,8 +11,7 @@ module Msgr
       @payload       = payload
       @route         = route
 
-      # rubocop:disable Style/GuardClause
-      if content_type == 'application/json'
+      if content_type == 'application/json' # rubocop:disable Style/GuardClause
         @payload = JSON.parse(payload)
         @payload.symbolize_keys! if @payload.respond_to? :symbolize_keys!
       end
