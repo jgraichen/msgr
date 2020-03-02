@@ -37,6 +37,10 @@ jobs:
           path: vendor
           key: v1-ruby-${{ matrix.ruby }}-gemfile-${{ matrix.gemfile }}
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get install --quiet --yes libsqlite3-dev
+
       - name: Install bundler
         run: |
           gem install bundler -v '~> 2.0'
@@ -44,7 +48,7 @@ jobs:
           bundle config without development
 
       - name: Run bundle install
-        run: bundle install --gemfile gemfiles/${{ matrix.gemfile }}--jobs=4 --retry=3
+        run: bundle install --gemfile gemfiles/${{ matrix.gemfile }} --jobs=4 --retry=3
 
       - name: Run unit tests
         run: bundle exec rspec spec/msgr --color

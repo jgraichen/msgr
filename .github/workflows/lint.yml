@@ -15,6 +15,10 @@ jobs:
           path: vendor
           key: v1-ruby-2.6
 
+      - name: Install dependencies
+        run: |
+          sudo apt-get install --quiet --yes libsqlite3-dev
+
       - name: Install bundler
         run: |
           gem install bundler -v '~> 2.0'
