@@ -42,18 +42,13 @@ jobs:
         run: |
           sudo apt-get install --quiet --yes libsqlite3-dev
 
-      - name: Install bundler
-        env:
-          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
-        run: |
-          gem install bundler --version '~> 1.0'
-          bundle config path "$(pwd)/vendor/bundle"
-          bundle config without development
-
       - name: Run bundle install
         env:
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
-        run: bundle install --gemfile gemfiles/${{ matrix.gemfile }} --jobs=4 --retry=3
+        run: |
+          bundle config path "$(pwd)/vendor/bundle"
+          bundle config without development
+          bundle install --jobs=4 --retry=3
 
       - name: Run unit tests
         env:
