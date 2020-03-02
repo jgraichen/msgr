@@ -2,6 +2,7 @@ AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - spec/integration/dummy/**
+    - vendor/**
 
 
 Gemspec/DuplicatedAssignment:
