@@ -7,7 +7,7 @@ gem 'coveralls'
 gem 'rake'
 gem 'rspec', '~> 3.0'
 gem 'rspec-rails'
-gem 'rubocop', '~> 0.83.0'
+gem 'rubocop', '~> 0.84.0'
 
 gem 'rails'
 gem 'sqlite3'
