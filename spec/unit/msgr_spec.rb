@@ -51,7 +51,9 @@ describe Msgr do
 
   it 'redelivers failed messages' do
     expect(Receiver).to receive(:error).ordered.and_raise RuntimeError
-    expect(Receiver).to receive(:error).ordered { queue << :end }
+    expect(Receiver).to(
+      receive(:error).ordered { queue << :end }
+    )
 
     client.publish 'Payload', to: 'test.error'
 
@@ -59,7 +61,9 @@ describe Msgr do
   end
 
   it 'receives 2 messages when prefetch is set to 2' do
-    expect(Receiver).to receive(:batch).twice {|msg| queue << msg }
+    expect(Receiver).to(
+      receive(:batch).twice {|msg| queue << msg }
+    )
 
     2.times { client.publish 'Payload', to: 'test.batch' }
 
@@ -67,7 +71,9 @@ describe Msgr do
   end
 
   it 'does not bulk ack all unacknowledged messages when acknowledging the last one' do
-    expect(Receiver).to receive(:batch).exactly(3).times {|msg| queue << msg }
+    expect(Receiver).to(
+      receive(:batch).exactly(3).times {|msg| queue << msg }
+    )
 
     2.times { client.publish 'Payload', to: 'test.batch' }
 
