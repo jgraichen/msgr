@@ -56,4 +56,33 @@ describe Msgr::Client do
       end
     end
   end
+
+  describe 'drain' do
+    subject(:drain) { client.drain }
+
+    let(:channel_stub) { instance_double('Msgr::Channel', prefetch: true) }
+    let(:queue_stub) { instance_double('Bunny::Queue', purge: true) }
+
+    before do
+      client.routes.configure do
+        route 'abc', to: 'consumer1#action1'
+        route 'def', to: 'consumer1#action2'
+        route 'ghi', to: 'consumer2#action1'
+      end
+
+      allow(Msgr::Channel).to receive(:new).and_return(channel_stub)
+      allow(channel_stub).to receive(:queue).and_return(queue_stub).at_most(3).times
+    end
+
+    it 'requests purges for all configured routes' do
+      drain
+
+      expect(Msgr::Channel).to have_received(:new).exactly(3).times
+      expect(channel_stub).to have_received(:queue).with('msgr.consumer.Consumer1Consumer.action1', passive: true).once
+      expect(channel_stub).to have_received(:queue).with('msgr.consumer.Consumer1Consumer.action2', passive: true).once
+      expect(channel_stub).to have_received(:queue).with('msgr.consumer.Consumer2Consumer.action1', passive: true).once
+
+      expect(queue_stub).to have_received(:purge).exactly(3).times
+    end
+  end
 end

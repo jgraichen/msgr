@@ -101,6 +101,15 @@ module Msgr
       end
     end
 
+    ##
+    # Purge all queues known to Msgr, if they exist.
+    #
+    def drain
+      @routes.each do |route|
+        connection.purge_queue(route.name)
+      end
+    end
+
     def publish(payload, opts = {})
       mutex.synchronize do
         check_process!
