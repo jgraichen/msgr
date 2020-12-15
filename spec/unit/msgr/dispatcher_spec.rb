@@ -24,20 +24,22 @@ describe Msgr::Dispatcher do
   describe 'dispatch' do
     it 'acks messages automatically if auto_ack is enabled' do
       route_db = instance_double('Msgr::Route', consumer: 'MsgrAutoAckConsumer', action: :index)
-      msg_db = instance_double('Msgr::Message', route: route_db, acked?: false)
-      expect(msg_db).to receive(:ack)
-      expect(msg_db).not_to receive(:nack)
+      msg_db = instance_spy('Msgr::Message', route: route_db, acked?: false)
 
       dispatcher.dispatch(msg_db)
+
+      expect(msg_db).to have_received(:ack)
+      expect(msg_db).not_to have_received(:nack)
     end
 
     it 'does not ack messages if auto_ack is disabled' do
       route_db = instance_double('Msgr::Route', consumer: 'MsgrManualAckConsumer', action: :index)
-      msg_db = instance_double('Msgr::Message', route: route_db, acked?: false)
-      expect(msg_db).not_to receive(:ack)
-      expect(msg_db).not_to receive(:nack)
+      msg_db = instance_spy('Msgr::Message', route: route_db, acked?: false)
 
       dispatcher.dispatch(msg_db)
+
+      expect(msg_db).not_to have_received(:ack)
+      expect(msg_db).not_to have_received(:nack)
     end
   end
 end

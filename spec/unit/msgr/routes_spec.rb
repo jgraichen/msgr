@@ -6,22 +6,12 @@ describe Msgr::Routes do
   let(:routes) { described_class.new }
 
   describe '#configure' do
-    let(:block) { proc {} }
-
-    it 'evaluates given block within instance context' do
-      expect(routes).to receive(:instance_eval) do |&p|
-        expect(p).to be block
-      end
-
-      routes.configure(&block)
-    end
-
-    it 'allows to call instance method in gven block' do
-      expect(routes).to receive(:test_instance_method).with(:abc)
-
+    it 'allows to configure the instance in given block' do
       routes.configure do
-        test_instance_method :abc
+        route 'abc', to: 'consumer#action'
       end
+
+      expect(routes.routes.first.keys).to eq ['abc']
     end
   end
 
@@ -90,13 +80,17 @@ describe Msgr::Routes do
   end
 
   describe 'reload' do
-    before { File.stub(:exist?).and_return(true) }
+    before do
+      allow(File).to receive(:exist?).and_return(true)
+      allow(routes).to receive(:load)
+    end
 
     it 'triggers load for all files' do
-      expect(routes).to receive(:load).with('cde.rb').ordered
-      expect(routes).to receive(:load).with('edf.rb').ordered
       routes.files += %w[cde.rb edf.rb]
       routes.reload
+
+      expect(routes).to have_received(:load).with('cde.rb').ordered
+      expect(routes).to have_received(:load).with('edf.rb').ordered
     end
 
     it 'clears old routes before reloading' do
@@ -110,8 +104,10 @@ describe Msgr::Routes do
     let(:file) { 'spec/fixtures/msgr_routes_test_1.rb' }
 
     it 'evals given file within routes context' do
-      expect(routes).to receive(:route).with('abc.#', to: 'test#index')
       routes.load file
+      expect(routes.routes.count).to eq 1
+      expect(routes.routes.first.keys).to eq ['abc.#']
+      expect(routes.routes.first.name).to eq 'msgr.consumer.TestConsumer.index'
     end
   end
 end

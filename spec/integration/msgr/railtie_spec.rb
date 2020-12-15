@@ -89,35 +89,40 @@ describe Msgr::Railtie do
       cfg
     end
 
+    before do
+      allow(Msgr).to receive(:start)
+      allow(Msgr.client).to receive(:connect)
+    end
+
     context 'with autostart is true' do
       it 'starts Msgr' do
-        expect(Msgr).to receive(:start)
-        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test', autostart: true})
+        allow(described_class).to receive(:load_config).and_return('test' => {uri: 'test', autostart: true})
         described_class.load config
+        expect(Msgr).to have_received(:start)
       end
     end
 
     context 'without autostart value' do
       it 'does not start Msgr' do
-        expect(Msgr).not_to receive(:start)
-        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test'})
+        allow(described_class).to receive(:load_config).and_return('test' => {uri: 'test'})
         described_class.load config
+        expect(Msgr).not_to have_received(:start)
       end
     end
 
     context 'without checkcredentials value' do
       it 'connects to rabbitmq directly to check credentials' do
-        expect(Msgr.client).to receive(:connect)
-        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test'})
+        allow(described_class).to receive(:load_config).and_return('test' => {uri: 'test'})
         described_class.load config
+        expect(Msgr.client).to have_received(:connect)
       end
     end
 
     context 'with checkcredentials is false' do
       it 'connects to rabbitmq directly to check credentials' do
-        expect(Msgr.client).not_to receive(:connect)
-        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test', checkcredentials: false})
+        allow(described_class).to receive(:load_config).and_return('test' => {uri: 'test', checkcredentials: false})
         described_class.load config
+        expect(Msgr.client).not_to have_received(:connect)
       end
     end
   end

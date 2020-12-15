@@ -35,6 +35,17 @@ describe Msgr do
     end
 
     client.start
+
+    allow(Receiver).to receive(:index) { queue << :end }
+    allow(Receiver).to receive(:batch) {|msg| queue << msg }
+
+    error_count = 0
+    allow(Receiver).to receive(:error) do
+      error_count += 1
+      raise 'error' if error_count == 1
+
+      queue << :end
+    end
   end
 
   after do
@@ -42,39 +53,30 @@ describe Msgr do
   end
 
   it 'dispatches published methods to consumer' do
-    expect(Receiver).to receive(:index) { queue << :end }
-
     client.publish 'Payload', to: 'test.index'
 
     Timeout.timeout(4) { queue.pop }
+
+    expect(Receiver).to have_received(:index).exactly(1).time
   end
 
   it 'redelivers failed messages' do
-    expect(Receiver).to receive(:error).ordered.and_raise RuntimeError
-    expect(Receiver).to(
-      receive(:error).ordered { queue << :end }
-    )
-
     client.publish 'Payload', to: 'test.error'
 
     Timeout.timeout(4) { queue.pop }
+
+    expect(Receiver).to have_received(:error).exactly(2).times
   end
 
   it 'receives 2 messages when prefetch is set to 2' do
-    expect(Receiver).to(
-      receive(:batch).twice {|msg| queue << msg }
-    )
-
     2.times { client.publish 'Payload', to: 'test.batch' }
 
     2.times { Timeout.timeout(4) { queue.pop } }
+
+    expect(Receiver).to have_received(:batch).exactly(2).times
   end
 
   it 'does not bulk ack all unacknowledged messages when acknowledging the last one' do
-    expect(Receiver).to(
-      receive(:batch).exactly(3).times {|msg| queue << msg }
-    )
-
     2.times { client.publish 'Payload', to: 'test.batch' }
 
     messages = Array.new(2) { Timeout.timeout(4) { queue.pop } }
@@ -85,5 +87,7 @@ describe Msgr do
     message = Timeout.timeout(4) { queue.pop }
     expect(message.payload).to eq(messages[0].payload)
     expect(message.delivery_info.redelivered).to eq(true)
+
+    expect(Receiver).to have_received(:batch).exactly(3).times
   end
 end
