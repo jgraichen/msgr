@@ -77,7 +77,7 @@ describe Msgr do
 
     2.times { client.publish 'Payload', to: 'test.batch' }
 
-    messages = 2.times.map { Timeout.timeout(4) { queue.pop } }
+    messages = Array.new(2) { Timeout.timeout(4) { queue.pop } }
     messages[1].ack
     messages[0].nack
 
