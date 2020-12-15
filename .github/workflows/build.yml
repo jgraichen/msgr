@@ -30,31 +30,36 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-ruby@v1
+
+      - name: Install Ruby with Bundler 1.x
+        uses: ruby/setup-ruby@v1
+        if: matrix.gemfile == 'rails_42.gemfile'
         with:
           ruby-version: ${{ matrix.ruby }}
-      - uses: actions/cache@v1
+          bundler-cache: true
+          bundler: 1
+        env:
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
+          BUNDLE_WITHOUT: development
+          BUNDLE_JOBS: 4
+          BUNDLE_RETRY: 3
+
+      - name: Install Ruby with Bundler 2.x
+        uses: ruby/setup-ruby@v1
+        if: matrix.gemfile != 'rails_42.gemfile'
         with:
-          path: vendor
-          key: v1-ruby-${{ matrix.ruby }}-gemfile-${{ matrix.gemfile }}
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+          bundler: 1
+        env:
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
+          BUNDLE_WITHOUT: development
+          BUNDLE_JOBS: 4
+          BUNDLE_RETRY: 3
 
       - name: Install dependencies
         run: |
           sudo apt-get install --quiet --yes libsqlite3-dev
-
-      - name: Install bundler 1.0
-        if: matrix.gemfile == 'rails_42.gemfile'
-        run: |
-          gem uninstall --all --executables --force bundler
-          gem install bundler --version '~> 1.0'
-
-      - name: Run bundle install
-        env:
-          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
-        run: |
-          bundle config path "$(pwd)/vendor/bundle"
-          bundle config without development
-          bundle install --jobs=4 --retry=3
 
       - name: Run unit tests
         env:
