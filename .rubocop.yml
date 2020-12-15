@@ -37,11 +37,17 @@ Layout/CaseIndentation:
     - end
   IndentOneStep: true
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 Layout/LineLength:
   Enabled: false
 
 Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
 
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: space
@@ -56,12 +62,27 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - spec/**/*_spec.rb
 
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
+
 
 Style/ClassAndModuleChildren:
   Enabled: false
 
 Style/Documentation:
   Enabled: false
+
+Style/ExponentialNotation:
+  Enabled: true
 
 Style/HashEachMethods:
   Enabled: false
@@ -75,11 +96,20 @@ Style/HashTransformValues:
 Style/RaiseArgs:
   EnforcedStyle: compact
 
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: true
+
 Style/SafeNavigation:
   Enabled: false # not available before 2.3
 
 Style/SignalException:
   EnforcedStyle: only_raise
+
+Style/SlicingWithRange:
+  Enabled: true
 
 Style/TrivialAccessors:
   AllowPredicates: true

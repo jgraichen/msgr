@@ -5,6 +5,7 @@ module Msgr
     include Logging
 
     attr_reader :message
+
     delegate :payload, to: :@message
     delegate :action, to: :'@message.route'
     delegate :consumer, to: :'@message.consumer'

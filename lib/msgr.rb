@@ -26,6 +26,7 @@ require 'msgr/railtie' if defined? Rails
 module Msgr
   class << self
     attr_writer :client, :config
+
     delegate :publish, to: :client
 
     def config

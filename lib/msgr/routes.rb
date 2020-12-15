@@ -3,7 +3,9 @@
 module Msgr
   class Routes
     include Logging
+
     attr_reader :routes
+
     delegate :each, :empty?, :size, :any?, to: :@routes
 
     def initialize
