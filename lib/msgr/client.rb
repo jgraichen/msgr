@@ -2,6 +2,7 @@
 
 require 'uri'
 require 'cgi'
+require 'json'
 
 module Msgr
   # rubocop:disable Metrics/ClassLength
