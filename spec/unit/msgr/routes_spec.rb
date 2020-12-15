@@ -45,15 +45,16 @@ describe Msgr::Routes do
   end
 
   describe '#route' do
-    let(:subject) { -> { routes.route 'routing.key', to: 'test2#index2' } }
+    subject(:route) { -> { routes.route 'routing.key', to: 'test2#index2' } }
+
     let(:last_route) { routes.routes.last }
 
     it 'adds a new route' do
-      expect { subject.call }.to change { routes.routes.size }.from(0).to(1)
+      expect { route.call }.to change { routes.routes.size }.from(0).to(1)
     end
 
     it 'adds given route' do
-      subject.call
+      route.call
 
       expect(last_route.keys).to eq %w[routing.key]
       expect(last_route.consumer).to eq 'Test2Consumer'
@@ -61,7 +62,7 @@ describe Msgr::Routes do
     end
 
     context 'with same target' do
-      let(:subject) do
+      subject(:route) do
         lambda do
           routes.route 'routing.key', to: 'test#index'
           routes.route 'another.routing.key', to: 'test#index'
@@ -69,11 +70,11 @@ describe Msgr::Routes do
       end
 
       it 'onlies add one new route' do
-        expect { subject.call }.to change { routes.routes.size }.from(0).to(1)
+        expect { route.call }.to change { routes.routes.size }.from(0).to(1)
       end
 
       it 'adds second binding to first route' do
-        subject.call
+        route.call
         expect(routes.routes.first.keys).to eq %w[routing.key another.routing.key]
       end
     end

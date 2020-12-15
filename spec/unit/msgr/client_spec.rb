@@ -3,47 +3,45 @@
 require 'spec_helper'
 
 describe Msgr::Client do
-  subject { described_class.new config }
+  subject(:client) { described_class.new config }
 
   let(:config) { {} }
 
   describe '#uri' do
-    subject { super().uri.to_s }
+    subject(:uri) { client.uri.to_s }
 
     context 'with default config' do
       it 'uses the default config' do
-        expect(subject).to eq 'amqp://127.0.0.1'
+        expect(uri).to eq 'amqp://127.0.0.1'
       end
     end
 
-    context 'with overwritten URI' do
-      context 'without vhost' do
-        let(:config) { {uri: 'amqp://rabbit'} }
+    context 'without vhost' do
+      let(:config) { {uri: 'amqp://rabbit'} }
 
-        it 'does not specify a vhost' do
-          expect(subject).to eq 'amqp://rabbit'
-        end
+      it 'does not specify a vhost' do
+        expect(uri).to eq 'amqp://rabbit'
       end
+    end
 
-      context 'with empty vhost' do
-        let(:config) { {uri: 'amqp://rabbit/'} }
+    context 'with empty vhost' do
+      let(:config) { {uri: 'amqp://rabbit/'} }
 
-        it 'does not specify a vhost' do
-          expect(subject).to eq 'amqp://rabbit'
-        end
+      it 'does not specify a vhost' do
+        expect(uri).to eq 'amqp://rabbit'
       end
+    end
 
-      context 'with explicit vhost' do
-        let(:config) { {uri: 'amqp://rabbit/some_vhost'} }
+    context 'with explicit vhost' do
+      let(:config) { {uri: 'amqp://rabbit/some_vhost'} }
 
-        # This behavior is due to legacy parsing in Msgr's config.
-        # We interpret the entire path (incl. the leading slash)
-        # as vhost. As per AMQP rules, this means the leading slash
-        # is part of the vhost, which means it has to be URL encoded.
-        # This will likely change with the next major release.
-        it 'uses the entire path as vhost' do
-          expect(subject).to eq 'amqp://rabbit/%2Fsome_vhost'
-        end
+      # This behavior is due to legacy parsing in Msgr's config.
+      # We interpret the entire path (incl. the leading slash)
+      # as vhost. As per AMQP rules, this means the leading slash
+      # is part of the vhost, which means it has to be URL encoded.
+      # This will likely change with the next major release.
+      it 'uses the entire path as vhost' do
+        expect(uri).to eq 'amqp://rabbit/%2Fsome_vhost'
       end
     end
 
@@ -54,7 +52,7 @@ describe Msgr::Client do
       # leading slash (as a vhost in the :uri config would have
       # an extra URL encoded leading slash).
       it 'uses the explicit vhost' do
-        expect(subject).to eq 'amqp://rabbit/real_vhost'
+        expect(uri).to eq 'amqp://rabbit/real_vhost'
       end
     end
   end
