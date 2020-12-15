@@ -7,26 +7,18 @@ jobs:
 
     steps:
       - uses: actions/checkout@master
-      - uses: actions/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.6
-      - uses: actions/cache@v1
-        with:
-          path: vendor
-          key: v1-ruby-2.6
+          bundler-cache: true
+        env:
+          BUNDLE_WITHOUT: development
+          BUNDLE_JOBS: 4
+          BUNDLE_RETRY: 3
 
       - name: Install dependencies
         run: |
           sudo apt-get install --quiet --yes libsqlite3-dev
-
-      - name: Install bundler
-        run: |
-          gem install bundler -v '~> 2.0'
-          bundle config path "$(pwd)/vendor/bundle"
-          bundle config without development
-
-      - name: Run bundle install
-        run: bundle install --jobs=4 --retry=3
 
       - name: Run rubocop
         run: bundle exec rubocop --parallel --color
