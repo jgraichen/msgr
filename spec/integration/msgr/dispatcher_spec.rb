@@ -43,31 +43,34 @@ describe Msgr::Dispatcher do
   let(:message) { Msgr::Message.new channel, delivery_info, metadata, payload, route }
   let(:action) { -> { dispatcher.call message } }
 
-  it 'should consume message' do
+  it 'consumes message' do
     expect_any_instance_of(DispatcherTestConsumer).to receive(:index)
     dispatcher.call message
   end
 
   context 'with not acknowledged message' do
-    before { dispatcher.call message }
     subject { message }
-    it { should be_acked }
+
+    before { dispatcher.call message }
+
+    it { is_expected.to be_acked }
   end
 
   describe 'exception swallowing' do
     let(:consumer) { 'DispatcherRaiseConsumer' }
+
     before do
       allow(message).to receive(:nack)
     end
 
-    it 'should swallow exceptions by default' do
+    it 'swallows exceptions by default' do
       expect { dispatcher.call(message) }.not_to raise_error
     end
 
     context 'with raise_exceptions configuration option and a synchronous pool' do
       let(:config) { super().merge(raise_exceptions: true) }
 
-      it 'should raise the exception' do
+      it 'raises the exception' do
         expect { dispatcher.call(message) }.to raise_error(ArgumentError)
       end
     end

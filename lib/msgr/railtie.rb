@@ -4,7 +4,9 @@ module Msgr
   class Railtie < ::Rails::Railtie
     config.msgr = ActiveSupport::OrderedOptions.new
 
-    config.autoload_paths << File.expand_path("#{Rails.root}/app/consumers") if File.exist?("#{Rails.root}/app/consumers")
+    if File.exist?("#{Rails.root}/app/consumers")
+      config.autoload_paths << File.expand_path("#{Rails.root}/app/consumers")
+    end
 
     initializer 'msgr.logger' do |app|
       app.config.msgr.logger ||= Rails.logger
@@ -41,7 +43,9 @@ module Msgr
         end
 
         cfg = HashWithIndifferentAccess.new cfg[Rails.env]
-        raise ArgumentError.new('Could not load rabbitmq environment config: URI missing.') unless cfg[:uri]
+        unless cfg[:uri]
+          raise ArgumentError.new('Could not load rabbitmq environment config: URI missing.')
+        end
 
         case cfg[:autostart]
           when true, 'true', 'enabled'

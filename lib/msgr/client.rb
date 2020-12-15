@@ -5,7 +5,6 @@ require 'cgi'
 require 'json'
 
 module Msgr
-  # rubocop:disable Metrics/ClassLength
   class Client
     include Logging
 
@@ -28,7 +27,6 @@ module Msgr
       log(:debug) { "Created new client on process ##{@pid}..." }
     end
 
-    # rubocop:enable all
     def uri
       @uri = begin
         uri = ::URI.parse('amqp://localhost')
@@ -39,7 +37,9 @@ module Msgr
         uri.port     = config[:port]             if config.key?(:port)
         uri.scheme   = config[:ssl] ? 'amqps' : 'amqp'
 
-        uri.path = "/#{CGI.escape(config[:vhost])}" if config.key?(:vhost) && config[:vhost] != '/'
+        if config.key?(:vhost) && config[:vhost] != '/'
+          uri.path = "/#{CGI.escape(config[:vhost])}"
+        end
 
         uri
       end

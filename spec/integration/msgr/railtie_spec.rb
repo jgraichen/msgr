@@ -6,15 +6,16 @@ describe Msgr::Railtie do
   describe 'configuration options' do
     let(:config) { Rails.configuration }
 
-    it 'should have `msgr` key' do
+    it 'has `msgr` key' do
       expect(config).to respond_to :msgr
     end
   end
 
   describe '#parse_config' do
+    subject { action }
+
     let(:settings) { {} }
     let(:action) { described_class.parse_config settings }
-    subject { action }
 
     context 'with incorrect settings' do
       subject { -> { action } }
@@ -22,25 +23,25 @@ describe Msgr::Railtie do
       context 'with config without url' do
         let(:settings) { {'test' => {hans: 'otto'}} }
 
-        it { should raise_error 'Could not load rabbitmq environment config: URI missing.' }
+        it { is_expected.to raise_error 'Could not load rabbitmq environment config: URI missing.' }
       end
 
       context 'with invalid autostart value' do
         let(:settings) { {'test' => {uri: 'hans', autostart: 'unvalid'}} }
 
-        it { should raise_error 'Invalid value for rabbitmq config autostart: "unvalid"' }
+        it { is_expected.to raise_error 'Invalid value for rabbitmq config autostart: "unvalid"' }
       end
 
       context 'with invalid checkcredentials value' do
         let(:settings) { {'test' => {uri: 'hans', checkcredentials: 'unvalid'}} }
 
-        it { should raise_error 'Invalid value for rabbitmq config checkcredentials: "unvalid"' }
+        it { is_expected.to raise_error 'Invalid value for rabbitmq config checkcredentials: "unvalid"' }
       end
 
       context 'with invalid raise_exceptions value' do
         let(:settings) { {'test' => {uri: 'franz', raise_exceptions: 'unvalid'}} }
 
-        it { should raise_error 'Invalid value for rabbitmq config raise_exceptions: "unvalid"' }
+        it { is_expected.to raise_error 'Invalid value for rabbitmq config raise_exceptions: "unvalid"' }
       end
     end
 
@@ -49,7 +50,8 @@ describe Msgr::Railtie do
 
       context '[:routing_file]' do
         subject { super()[:routing_file] }
-        it { should eq Rails.root.join('config/msgr.rb').to_s }
+
+        it { is_expected.to eq Rails.root.join('config/msgr.rb').to_s }
       end
     end
 
@@ -58,7 +60,8 @@ describe Msgr::Railtie do
 
       context '[:routing_file]' do
         subject { super()[:routing_file] }
-        it { should eq 'my fancy file' }
+
+        it { is_expected.to eq 'my fancy file' }
       end
     end
 
@@ -67,7 +70,8 @@ describe Msgr::Railtie do
 
       context '[:uri]' do
         subject { super()[:uri] }
-        it { should eq 'hans' }
+
+        it { is_expected.to eq 'hans' }
       end
     end
 
@@ -76,7 +80,8 @@ describe Msgr::Railtie do
 
       context '[:uri]' do
         subject { super()[:uri] }
-        it { should eq 'hans' }
+
+        it { is_expected.to eq 'hans' }
       end
     end
 
@@ -85,7 +90,8 @@ describe Msgr::Railtie do
 
       describe '[:raise_exceptions]' do
         subject { super()[:raise_exceptions] }
-        it { should eq false }
+
+        it { is_expected.to eq false }
       end
     end
   end
@@ -98,34 +104,34 @@ describe Msgr::Railtie do
     end
 
     context 'with autostart is true' do
-      it 'should not start Msgr' do
+      it 'does not start Msgr' do
         expect(Msgr).to receive(:start)
-        expect(Msgr::Railtie).to receive(:load_config).and_return('test' => {uri: 'test', autostart: true})
-        Msgr::Railtie.load config
+        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test', autostart: true})
+        described_class.load config
       end
     end
 
     context 'without autostart value' do
-      it 'should not start Msgr' do
-        expect(Msgr).to_not receive(:start)
-        expect(Msgr::Railtie).to receive(:load_config).and_return('test' => {uri: 'test'})
-        Msgr::Railtie.load config
+      it 'does not start Msgr' do
+        expect(Msgr).not_to receive(:start)
+        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test'})
+        described_class.load config
       end
     end
 
     context 'without checkcredentials value' do
-      it 'should connect to rabbitmq directly to check credentials' do
+      it 'connects to rabbitmq directly to check credentials' do
         expect_any_instance_of(Msgr::Client).to receive(:connect)
-        expect(Msgr::Railtie).to receive(:load_config).and_return('test' => {uri: 'test'})
-        Msgr::Railtie.load config
+        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test'})
+        described_class.load config
       end
     end
 
     context 'with checkcredentials is false' do
-      it 'should connect to rabbitmq directly to check credentials' do
-        expect_any_instance_of(Msgr::Client).to_not receive(:connect)
-        expect(Msgr::Railtie).to receive(:load_config).and_return('test' => {uri: 'test', checkcredentials: false})
-        Msgr::Railtie.load config
+      it 'connects to rabbitmq directly to check credentials' do
+        expect_any_instance_of(Msgr::Client).not_to receive(:connect)
+        expect(described_class).to receive(:load_config).and_return('test' => {uri: 'test', checkcredentials: false})
+        described_class.load config
       end
     end
   end

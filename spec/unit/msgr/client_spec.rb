@@ -4,6 +4,7 @@ require 'spec_helper'
 
 describe Msgr::Client do
   subject { described_class.new config }
+
   let(:config) { {} }
 
   describe '#uri' do
@@ -11,7 +12,7 @@ describe Msgr::Client do
 
     context 'with default config' do
       it 'uses the default config' do
-        is_expected.to eq 'amqp://127.0.0.1'
+        expect(subject).to eq 'amqp://127.0.0.1'
       end
     end
 
@@ -20,7 +21,7 @@ describe Msgr::Client do
         let(:config) { {uri: 'amqp://rabbit'} }
 
         it 'does not specify a vhost' do
-          is_expected.to eq 'amqp://rabbit'
+          expect(subject).to eq 'amqp://rabbit'
         end
       end
 
@@ -28,7 +29,7 @@ describe Msgr::Client do
         let(:config) { {uri: 'amqp://rabbit/'} }
 
         it 'does not specify a vhost' do
-          is_expected.to eq 'amqp://rabbit'
+          expect(subject).to eq 'amqp://rabbit'
         end
       end
 
@@ -41,7 +42,7 @@ describe Msgr::Client do
         # is part of the vhost, which means it has to be URL encoded.
         # This will likely change with the next major release.
         it 'uses the entire path as vhost' do
-          is_expected.to eq 'amqp://rabbit/%2Fsome_vhost'
+          expect(subject).to eq 'amqp://rabbit/%2Fsome_vhost'
         end
       end
     end
@@ -53,7 +54,7 @@ describe Msgr::Client do
       # leading slash (as a vhost in the :uri config would have
       # an extra URL encoded leading slash).
       it 'uses the explicit vhost' do
-        is_expected.to eq 'amqp://rabbit/real_vhost'
+        expect(subject).to eq 'amqp://rabbit/real_vhost'
       end
     end
   end

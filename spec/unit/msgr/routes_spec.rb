@@ -3,12 +3,12 @@
 require 'spec_helper'
 
 describe Msgr::Routes do
-  let(:routes) { Msgr::Routes.new }
+  let(:routes) { described_class.new }
 
   describe '#configure' do
     let(:block) { proc {} }
 
-    it 'should evaluate given block within instance context' do
+    it 'evaluates given block within instance context' do
       expect(routes).to receive(:instance_eval) do |&p|
         expect(p).to be block
       end
@@ -16,7 +16,7 @@ describe Msgr::Routes do
       routes.configure(&block)
     end
 
-    it 'should allow to call instance method in gven block' do
+    it 'allows to call instance method in gven block' do
       expect(routes).to receive(:test_instance_method).with(:abc)
 
       routes.configure do
@@ -35,7 +35,7 @@ describe Msgr::Routes do
 
     let(:each) { routes.each }
 
-    it 'should iterate over configured routes' do
+    it 'iterates over configured routes' do
       expect(each.size).to eq 2
 
       expect(each.map(&:keys)).to eq [%w[abc.#], %w[edf.#]]
@@ -48,11 +48,11 @@ describe Msgr::Routes do
     let(:subject) { -> { routes.route 'routing.key', to: 'test2#index2' } }
     let(:last_route) { routes.routes.last }
 
-    it 'should add a new route' do
+    it 'adds a new route' do
       expect { subject.call }.to change { routes.routes.size }.from(0).to(1)
     end
 
-    it 'should add given route' do
+    it 'adds given route' do
       subject.call
 
       expect(last_route.keys).to eq %w[routing.key]
@@ -68,11 +68,11 @@ describe Msgr::Routes do
         end
       end
 
-      it 'should only add one new route' do
+      it 'onlies add one new route' do
         expect { subject.call }.to change { routes.routes.size }.from(0).to(1)
       end
 
-      it 'should add second binding to first route' do
+      it 'adds second binding to first route' do
         subject.call
         expect(routes.routes.first.keys).to eq %w[routing.key another.routing.key]
       end
@@ -80,7 +80,7 @@ describe Msgr::Routes do
   end
 
   describe '#files' do
-    it 'should allow to add route paths' do
+    it 'allows to add route paths' do
       routes.files << 'abc.rb'
       routes.files += %w[cde.rb edf.rb]
 
@@ -91,14 +91,14 @@ describe Msgr::Routes do
   describe 'reload' do
     before { File.stub(:exist?).and_return(true) }
 
-    it 'should trigger load for all files' do
+    it 'triggers load for all files' do
       expect(routes).to receive(:load).with('cde.rb').ordered
       expect(routes).to receive(:load).with('edf.rb').ordered
       routes.files += %w[cde.rb edf.rb]
       routes.reload
     end
 
-    it 'should clear old routes before reloading' do
+    it 'clears old routes before reloading' do
       routes.route 'abc', to: 'abc#test'
       routes.reload
       expect(routes.each.size).to eq 0
@@ -108,7 +108,7 @@ describe Msgr::Routes do
   describe 'load' do
     let(:file) { 'spec/fixtures/msgr_routes_test_1.rb' }
 
-    it 'should eval given file within routes context' do
+    it 'evals given file within routes context' do
       expect(routes).to receive(:route).with('abc.#', to: 'test#index')
       routes.load file
     end

@@ -41,7 +41,7 @@ describe Msgr do
     client.stop delete: true
   end
 
-  it 'should dispatch published methods to consumer' do
+  it 'dispatches published methods to consumer' do
     expect(Receiver).to receive(:index) { queue << :end }
 
     client.publish 'Payload', to: 'test.index'
@@ -49,7 +49,7 @@ describe Msgr do
     Timeout.timeout(4) { queue.pop }
   end
 
-  it 'should redelivery failed messages' do
+  it 'redelivers failed messages' do
     expect(Receiver).to receive(:error).ordered.and_raise RuntimeError
     expect(Receiver).to receive(:error).ordered { queue << :end }
 
@@ -58,7 +58,7 @@ describe Msgr do
     Timeout.timeout(4) { queue.pop }
   end
 
-  it 'should receive 2 messages when prefetch is set to 2' do
+  it 'receives 2 messages when prefetch is set to 2' do
     expect(Receiver).to receive(:batch).twice {|msg| queue << msg }
 
     2.times { client.publish 'Payload', to: 'test.batch' }
@@ -66,7 +66,7 @@ describe Msgr do
     2.times { Timeout.timeout(4) { queue.pop } }
   end
 
-  it 'should not bulk ack all unacknowledged messages when acknowledging the last one' do
+  it 'does not bulk ack all unacknowledged messages when acknowledging the last one' do
     expect(Receiver).to receive(:batch).exactly(3).times {|msg| queue << msg }
 
     2.times { client.publish 'Payload', to: 'test.batch' }

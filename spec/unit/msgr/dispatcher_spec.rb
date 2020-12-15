@@ -15,13 +15,14 @@ class MsgrManualAckConsumer < Msgr::Consumer
 end
 
 describe Msgr::Dispatcher do
-  let(:config) { {} }
-  let(:args) { [config] }
-  let(:dispatcher) { Msgr::Dispatcher.new(*args) }
   subject { dispatcher }
 
+  let(:config) { {} }
+  let(:args) { [config] }
+  let(:dispatcher) { described_class.new(*args) }
+
   describe 'dispatch' do
-    it 'should ack messages automatically if auto_ack is enabled' do
+    it 'acks messages automatically if auto_ack is enabled' do
       route_db = double('Route', consumer: 'MsgrAutoAckConsumer', action: :index)
       msg_db = double('Message', route: route_db, acked?: false)
       expect(msg_db).to receive(:ack)
@@ -30,7 +31,7 @@ describe Msgr::Dispatcher do
       dispatcher.dispatch(msg_db)
     end
 
-    it 'should not ack messages if auto_ack is disabled' do
+    it 'does not ack messages if auto_ack is disabled' do
       route_db = double('Route', consumer: 'MsgrManualAckConsumer', action: :index)
       msg_db = double('Message', route: route_db, acked?: false)
       expect(msg_db).not_to receive(:ack)
