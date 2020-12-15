@@ -28,8 +28,8 @@ module Msgr
       end
     end
 
-    def queue(name)
-      @channel.queue(prefix(name), durable: true).tap do |queue|
+    def queue(name, **opts)
+      @channel.queue(prefix(name), durable: true, **opts).tap do |queue|
         log(:debug) do
           "Create queue #{queue.name} (durable: #{queue.durable?}, " \
           "auto_delete: #{queue.auto_delete?})"

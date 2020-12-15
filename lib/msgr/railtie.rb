@@ -25,6 +25,10 @@ module Msgr
       end
     end
 
+    rake_tasks do
+      load File.expand_path('tasks/msgr/drain.rake', __dir__)
+    end
+
     class << self
       def load(config)
         config = DEFAULT_OPTIONS.merge(config)

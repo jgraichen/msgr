@@ -70,6 +70,16 @@ module Msgr
       bindings.each {|b| b.purge(**kwargs) }
     end
 
+    def purge_queue(name)
+      # Creating the queue in passive mode ensures that queues that do not exist
+      # won't be created just to purge them.
+      # That requires creating a new channel every time, as exceptions (on
+      # missing queues) invalidate the channel.
+      channel.queue(name, passive: true).purge
+    rescue Bunny::NotFound
+      nil
+    end
+
     def bindings
       @bindings ||= []
     end
