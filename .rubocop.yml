@@ -7,3 +7,7 @@ AllCops:
     - gemfiles/**/*
     - spec/integration/dummy/**/*
     - vendor/**/*
+
+Layout/LineLength:
+  Exclude:
+    - spec/**/*

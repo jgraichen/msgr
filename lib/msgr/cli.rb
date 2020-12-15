@@ -69,11 +69,17 @@ module Msgr
         }
 
         OptionParser.new do |o|
-          o.on '-r', '--require [PATH|DIR]', 'Location of Rails application (default to current directory)' do |arg|
+          o.on(
+            '-r', '--require [PATH|DIR]',
+            'Location of Rails application (default to current directory)'
+          ) do |arg|
             options[:require] = arg
           end
 
-          o.on '-e', '--environment [env]', 'Rails environment (default to development)' do |arg|
+          o.on(
+            '-e', '--environment [env]',
+            'Rails environment (default to development)'
+          ) do |arg|
             options[:environment] = arg
           end
         end.parse!

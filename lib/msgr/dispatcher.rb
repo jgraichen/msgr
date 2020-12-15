@@ -34,7 +34,8 @@ module Msgr
 
       consumer_class.new.dispatch message
 
-      # Acknowledge message unless it is already acknowledged or auto_ack is disabled.
+      # Acknowledge message only if it is not already acknowledged and auto
+      # acknowledgment is enabled.
       message.ack unless message.acked? || !consumer_class.auto_ack?
     rescue StandardError => e
       message.nack unless message.acked?
