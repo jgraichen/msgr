@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.3.1] - 2020-12-16
+### Fixed
+- Delay setting default options for correct relative routing file path
+
 ## [1.3.0] - 2020-12-16
 ### Added
 - Support and testing for Rails 6.1
@@ -90,13 +94,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 - Fix bug with empty routes on client start
 
-## 0.4.0 - 0.10.0
-### Changed
-- Some lost history due to several crises
-
 ## [0.4.0] - 2014-03-04
 ### Changed
 - Improve railtie and autostart code
+
+## 0.4.0 - 0.10.0
+### Changed
+- Some lost history due to several crises
 
 ## [0.3.0] - 2014-03-03
 ### Added
@@ -110,7 +114,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Improve rails initializer code
 
-[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.3.1...HEAD
+[1.3.1]: https://github.com/jgraichen/msgr/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/jgraichen/msgr/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/jgraichen/msgr/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/jgraichen/msgr/compare/v1.0.0...v1.1.0
