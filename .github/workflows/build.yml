@@ -20,8 +20,9 @@ jobs:
     services:
       rabbitmq:
         image: rabbitmq:latest
-        ports: [5672/tcp]
         options: --health-cmd "rabbitmqctl node_health_check" --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 5672:5672
 
     steps:
       - uses: actions/checkout@master
@@ -40,12 +41,12 @@ jobs:
 
       - name: Run unit tests
         env:
-          AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
+          AMQP_SERVER: amqp://localhost:5672
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: bundle exec rspec -Ispec/unit --color spec/unit
 
       - name: Run integration tests
         env:
-          AMQP_SERVER: amqp://localhost:${{ job.services.rabbitmq.ports[5672] }}
+          AMQP_SERVER: amqp://localhost:5672
           BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
         run: bundle exec rspec -Ispec/integration --color spec/integration
