@@ -3,7 +3,7 @@ on: [push]
 jobs:
   rubocop:
     name: rubocop
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     steps:
       - uses: actions/checkout@master
@@ -15,10 +15,6 @@ jobs:
           BUNDLE_WITHOUT: development
           BUNDLE_JOBS: 4
           BUNDLE_RETRY: 3
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install --quiet --yes libsqlite3-dev
 
       - name: Run rubocop
         run: bundle exec rubocop --parallel --color
