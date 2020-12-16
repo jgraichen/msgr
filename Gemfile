@@ -6,6 +6,7 @@ gem 'appraisal'
 gem 'coveralls'
 gem 'my-rubocop', github: 'jgraichen/my-rubocop'
 gem 'rake'
+gem 'rake-release', '~> 1.1'
 gem 'rspec', '~> 3.0'
 gem 'rspec-rails'
 

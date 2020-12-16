@@ -7,8 +7,12 @@ rescue LoadError
 end
 
 require 'rake'
-require 'bundler/gem_tasks'
+require 'rake/release/task'
 require 'rspec/core/rake_task'
+
+Rake::Release::Task.new do |spec|
+  spec.sign_tag = true
+end
 
 # Delegate spec task task to spec:all to run all specs.
 task spec: 'spec:all'
