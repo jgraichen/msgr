@@ -12,14 +12,9 @@ jobs:
           - '2.6'
           - '2.5'
         gemfile:
-          - rails_42.gemfile
-          - rails_50.gemfile
-          - rails_51.gemfile
-          - rails_52.gemfile
-          - rails_60.gemfile
-        exclude:
-          - {ruby: '2.7', gemfile: 'rails_42.gemfile'}
-          - {ruby: '2.6', gemfile: 'rails_42.gemfile'}
+          - rails_5.2.gemfile
+          - rails_6.0.gemfile
+          - rails_6.1.gemfile
       fail-fast: false
 
     services:
@@ -31,9 +26,8 @@ jobs:
     steps:
       - uses: actions/checkout@master
 
-      - name: Install Ruby with Bundler 1.x
+      - name: Setup Ruby
         uses: ruby/setup-ruby@v1
-        if: matrix.gemfile == 'rails_42.gemfile'
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
@@ -43,23 +37,6 @@ jobs:
           BUNDLE_WITHOUT: development
           BUNDLE_JOBS: 4
           BUNDLE_RETRY: 3
-
-      - name: Install Ruby with Bundler 2.x
-        uses: ruby/setup-ruby@v1
-        if: matrix.gemfile != 'rails_42.gemfile'
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-          bundler: 1
-        env:
-          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
-          BUNDLE_WITHOUT: development
-          BUNDLE_JOBS: 4
-          BUNDLE_RETRY: 3
-
-      - name: Install dependencies
-        run: |
-          sudo apt-get install --quiet --yes libsqlite3-dev
 
       - name: Run unit tests
         env:

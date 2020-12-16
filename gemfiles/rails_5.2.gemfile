@@ -4,11 +4,11 @@ source "https://rubygems.org"
 
 gem "appraisal"
 gem "coveralls"
+gem "my-rubocop", github: "jgraichen/my-rubocop"
 gem "rake"
 gem "rspec", "~> 3.0"
 gem "rspec-rails"
-gem "rubocop", "~> 0.80.1"
-gem "rails", "~> 5.1.0"
+gem "rails", "~> 5.2.0"
 gem "sqlite3"
 
 gemspec path: "../"

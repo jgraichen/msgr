@@ -1,27 +1,16 @@
 # frozen_string_literal: true
-
 # -*- mode: ruby -*-
 
-appraise 'rails-42' do
-  gem 'rails', '~> 4.2.0'
-  gem 'sqlite3', '~> 1.3.6'
-end
-
-appraise 'rails-50' do
-  gem 'rails', '~> 5.0.0'
-  gem 'sqlite3', '~> 1.3.6'
-end
-
-appraise 'rails-51' do
-  gem 'rails', '~> 5.1.0'
-end
-
-appraise 'rails-52' do
+appraise 'rails-5.2' do
   gem 'rails', '~> 5.2.0'
 end
 
-appraise 'rails-60' do
+appraise 'rails-6.0' do
   gem 'rails', '~> 6.0.0'
+end
+
+appraise 'rails-6.1' do
+  gem 'rails', '~> 6.1.0'
 end
 
 appraise 'rails-master' do
