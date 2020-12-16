@@ -5,7 +5,6 @@ require 'spec_helper'
 class DispatcherTestConsumer < Msgr::Consumer
   def index
     self.class.called!
-    puts "<<< #{payload}"
   end
 
   class << self
