@@ -81,9 +81,12 @@ class TestController < ApplicationController
 end
 ```
 
+Run client daemon with `bundle exec msgr`.
+
+
 ## Advanced configuration
 
-### Manual message acknowledgement
+### Manual message acknowledgments
 
 Per default messages are automatically acknowledged, if no (n)ack is sent explicitly by the consumer. This can be disabled by setting the `auto_ack` attribute to `false`.
 
@@ -99,7 +102,6 @@ class TestConsumer < Msgr::Consumer
 end
 ```
 
-
 ### Prefetch count
 
 Per default each message queue has a prefetch count of 1. This value can be changed when specifying the messaging routes:
@@ -107,19 +109,6 @@ Per default each message queue has a prefetch count of 1. This value can be chan
  ```ruby
  route 'local.test.index', to: 'test#index', prefetch: 42
  ```
-
-### Msgr and fork web server like unicorn
-
-Per default msgr opens the rabbitmq connect when rails is loaded. If you use a multi-process web server that preloads the application (like unicorn) will lead to unexpected behavior. In this case adjust `config/rabbitmq.yml` and adjust `autostart = false`:
-
-
-```yaml
-common: &common
-  uri: amqp://localhost/
-  autostart: false
-```
-
-And call inside each worker `Msgr.start` - e.g. in an after-fork block
 
 
 ## Testing
