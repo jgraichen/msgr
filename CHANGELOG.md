@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.3.2] - 2021-09-21
+### Fixed
+- Rake task `msgr:drain` ran before all routes were initialized (#44)
+
 ## [1.3.1] - 2020-12-16
 ### Fixed
 - Delay setting default options for correct relative routing file path
@@ -12,7 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.3.0] - 2020-12-16
 ### Added
 - Support and testing for Rails 6.1
-- Rake task  for purging all known queues (#43)
+- Rake task for purging all known queues (#43)
 
 ### Changed
 - High-risk feature to autostart client in-process has been removed without replacement
@@ -114,7 +118,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Improve rails initializer code
 
-[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.3.1...HEAD
+[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.3.2...HEAD
+[1.3.2]: https://github.com/jgraichen/msgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/jgraichen/msgr/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/jgraichen/msgr/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/jgraichen/msgr/compare/v1.1.0...v1.2.0
