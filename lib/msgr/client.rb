@@ -21,7 +21,7 @@ module Msgr
       @config.merge! config.symbolize_keys
 
       @mutex  = ::Mutex.new
-      @routes = Routes.new
+      @routes = load_routes
       @pid ||= ::Process.pid
 
       log(:debug) { "Created new client on process ##{@pid}..." }
@@ -59,8 +59,6 @@ module Msgr
 
         log(:debug) { "Start on #{uri}..." }
 
-        @routes << config[:routing_file] if config[:routing_file].present?
-        @routes.reload
         connection.bind(@routes)
       end
     end
@@ -191,6 +189,13 @@ module Msgr
       config[:ssl]   ||= uri.scheme.casecmp('amqps').zero?
 
       config
+    end
+
+    def load_routes
+      Routes.new.tap do |routes|
+        routes << config[:routing_file] if config[:routing_file].present?
+        routes.reload
+      end
     end
   end
 end
