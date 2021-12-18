@@ -25,7 +25,7 @@ require 'msgr/railtie' if defined? Rails
 
 module Msgr
   class << self
-    attr_writer :client, :config
+    attr_writer :client, :config, :logger
 
     delegate :publish, to: :client
 
@@ -45,8 +45,6 @@ module Msgr
 
       @logger
     end
-
-    attr_writer :logger
 
     def start
       client.start

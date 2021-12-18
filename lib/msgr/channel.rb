@@ -22,7 +22,7 @@ module Msgr
         @channel.topic(prefix(EXCHANGE_NAME), durable: true).tap do |ex|
           log(:debug) do
             "Created exchange #{ex.name} (type: #{ex.type}, " \
-                "durable: #{ex.durable?}, auto_delete: #{ex.auto_delete?})"
+              "durable: #{ex.durable?}, auto_delete: #{ex.auto_delete?})"
           end
         end
       end
@@ -32,7 +32,7 @@ module Msgr
       @channel.queue(prefix(name), durable: true, **opts).tap do |queue|
         log(:debug) do
           "Create queue #{queue.name} (durable: #{queue.durable?}, " \
-          "auto_delete: #{queue.auto_delete?})"
+            "auto_delete: #{queue.auto_delete?})"
         end
       end
     end

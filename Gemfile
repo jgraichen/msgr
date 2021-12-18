@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 gem 'appraisal'
 gem 'coveralls'
-gem 'my-rubocop', github: 'jgraichen/my-rubocop'
+gem 'my-rubocop', github: 'jgraichen/my-rubocop', ref: 'v3'
 gem 'rake'
 gem 'rake-release', '~> 1.1'
 gem 'rspec', '~> 3.0'

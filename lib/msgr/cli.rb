@@ -41,7 +41,7 @@ module Msgr
       Signal.trap('INT') { w.puts 'INT' }
       Signal.trap('TERM') { w.puts 'TERM' }
 
-      Msgr.logger = Logger.new(STDOUT)
+      Msgr.logger = Logger.new($stdout)
       Msgr.client.start
 
       while (readable = IO.select([r]))
@@ -65,20 +65,20 @@ module Msgr
       def parse(_argv)
         options = {
           require: Dir.pwd,
-          environment: 'development'
+          environment: 'development',
         }
 
         OptionParser.new do |o|
           o.on(
             '-r', '--require [PATH|DIR]',
-            'Location of Rails application (default to current directory)'
+            'Location of Rails application (default to current directory)',
           ) do |arg|
             options[:require] = arg
           end
 
           o.on(
             '-e', '--environment [env]',
-            'Rails environment (default to development)'
+            'Rails environment (default to development)',
           ) do |arg|
             options[:environment] = arg
           end

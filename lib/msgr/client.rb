@@ -14,7 +14,7 @@ module Msgr
       @config = {
         host: '127.0.0.1',
         vhost: '/',
-        max: 2
+        max: 2,
       }
 
       @config.merge! parse(config.delete(:uri)) if config[:uri]
@@ -148,7 +148,7 @@ module Msgr
 
       log(:warn) do
         "Fork detected. Reset internal state. (Old PID: #{@pid} / " \
-        "New PID: #{::Process.pid}"
+          "New PID: #{::Process.pid}"
       end
 
       reset

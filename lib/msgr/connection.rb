@@ -88,7 +88,7 @@ module Msgr
       if routes.empty?
         log(:warn) do
           "No routes to bound to. Bind will have no effect:\n" \
-          "  #{routes.inspect}"
+            "  #{routes.inspect}"
         end
       else
         bind_all(routes)

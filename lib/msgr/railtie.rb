@@ -24,7 +24,7 @@ module Msgr
         # Set defaults
         config.reverse_merge!(
           checkcredentials: true,
-          routing_file: Rails.root.join('config/msgr.rb').to_s
+          routing_file: Rails.root.join('config/msgr.rb').to_s,
         )
 
         Msgr.config = config

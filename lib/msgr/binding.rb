@@ -10,7 +10,7 @@ module Msgr
       :dispatcher,
       :queue,
       :route,
-      :subscription
+      :subscription,
     )
 
     def initialize(connection, route, dispatcher)
@@ -54,7 +54,7 @@ module Msgr
       rescue StandardError => e
         log(:error) do
           "Rescued error from subscribe: #{e.class.name}: " \
-          "#{e}\n#{e.backtrace.join("\n")}"
+            "#{e}\n#{e.backtrace.join("\n")}"
         end
       end
     end
