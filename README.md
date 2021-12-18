@@ -1,5 +1,4 @@
-# Msgr: *Rails-like Messaging Framework*
-
+# Msgr: _Rails-like Messaging Framework_
 
 [![Gem Version](https://badge.fury.io/rb/msgr.svg)](http://badge.fury.io/rb/msgr)
 [![Build Status](https://travis-ci.org/jgraichen/msgr.svg?branch=master)](https://travis-ci.org/jgraichen/msgr)
@@ -9,7 +8,7 @@
 You know it and you like it. Using Rails you can just declare your routes and
 create a controller. That's all you need to process requests.
 
-With *Msgr* you can do the same for asynchronous AMQP messaging. Just define
+With _Msgr_ you can do the same for asynchronous AMQP messaging. Just define
 your routes, create your consumer and watch your app processing messages.
 
 ## Installation
@@ -83,7 +82,6 @@ end
 
 Run client daemon with `bundle exec msgr`.
 
-
 ## Advanced configuration
 
 ### Manual message acknowledgments
@@ -106,10 +104,9 @@ end
 
 Per default each message queue has a prefetch count of 1. This value can be changed when specifying the messaging routes:
 
- ```ruby
- route 'local.test.index', to: 'test#index', prefetch: 42
- ```
-
+```ruby
+route 'local.test.index', to: 'test#index', prefetch: 42
+```
 
 ## Testing
 
@@ -153,7 +150,6 @@ it 'executes the consumer' do
   expect(actual).to eq expected
 end
 ```
-
 
 ## Contributing
 
