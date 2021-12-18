@@ -1,8 +1,7 @@
 # Msgr: _Rails-like Messaging Framework_
 
-[![Gem Version](https://badge.fury.io/rb/msgr.svg)](http://badge.fury.io/rb/msgr)
-[![Build Status](https://travis-ci.org/jgraichen/msgr.svg?branch=master)](https://travis-ci.org/jgraichen/msgr)
-[![Build Status](https://github.com/jgraichen/msgr/workflows/Build/badge.svg?branch=master)](https://github.com/jgraichen/msgr/actions?query=workflow%3ABuild+branch%3Amaster)
+[![Gem](https://img.shields.io/gem/v/msgr?logo=rubygems)](https://rubygems.org/gems/msgr)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jgraichen/msgr/test?logo=github)](https://github.com/jgraichen/msgr/actions/workflows/test.yml)
 [![RubyDoc Documentation](http://img.shields.io/badge/rubydoc-here-blue.svg)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and you like it. Using Rails you can just declare your routes and
