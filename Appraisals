@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-# -*- mode: ruby -*-
+
+# vim: ft=ruby
 
 appraise 'rails-5.2' do
   gem 'rails', '~> 5.2.0'
