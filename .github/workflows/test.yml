@@ -1,0 +1,70 @@
+name: Build
+on: [push]
+jobs:
+  test:
+    name: Ruby ${{ matrix.ruby }} / ${{ matrix.gemfile }}
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        ruby:
+          - "2.7"
+          - "2.6"
+          - "2.5"
+        gemfile:
+          - rails_5.2.gemfile
+          - rails_6.0.gemfile
+          - rails_6.1.gemfile
+      fail-fast: False
+
+    services:
+      rabbitmq:
+        image: rabbitmq:latest
+        options: >
+          --health-cmd "rabbitmqctl node_health_check"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5672:5672
+
+    env:
+      AMQP_SERVER: amqp://localhost:5672
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 10
+      BUNDLE_WITHOUT: development
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: True
+
+      - name: Run unit tests
+        run: bundle exec rspec -Ispec/unit --color spec/unit
+
+      - name: Run integration tests
+        run: bundle exec rspec -Ispec/integration --color spec/integration
+
+  rubocop:
+    name: rubocop
+    runs-on: ubuntu-20.04
+
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 10
+      BUNDLE_WITHOUT: development
+
+    steps:
+      - uses: actions/checkout@master
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0
+          bundler-cache: true
+
+      - name: Run rubocop
+        run: bundle exec rubocop --parallel --color
