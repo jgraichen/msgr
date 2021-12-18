@@ -13,6 +13,10 @@ appraise 'rails-6.1' do
   gem 'rails', '~> 6.1.0'
 end
 
-appraise 'rails-master' do
+appraise 'rails-7.0' do
+  gem 'rails', '~> 6.1.0'
+end
+
+appraise 'rails-head' do
   gem 'rails', git: 'https://github.com/rails/rails', require: 'rails'
 end
