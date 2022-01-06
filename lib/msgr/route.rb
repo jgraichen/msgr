@@ -4,7 +4,7 @@ module Msgr
   class Route
     attr_reader :consumer, :action, :opts
 
-    MATCH_REGEXP = /\A(?<consumer>\w+)#(?<action>\w+)\z/.freeze
+    MATCH_REGEXP = %r{\A(?<consumer>(?:\w+/)*\w+)#(?<action>\w+)\z}.freeze
     def initialize(key, opts = {})
       @opts = opts
       raise ArgumentError.new 'Missing `to` options.' unless @opts[:to]
@@ -16,7 +16,7 @@ module Msgr
       unless result
         raise ArgumentError.new \
           "Invalid consumer format: #{opts[:to].strip.to_s.inspect}. " \
-          'Must be `consumer_class#action`.'
+          'Must be `name/space/consumer_class#action`.'
       end
 
       @consumer = "#{result[:consumer].camelize}Consumer"
