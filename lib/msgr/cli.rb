@@ -44,14 +44,13 @@ module Msgr
       Msgr.logger = Logger.new($stdout)
       Msgr.client.start
 
-      while (readable = IO.select([r]))
-        case readable.first[0].gets.strip
-          when 'INT', 'TERM'
-            Msgr.client.stop
-            break
-          else
-            exit 1
-        end
+      # Wait until we receive a signal
+      readable = IO.select([r])
+      case readable.first[0].gets.strip
+        when 'INT', 'TERM' # Safe shutdown
+          Msgr.client.stop
+        else # Error
+          exit 1
       end
     end
 
