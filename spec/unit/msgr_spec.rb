@@ -2,8 +2,7 @@
 
 require 'spec_helper'
 
-class Receiver
-end
+Receiver = Class.new
 
 class MsgrTestConsumer < Msgr::Consumer
   def index
