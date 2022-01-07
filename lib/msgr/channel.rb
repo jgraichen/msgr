@@ -55,11 +55,6 @@ module Msgr
       log(:debug) { "Nacked message: #{delivery_tag}" }
     end
 
-    def reject(delivery_tag, requeue = true)
-      @channel.reject delivery_tag, requeue
-      log(:debug) { "Rejected message: #{delivery_tag}" }
-    end
-
     def close
       @channel.close if @channel.open?
     end
