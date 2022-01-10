@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.4.0] - 2022-01-10
+
+### Added
+
+- Support for namespaced consumer classes in routes file (#48, #49)
+
+### Removed
+
+- Unused `Channel#reject` method
+
 ## [1.3.2] - 2021-09-21
 
 ### Fixed
@@ -169,7 +179,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Improve rails initializer code
 
-[unreleased]: https://github.com/jgraichen/msgr/compare/v1.3.2...HEAD
+[unreleased]: https://github.com/jgraichen/msgr/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/jgraichen/msgr/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/jgraichen/msgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/jgraichen/msgr/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/jgraichen/msgr/compare/v1.2.0...v1.3.0
