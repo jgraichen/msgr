@@ -34,6 +34,12 @@ describe Msgr::Route do
         described_class.new routing_key, to: 'abc'
       end.to raise_error ArgumentError, /invalid consumer format/i
     end
+
+    it 'allows namespaces in consumer' do
+      expect do
+        described_class.new routing_key, to: 'abc/def#ghi'
+      end.not_to raise_error
+    end
   end
 
   describe '#consumer' do
@@ -44,8 +50,16 @@ describe Msgr::Route do
     context 'with underscore consumer name' do
       let(:options) { super().merge to: 'test_resource_foo#index' }
 
-      it 'returns camelized method name' do
+      it 'returns camelized class name' do
         expect(route.consumer).to eq 'TestResourceFooConsumer'
+      end
+    end
+
+    context 'with nested namespace in consumer name' do
+      let(:options) { super().merge to: 'nested/namespace/foo#index' }
+
+      it 'returns fully classified, classified class name' do
+        expect(route.consumer).to eq 'Nested::Namespace::FooConsumer'
       end
     end
   end
