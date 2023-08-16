@@ -1,7 +1,7 @@
 # Msgr: _Rails-like Messaging Framework_
 
 [![Gem](https://img.shields.io/gem/v/msgr?logo=rubygems)](https://rubygems.org/gems/msgr)
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/jgraichen/msgr/test?logo=github)](https://github.com/jgraichen/msgr/actions/workflows/test.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jgraichen/msgr/test.yml?branch=main&logo=github)](https://github.com/jgraichen/msgr/actions/workflows/test.yml)
 [![RubyDoc Documentation](http://img.shields.io/badge/rubydoc-here-blue.svg)](http://rubydoc.info/github/jgraichen/msgr/master/frames)
 
 You know it and you like it. Using Rails you can just declare your routes and
@@ -14,19 +14,25 @@ your routes, create your consumer and watch your app processing messages.
 
 Add this line to your application's Gemfile:
 
-    gem 'msgr'
+```ruby
+gem 'msgr'
+```
 
 And then execute:
 
-    $ bundle
+```console
+bundle
+```
 
 Or install it yourself as:
 
-    $ gem install msgr
+```console
+gem install msgr
+```
 
 ## Usage
 
-After adding 'msgr' to your gemfile create a `config/rabbitmq.yml` like this:
+After adding 'msgr' to your Gemfile create a `config/rabbitmq.yml` like this:
 
 ```yaml
 common: &common
