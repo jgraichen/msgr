@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Support for Ruby 3.1 and 3.2
+
+### Changed
+
+- Drop support for Ruby < 2.7
+
+### Fixed
+
+- `TestPool#run` passing down keyword arguments
+
 ## [1.4.0] - 2022-01-10
 
 ### Added
@@ -48,7 +60,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Serialize JSON using core JSON instead of MultiJson
+- Serialize JSON using core JSON instead of `MultiJson`
 - Remove application/text fallback for payload (#25)
 
 ## [1.1.0] - 2018-07-25
@@ -88,7 +100,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Rework TestPool timeout handling to not account processing time
+- Rework `TestPool` timeout handling to not account processing time
 
 ## [0.14.1] - 2016-02-17
 
@@ -124,7 +136,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Add checkcredentials config option to disable initial connect to rabbitmq
+- Add `checkcredentials` config option to disable initial connect to RabbitMQ
   server to check the credentials
 
 ### Changed
@@ -135,13 +147,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Add nack for messages when an error is rescued by dispatcher
+- Add `#nack` for messages when an error is rescued by dispatcher
 
 ## [0.11.0-rc1] - 2014-03-29
 
 ### Added
 
-- Add pool_class config to override pool classes used by dispatcher
+- Add `pool_class` config to override pool classes used by dispatcher
 
 ## [0.4.1] - 2014-03-18
 
@@ -149,17 +161,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Fix bug with empty routes on client start
 
-## [0.4.0] - 2014-03-04
-
-### Changed
-
-- Improve railtie and autostart code
-
 ## 0.4.0 - 0.10.0
 
 ### Changed
 
 - Some lost history due to several crises
+
+## [0.4.0] - 2014-03-04
+
+### Changed
+
+- Improve `Railtie` and autostart code
 
 ## [0.3.0] - 2014-03-03
 
@@ -171,7 +183,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Fix wrong rails initializer code - was not use the config file
+- Fix wrong Rails initializer code - was not use the config file
 
 ## [0.2.0] - 2014-02-21
 
@@ -179,7 +191,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Improve rails initializer code
 
-[unreleased]: https://github.com/jgraichen/msgr/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.4.0...HEAD
 [1.4.0]: https://github.com/jgraichen/msgr/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/jgraichen/msgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/jgraichen/msgr/compare/v1.3.0...v1.3.1
