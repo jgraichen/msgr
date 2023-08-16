@@ -4,11 +4,11 @@ source 'https://rubygems.org'
 
 gem 'appraisal'
 gem 'coveralls'
-gem 'my-rubocop', github: 'jgraichen/my-rubocop', ref: 'v4'
 gem 'rake'
 gem 'rake-release', '~> 1.1'
 gem 'rspec', '~> 3.0'
 gem 'rspec-rails'
+gem 'rubocop-config', github: 'jgraichen/rubocop-config', ref: 'v11', require: false
 
 gem 'rails'
 gem 'sqlite3'

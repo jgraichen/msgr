@@ -11,7 +11,7 @@ Coveralls.wear! do
 end
 
 ENV['RAILS_ENV'] ||= 'test'
-ENV['RAILS_GROUPS'] = ['rails', ENV['RAILS_GROUPS']].reject(&:nil?).join(',')
+ENV['RAILS_GROUPS'] = ['rails', ENV.fetch('RAILS_GROUPS', nil)].compact.join(',')
 require File.expand_path('dummy/config/environment', __dir__)
 require 'rspec/rails'
 

@@ -61,8 +61,8 @@ describe Msgr::Client do
     subject(:drain) { client.drain }
 
     let(:config) { {routing_file: 'spec/fixtures/msgr_routes_test_drain.rb'} }
-    let(:channel_stub) { instance_double('Msgr::Channel', prefetch: true) }
-    let(:queue_stub) { instance_double('Bunny::Queue', purge: true) }
+    let(:channel_stub) { instance_double(Msgr::Channel, prefetch: true) }
+    let(:queue_stub) { instance_double(Bunny::Queue, purge: true) }
 
     before do
       allow(Msgr::Channel).to receive(:new).and_return(channel_stub)

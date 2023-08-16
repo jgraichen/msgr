@@ -45,8 +45,8 @@ module Msgr
       Msgr.client.start
 
       # Wait until we receive a signal
-      readable = IO.select([r])
-      case readable.first[0].gets.strip
+      r.wait_readable
+      case r.gets.strip
         when 'INT', 'TERM' # Safe shutdown
           Msgr.client.stop
         else # Error

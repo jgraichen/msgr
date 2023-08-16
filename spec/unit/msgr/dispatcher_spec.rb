@@ -23,8 +23,8 @@ describe Msgr::Dispatcher do
 
   describe 'dispatch' do
     it 'acks messages automatically if auto_ack is enabled' do
-      route_db = instance_double('Msgr::Route', consumer: 'MsgrAutoAckConsumer', action: :index)
-      msg_db = instance_spy('Msgr::Message', route: route_db, acked?: false)
+      route_db = instance_double(Msgr::Route, consumer: 'MsgrAutoAckConsumer', action: :index)
+      msg_db = instance_spy(Msgr::Message, route: route_db, acked?: false)
 
       dispatcher.dispatch(msg_db)
 
@@ -33,8 +33,8 @@ describe Msgr::Dispatcher do
     end
 
     it 'does not ack messages if auto_ack is disabled' do
-      route_db = instance_double('Msgr::Route', consumer: 'MsgrManualAckConsumer', action: :index)
-      msg_db = instance_spy('Msgr::Message', route: route_db, acked?: false)
+      route_db = instance_double(Msgr::Route, consumer: 'MsgrManualAckConsumer', action: :index)
+      msg_db = instance_spy(Msgr::Message, route: route_db, acked?: false)
 
       dispatcher.dispatch(msg_db)
 

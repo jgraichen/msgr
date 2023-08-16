@@ -65,7 +65,7 @@ module Msgr
       end
 
       def clear
-        @instance ? @instance.clear : nil
+        @instance&.clear
       end
 
       alias reset clear

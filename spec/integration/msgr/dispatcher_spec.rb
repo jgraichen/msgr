@@ -31,24 +31,23 @@ describe Msgr::Dispatcher do
   let(:config) { {max: 1} }
   let(:consumer) { 'DispatcherTestConsumer' }
   let(:route) do
-    instance_double('Msgr::Route').tap do |t|
-      allow(t).to receive(:consumer).and_return consumer
-      allow(t).to receive(:action).and_return 'index'
+    instance_double(Msgr::Route).tap do |t|
+      allow(t).to receive_messages(consumer: consumer, action: 'index')
     end
   end
   let(:channel) do
-    instance_double('Msgr::Channel').tap do |c|
+    instance_double(Msgr::Channel).tap do |c|
       allow(c).to receive(:ack)
     end
   end
   let(:delivery_info) do
-    instance_double('Bunny::DeliveryInfo').tap do |ti|
+    instance_double(Bunny::DeliveryInfo).tap do |ti|
       allow(ti).to receive(:delivery_tag).and_return(3)
     end
   end
   let(:payload) { {} }
   let(:metadata) do
-    instance_double('Bunny::MessageProperties').tap do |metadata|
+    instance_double(Bunny::MessageProperties).tap do |metadata|
       allow(metadata).to receive(:content_type).and_return('text/plain')
     end
   end
