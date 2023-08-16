@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class TestConsumer < ApplicationConsumer
+  class << self
+    attr_accessor :queue
+  end
+
   def index
     data = {fuubar: 'abc'}
 
@@ -8,6 +12,7 @@ class TestConsumer < ApplicationConsumer
   end
 
   def another_action
-    puts payload.inspect.to_s
+    self.class.queue ||= []
+    self.class.queue << payload
   end
 end

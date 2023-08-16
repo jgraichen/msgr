@@ -3,6 +3,8 @@ common: &common
 
 test:
   <<: *common
+  pool_class: Msgr::TestPool
+  raise_exceptions: true
 
 development:
   <<: *common

@@ -50,4 +50,10 @@ RSpec.configure do |config|
   config.before do
     Msgr.logger = false
   end
+
+  config.after do
+    # Flush the consumer queue
+    Msgr.client.stop delete: true
+    Msgr::TestPool.reset
+  end
 end
