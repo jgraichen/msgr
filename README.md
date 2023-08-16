@@ -15,7 +15,7 @@ your routes, create your consumer and watch your app processing messages.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'msgr'
+gem 'msgr', '~> 1.5'
 ```
 
 And then execute:

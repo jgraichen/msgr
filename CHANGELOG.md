@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.5.0] - 2023-08-16
+
 ### Added
 
 - Support for Ruby 3.1 and 3.2
@@ -161,17 +163,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Fix bug with empty routes on client start
 
-## 0.4.0 - 0.10.0
-
-### Changed
-
-- Some lost history due to several crises
-
 ## [0.4.0] - 2014-03-04
 
 ### Changed
 
 - Improve `Railtie` and autostart code
+
+## 0.4.0 - 0.10.0
+
+### Changed
+
+- Some lost history due to several crises
 
 ## [0.3.0] - 2014-03-03
 
@@ -191,7 +193,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Improve rails initializer code
 
-[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/jgraichen/msgr/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/jgraichen/msgr/compare/v1.3.2...v1.4.0
 [1.3.2]: https://github.com/jgraichen/msgr/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/jgraichen/msgr/compare/v1.3.0...v1.3.1
