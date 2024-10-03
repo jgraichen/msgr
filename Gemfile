@@ -15,7 +15,6 @@ gem 'simplecov-cobertura', require: false
 gem 'rubocop-config', github: 'jgraichen/rubocop-config', ref: 'v12', require: false
 
 gem 'rails'
-gem 'sqlite3', '~> 1.4'
 
 # Specify your gem's dependencies in acfs.gemspec
 gemspec

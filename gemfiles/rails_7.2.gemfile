@@ -11,6 +11,6 @@ gem "simplecov", require: false
 gem "simplecov-cobertura", require: false
 gem "rubocop-config", github: "jgraichen/rubocop-config", ref: "v12", require: false
 gem "rails", "~> 7.2.0"
-gem "sqlite3", "~> 1.4"
+gem "sqlite3", "~> 2.0"
 
 gemspec path: "../"
