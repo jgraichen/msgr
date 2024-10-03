@@ -4,10 +4,17 @@
 require 'bundler'
 Bundler.require :rails, :test
 
-# Coverage
-require 'coveralls'
-Coveralls.wear! do
+require 'simplecov'
+require 'simplecov-cobertura'
+
+SimpleCov.start do
+  command_name 'rspec:integration'
   add_filter 'spec'
+
+  self.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::CoberturaFormatter,
+  ]
 end
 
 ENV['RAILS_ENV'] ||= 'test'
@@ -19,11 +26,7 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each {|f| require f }
 
-# Checks for pending migrations before tests are run.
-# If you are not using ActiveRecord, you can remove this line.
-if defined?(ActiveRecord::Migration) && Rails::VERSION::MAJOR >= 4
-  ActiveRecord::Migration.check_pending!
-end
+ActiveRecord::Migration.check_all_pending!
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -45,10 +48,6 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     # Only allow expect syntax
     c.syntax = :expect
-  end
-
-  config.before do
-    Msgr.logger = false
   end
 
   config.after do

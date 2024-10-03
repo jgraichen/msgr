@@ -57,7 +57,7 @@ module Msgr
 
     class << self
       def new(*args)
-        @instance ||= super(*args) # rubocop:disable Naming/MemoizedInstanceVariableName
+        @instance ||= super # rubocop:disable Naming/MemoizedInstanceVariableName
       end
 
       def run(**kwargs)

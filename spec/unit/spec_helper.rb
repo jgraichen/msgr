@@ -4,10 +4,17 @@
 require 'bundler'
 Bundler.setup :default, :test
 
-# Coverage
-require 'coveralls'
-Coveralls.wear! do
+require 'simplecov'
+require 'simplecov-cobertura'
+
+SimpleCov.start do
+  command_name 'rspec:unit'
   add_filter 'spec'
+
+  self.formatters = [
+    SimpleCov::Formatter::HTMLFormatter,
+    SimpleCov::Formatter::CoberturaFormatter,
+  ]
 end
 
 require 'msgr'
@@ -19,9 +26,5 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     # Only allow expect syntax
     c.syntax = :expect
-  end
-
-  config.before do
-    Msgr.logger = false
   end
 end

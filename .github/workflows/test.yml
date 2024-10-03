@@ -63,6 +63,11 @@ jobs:
       - name: Run integration tests
         run: bundle exec rspec -Ispec/integration --color spec/integration
 
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
   rubocop:
     name: rubocop
     runs-on: ubuntu-22.04
@@ -76,7 +81,7 @@ jobs:
       - uses: actions/checkout@master
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          ruby-version: "3.3"
           bundler-cache: true
 
       - name: Run rubocop

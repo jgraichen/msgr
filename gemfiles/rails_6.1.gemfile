@@ -3,12 +3,13 @@
 source "https://rubygems.org"
 
 gem "appraisal"
-gem "coveralls"
-gem "my-rubocop", github: "jgraichen/my-rubocop", ref: "v4"
 gem "rake"
 gem "rake-release", "~> 1.1"
 gem "rspec", "~> 3.0"
 gem "rspec-rails"
+gem "simplecov", require: false
+gem "simplecov-cobertura", require: false
+gem "rubocop-config", github: "jgraichen/rubocop-config", ref: "v12", require: false
 gem "rails", "~> 6.1.0"
 gem "sqlite3", "~> 1.4"
 
