@@ -26,7 +26,11 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each {|f| require f }
 
-ActiveRecord::Migration.check_all_pending!
+if ActiveRecord::Migration.respond_to?(:check_all_pending!)
+  ActiveRecord::Migration.check_all_pending!
+else
+  ActiveRecord::Migration.check_pending!
+end
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
