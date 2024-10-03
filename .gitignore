@@ -21,7 +21,7 @@ spec/integration/dummy/.generators
 spec/integration/dummy/.rakeTasks
 spec/integration/dummy/.sass-cache
 spec/integration/dummy/db/*.sqlite3
-spec/integration/dummy/db/*.sqlite3-journal
+spec/integration/dummy/db/*.sqlite3*
 spec/integration/dummy/tmp
 spec/reports
 test/tmp
