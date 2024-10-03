@@ -11,7 +11,7 @@ gem 'rspec-rails'
 gem 'rubocop-config', github: 'jgraichen/rubocop-config', ref: 'v11', require: false
 
 gem 'rails'
-gem 'sqlite3', '~> 1.4'
+gem 'sqlite3', '~> 2.0'
 
 # Specify your gem's dependencies in acfs.gemspec
 gemspec
