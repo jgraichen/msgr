@@ -10,6 +10,6 @@ gem "rake-release", "~> 1.1"
 gem "rspec", "~> 3.0"
 gem "rspec-rails"
 gem "rails", git: "https://github.com/rails/rails", require: "rails"
-gem "sqlite3"
+gem "sqlite3", "~> 1.4"
 
 gemspec path: "../"
