@@ -3,7 +3,7 @@ on: [push]
 jobs:
   test:
     name: Ruby ${{ matrix.ruby }} / ${{ matrix.gemfile }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     strategy:
       matrix:
@@ -69,7 +69,7 @@ jobs:
 
   rubocop:
     name: rubocop
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     env:
       BUNDLE_JOBS: 4
