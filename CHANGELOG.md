@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [1.6.1] - 2024-10-04
+
+### Fixed
+
+- Changelog parsing failing in release workflow
+
 ## [1.6.0] - 2024-10-04
 
 ### Added
@@ -193,7 +199,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Improve rails initializer code
 
-[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/jgraichen/msgr/compare/v1.6.1...HEAD
+[1.6.1]: https://github.com/jgraichen/msgr/compare/v1.6.0...v1.6.1
 [1.6.0]: https://github.com/jgraichen/msgr/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/jgraichen/msgr/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/jgraichen/msgr/compare/v1.3.2...v1.4.0
