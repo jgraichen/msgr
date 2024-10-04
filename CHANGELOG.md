@@ -175,12 +175,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Improve `Railtie` and autostart code
 
-## 0.4.0 - 0.10.0
-
-### Changed
-
-- Some lost history due to several crises
-
 ## [0.3.0] - 2014-03-03
 
 ### Added
