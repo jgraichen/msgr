@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+### Added
+
+- Support for Ruby 3.3
+
 ## [1.5.0] - 2023-08-16
 
 ### Added
@@ -163,17 +167,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Fix bug with empty routes on client start
 
-## [0.4.0] - 2014-03-04
-
-### Changed
-
-- Improve `Railtie` and autostart code
-
 ## 0.4.0 - 0.10.0
 
 ### Changed
 
 - Some lost history due to several crises
+
+## [0.4.0] - 2014-03-04
+
+### Changed
+
+- Improve `Railtie` and autostart code
 
 ## [0.3.0] - 2014-03-03
 
