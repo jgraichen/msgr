@@ -1,0 +1,36 @@
+name: release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  rubygems:
+    if: github.repository == 'jgraichen/msgr'
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+      id-token: write
+
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 10
+      BUNDLE_WITHOUT: development test
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+          bundler-cache: true
+
+      - uses: rubygems/release-gem@v1
+
+      - uses: taiki-e/create-gh-release-action@v1
+        with:
+          changelog: CHANGELOG.md
+          draft: true
+          token: ${{ secrets.GITHUB_TOKEN }}
