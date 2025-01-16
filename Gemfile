@@ -12,7 +12,7 @@ gem 'rspec-rails'
 gem 'simplecov', require: false
 gem 'simplecov-cobertura', require: false
 
-gem 'rubocop-config', github: 'jgraichen/rubocop-config', ref: 'v12', require: false
+gem 'rubocop-config', github: 'jgraichen/rubocop-config', ref: '7011bc14dbbf46e9bb240403feef25f7f6bb8dd3', require: false
 
 gem 'rails'
 
