@@ -63,8 +63,8 @@ module Msgr
     class NullPool
       def initialize(*); end
 
-      def post(*args)
-        yield(*args)
+      def post(*)
+        yield(*)
       end
     end
   end
