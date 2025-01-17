@@ -60,8 +60,8 @@ module Msgr
         @instance ||= super # rubocop:disable Naming/MemoizedInstanceVariableName
       end
 
-      def run(**kwargs)
-        new.run(**kwargs)
+      def run(**)
+        new.run(**)
       end
 
       def clear

@@ -4,7 +4,7 @@ module Msgr
   class Route
     attr_reader :consumer, :action, :opts
 
-    MATCH_REGEXP = %r{\A(?<consumer>(?:\w+/)*\w+)#(?<action>\w+)\z}.freeze
+    MATCH_REGEXP = %r{\A(?<consumer>(?:\w+/)*\w+)#(?<action>\w+)\z}
     def initialize(key, opts = {})
       @opts = opts
       raise ArgumentError.new 'Missing `to` options.' unless @opts[:to]

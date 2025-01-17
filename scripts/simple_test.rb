@@ -22,8 +22,8 @@ end
 class NullPool
   def initialize(*); end
 
-  def post(*args)
-    yield(*args)
+  def post(*)
+    yield(*)
   end
 end
 
