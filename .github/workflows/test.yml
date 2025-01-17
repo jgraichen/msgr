@@ -1,5 +1,10 @@
+---
 name: test
-on: [push]
+
+on:
+  - push
+  - pull_request
+
 jobs:
   test:
     name: Ruby ${{ matrix.ruby }} / ${{ matrix.gemfile }}
