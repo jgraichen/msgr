@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# Require logger before active_support
+# (https://github.com/rails/rails/pull/54264)
+require 'logger'
+
 require 'msgr/version'
 require 'active_support'
 require 'active_support/core_ext/object/blank'
