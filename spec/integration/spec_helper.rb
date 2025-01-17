@@ -24,7 +24,7 @@ require 'rspec/rails'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-Dir[File.expand_path('support/**/*.rb', __dir__)].sort.each {|f| require f }
+Dir[File.expand_path('support/**/*.rb', __dir__)].each {|f| require f }
 
 if ActiveRecord::Migration.respond_to?(:check_all_pending!)
   ActiveRecord::Migration.check_all_pending!
