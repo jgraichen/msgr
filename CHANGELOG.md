@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Support for Ruby 3.4 and Rails 8.0
 
+### Changed
+
+- Require Ruby 3.2+ and Rails 7.1+
+
 ## [1.6.1] - 2024-10-04
 
 ### Fixed

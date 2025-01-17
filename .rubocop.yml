@@ -2,7 +2,7 @@ inherit_gem:
   rubocop-config: default.yml
 
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: "3.2"
   SuggestExtensions: False
   Exclude:
     - gemfiles/**/*
