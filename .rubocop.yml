@@ -15,3 +15,8 @@ Layout/LineLength:
 
 RSpec/MultipleMemoizedHelpers:
   Max: 15
+
+Style/OneClassPerFile:
+  Exclude:
+    - scripts/**/*
+    - spec/**/*
